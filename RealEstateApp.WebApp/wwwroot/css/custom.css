@@ -1,0 +1,9 @@
+﻿body {
+    background-color: #F1F5F9;
+    font-family: 'Inter', sans-serif
+}
+
+.form-label {
+    font-weight: 600 !important;
+    font-size: 1rem !important;
+}
