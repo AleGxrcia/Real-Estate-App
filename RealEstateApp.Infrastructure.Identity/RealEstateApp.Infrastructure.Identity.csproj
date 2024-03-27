@@ -30,10 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Contexts\" />
-    <Folder Include="Entities\" />
-    <Folder Include="Services\" />
-    <Folder Include="Seeds\" />
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>

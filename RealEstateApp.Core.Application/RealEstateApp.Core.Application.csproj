@@ -20,14 +20,4 @@
     <ProjectReference Include="..\RealEstateApp.Core.Domain\RealEstateApp.Core.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Dtos\Account\" />
-    <Folder Include="Helpers\" />
-    <Folder Include="Interfaces\Services\" />
-    <Folder Include="Interfaces\Repositories\" />
-    <Folder Include="Mappings\" />
-    <Folder Include="ViewModels\" />
-    <Folder Include="Services\" />
-  </ItemGroup>
-
 </Project>
