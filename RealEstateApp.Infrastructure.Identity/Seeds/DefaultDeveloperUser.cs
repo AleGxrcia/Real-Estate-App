@@ -4,7 +4,7 @@ using RealEstateApp.Infrastructure.Identity.Entities;
 
 namespace RealEstateApp.Infrastructure.Identity.Seeds
 {
-    public static class DefaultDepveloperUser
+    public static class DefaultDeveloperUser
     {
         public static async Task SeedAsync(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
@@ -24,7 +24,7 @@ namespace RealEstateApp.Infrastructure.Identity.Seeds
                 if (user == null)
                 {
                     await userManager.CreateAsync(defaultUser, "123Pa$$word!");
-                    await userManager.AddToRoleAsync(defaultUser, Roles.Depveloper.ToString());
+                    await userManager.AddToRoleAsync(defaultUser, Roles.Developer.ToString());
                 }
             }
 
