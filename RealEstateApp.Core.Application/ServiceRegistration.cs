@@ -15,6 +15,8 @@ namespace RealEstateApp.Core.Application
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             #region Services
             services.AddTransient(typeof(IGenericService<,,>), typeof(GenericService<,,>));
+            services.AddTransient<IPropertyTypeService, PropertyTypeService>();
+            services.AddTransient<ISaleTypeService, SaleTypeService>();
 
 
 
