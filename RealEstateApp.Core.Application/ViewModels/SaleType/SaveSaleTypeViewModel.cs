@@ -4,7 +4,7 @@ namespace RealEstateApp.Core.Application.ViewModels.SaleType
 {
     public class SaveSaleTypeViewModel
     {
-        public int? Id { get; set; }
+        public int Id { get; set; }
         [Required(ErrorMessage = "Debe colocar un nombre")]
 		[DataType(DataType.Text)]
 		public string Name { get; set; }

@@ -5,6 +5,6 @@ namespace RealEstateApp.Core.Application.Interfaces.Services
 {
     public interface ISaleTypeService : IGenericService<SaveSaleTypeViewModel, SaleTypeViewModel, SaleType>
     {
-
+        Task<List<SaleTypeViewModel>> GetAllViewModelWithInclude();
     }
 }
