@@ -4,14 +4,15 @@ using RealEstateApp.Core.Application.Exceptions;
 using RealEstateApp.Core.Application.Interfaces.Repositories;
 using RealEstateApp.Core.Application.Wrappers;
 using RealEstateApp.Core.Domain.Entities;
-using StockApp.Core.Application.Features.Categories.Commands.UpdateImprovement;
+using RealEstateApp.Core.Application.Features.Improvements.Commands.UpdateImprovement;
 using Swashbuckle.AspNetCore.Annotations;
 using System;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using RealEstateApp.Core.Application.ViewModels.Improvement;
 
-namespace RealEstateApp.Core.Application.Features.Categories.Commands.UpdateImprovement
+namespace RealEstateApp.Core.Application.Features.Improvements.Commands.UpdateImprovement
 {
     /// <summary>
     /// Parámetros para la actualizacion de una improvement

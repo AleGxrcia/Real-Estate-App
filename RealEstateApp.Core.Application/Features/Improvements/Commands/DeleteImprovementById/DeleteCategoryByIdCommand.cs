@@ -5,10 +5,10 @@ using RealEstateApp.Core.Application.Wrappers;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Net;
 
-namespace RealEstateApp.Core.Application.Features.Categories.Commands.DeleteImprovementById
+namespace RealEstateApp.Core.Application.Features.Improvements.Commands.DeleteImprovementById
 {
     /// <summary>
-    /// Parámetros para la eliminacion de una 
+    /// Parámetros para la eliminacion de una mejora
     /// </summary> 
     public class DeleteImprovementByIdCommand : IRequest<Response<int>>
     {

@@ -62,22 +62,7 @@ namespace RealEstateApp.Core.Application.Mappings
                 .ForMember(x => x.LastModifiedBy, opt => opt.Ignore());
             #endregion
 
-            #region PropertyProfile
 
-            CreateMap<PropertyType, PropertyTypeViewModel>()
-                .ReverseMap()
-                .ForMember(x => x.Created, opt => opt.Ignore())
-                .ForMember(x => x.CreatedBy, opt => opt.Ignore())
-                .ForMember(x => x.LastModified, opt => opt.Ignore())
-                .ForMember(x => x.LastModifiedBy, opt => opt.Ignore());
-
-            CreateMap<PropertyType, SavePropertyTypeViewModel>()
-            .ReverseMap()
-            .ForMember(x => x.Created, opt => opt.Ignore())
-            .ForMember(x => x.CreatedBy, opt => opt.Ignore())
-            .ForMember(x => x.LastModified, opt => opt.Ignore())
-            .ForMember(x => x.LastModifiedBy, opt => opt.Ignore());
-            #endregion
 
 
             #region UserProfile
