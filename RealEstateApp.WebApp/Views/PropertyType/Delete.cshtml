@@ -1,0 +1,25 @@
+﻿@model RealEstateApp.Core.Application.ViewModels.PropertyType.SavePropertyTypeViewModel
+@{
+    ViewData["Title"] = "Eliminar tipo de propiedad";
+}
+
+<div class="container mt-5 w-50">
+    <div class="card border rounded-3 shadow">
+        <div class="card-header fw-bold">
+            <h4>Eliminar el tipo de propiedad: @Model.Name</h4>
+        </div>
+        <form method="post" asp-controller="PropertyType" asp-action="DeletePropType">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+
+            <div class="card-body">
+                <span>¿Está seguro de que desea eliminar el tipo de propiedad y sus propiedades asociadas?</span>
+            </div>
+
+            <div class="card-footer mt-2 bg-white">
+                <button type="submit" class="btn btn-danger">Confirmar</button>
+                <a class="btn btn-secondary" asp-action="Index">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>

@@ -3,6 +3,7 @@ using RealEstateApp.Core.Application.Interfaces.Repositories;
 using RealEstateApp.Core.Application.Interfaces.Services;
 using RealEstateApp.Core.Application.ViewModels.PropertyType;
 using RealEstateApp.Core.Domain.Entities;
+using System.Collections.Generic;
 
 namespace RealEstateApp.Core.Application.Services
 {
@@ -15,6 +16,21 @@ namespace RealEstateApp.Core.Application.Services
         {
             _propertyTypeRepository = propertyTypeRepository;
             _mapper = mapper;
+        }
+
+        public async Task<List<PropertyTypeViewModel>> GetAllViewModelWithInclude()
+        {
+            var listPropertyTypes = await _propertyTypeRepository.GetAllWithIncludeAsync(new List<string> { "Properties" });
+
+            //var propertyCount = listPropertyTypes.Select(p => p.Properties).Count();
+
+            return listPropertyTypes.Select(pt => new PropertyTypeViewModel()
+            {
+                Id = pt.Id,
+                Name = pt.Name,
+                Description = pt.Description,
+                PropertyCount = pt.Properties.Count()
+            }).ToList();
         }
     }
 }
