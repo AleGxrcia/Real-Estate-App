@@ -6,7 +6,7 @@ using RealEstateApp.Core.Application.ViewModels.Improvement;
 using RealEstateApp.Core.Application.Wrappers;
 using System.Net;
 
-namespace RealEstateApp.Core.Application.Features.Categories.Queries.GetAllImprovements
+namespace RealEstateApp.Core.Application.Features.Improvements.Queries.GetAllImprovements
 {
     /// <summary>
     /// Parámetros para el listado de mejoras
@@ -23,6 +23,7 @@ namespace RealEstateApp.Core.Application.Features.Categories.Queries.GetAllImpro
         public GetAllImprovementQueryHandler(IImprovementRepository improvementRepository, IMapper mapper)
         {
             _improvementRepository = improvementRepository;
+            _mapper = mapper;
         }
 
         public async Task<Response<IList<ImprovementViewModel>>> Handle(GetAllImprovementQuery request, CancellationToken cancellationToken)

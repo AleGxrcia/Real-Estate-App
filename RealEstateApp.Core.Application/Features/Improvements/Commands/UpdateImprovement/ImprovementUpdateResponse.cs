@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StockApp.Core.Application.Features.Categories.Commands.UpdateImprovement
+namespace RealEstateApp.Core.Application.Features.Improvements.Commands.UpdateImprovement
 {
     public class ImprovementUpdateResponse
     {

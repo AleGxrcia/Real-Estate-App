@@ -7,7 +7,7 @@ using RealEstateApp.Core.Application.Wrappers;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Net;
 
-namespace RealEstateApp.Core.Application.Features.Categories.Queries.GetImprovementById
+namespace RealEstateApp.Core.Application.Features.Improvements.Queries.GetImprovementById
 {
     /// <summary>
     /// Parámetros para obtener una mejora por su id
