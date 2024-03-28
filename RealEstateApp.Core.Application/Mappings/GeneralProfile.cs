@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using RealEstateApp.Core.Application.Dtos.Account;
 using RealEstateApp.Core.Application.ViewModels.Improvement;
+using RealEstateApp.Core.Application.ViewModels.Property;
 using RealEstateApp.Core.Application.ViewModels.PropertyType;
 using RealEstateApp.Core.Application.ViewModels.SaleType;
 using RealEstateApp.Core.Application.ViewModels.User;
@@ -38,11 +39,27 @@ namespace RealEstateApp.Core.Application.Mappings
                 .ForMember(x => x.LastModifiedBy, opt => opt.Ignore());
 
             CreateMap<SaleType, SaveSaleTypeViewModel>()
-            .ReverseMap()
-            .ForMember(x => x.Created, opt => opt.Ignore())
-            .ForMember(x => x.CreatedBy, opt => opt.Ignore())
-            .ForMember(x => x.LastModified, opt => opt.Ignore())
-            .ForMember(x => x.LastModifiedBy, opt => opt.Ignore());
+                .ReverseMap()
+                .ForMember(x => x.Created, opt => opt.Ignore())
+                .ForMember(x => x.CreatedBy, opt => opt.Ignore())
+                .ForMember(x => x.LastModified, opt => opt.Ignore())
+                .ForMember(x => x.LastModifiedBy, opt => opt.Ignore());
+            #endregion
+
+            #region PropertyTypeProfile
+            CreateMap<PropertyType, PropertyViewModel>()
+                .ReverseMap()
+                .ForMember(x => x.Created, opt => opt.Ignore())
+                .ForMember(x => x.CreatedBy, opt => opt.Ignore())
+                .ForMember(x => x.LastModified, opt => opt.Ignore())
+                .ForMember(x => x.LastModifiedBy, opt => opt.Ignore());
+
+            CreateMap<PropertyType, SavePropertyViewModel>()
+                .ReverseMap()
+                .ForMember(x => x.Created, opt => opt.Ignore())
+                .ForMember(x => x.CreatedBy, opt => opt.Ignore())
+                .ForMember(x => x.LastModified, opt => opt.Ignore())
+                .ForMember(x => x.LastModifiedBy, opt => opt.Ignore());
             #endregion
 
             #region PropertyProfile
