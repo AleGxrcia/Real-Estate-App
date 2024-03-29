@@ -62,7 +62,6 @@ namespace RealEstateApp.Core.Application.Mappings
                 .ForMember(x => x.LastModifiedBy, opt => opt.Ignore());
 			#endregion
 
-
 			#region Propery
             CreateMap<Property, PropertyViewModel>()
                 .ReverseMap()
@@ -106,6 +105,8 @@ namespace RealEstateApp.Core.Application.Mappings
 				.ForMember(x => x.AgentId, opt => opt.Ignore());
 
 			#endregion
+
+
 
 			#region UserProfile
 			CreateMap<AuthenticationRequest, LoginViewModel>()

@@ -49,5 +49,18 @@ namespace RealEstateApp.Core.Application.Services
             ResetPasswordRequest resetRequest = _mapper.Map<ResetPasswordRequest>(vm);
             return await _accountService.ResetPasswordAsync(resetRequest);
         }
-    }
+
+		public async Task<List<UserViewModel>> GetAllUsers()
+		{
+			return await _accountService.GetAllUsers();
+		}
+
+		public async Task<UserResponse> getUserByIdAsync(string id)
+		{
+			UserRequest userId = new();
+			userId.Id = id;
+			return await _accountService.GetUserWithId(userId);
+
+		}
+	}
 }

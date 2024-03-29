@@ -248,6 +248,7 @@ namespace RealEstateApp.Infrastructure.Identity.Services
             response.UserName = user.UserName;
             response.Phone = user.PhoneNumber;
             response.Email = user.Email;
+            response.ImgUrl = user.PhotoUrl;
 
             return response;
         }
