@@ -16,6 +16,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
 using Newtonsoft.Json.Linq;
+using RealEstateApp.Core.Application.ViewModels.User;
+using Microsoft.EntityFrameworkCore;
 
 namespace RealEstateApp.Infrastructure.Identity.Services
 {
@@ -329,6 +331,67 @@ namespace RealEstateApp.Infrastructure.Identity.Services
             }
 
             return response;
+        }
+
+        public async Task<UserResponse> GetUserWithId(UserRequest request)
+        {
+            UserResponse response = new();
+            var user = await _userManager.FindByIdAsync(request.Id);
+            if (user == null)
+            {
+                response.HasError = true;
+                response.Error = $"No existe la cuenta requerida";
+                return response;
+            }
+
+            response.Id = user.Id;
+            response.FirstName = user.FirstName;
+            response.LastName = user.LastName;
+            response.UserName = user.UserName;
+            response.Phone = user.PhoneNumber;
+            response.Email = user.Email;
+            response.ImgUrl = user.PhotoUrl;
+
+            var roles = await _userManager.GetRolesAsync(user);
+            var userRole = roles.FirstOrDefault().ToString();
+            response.Role = userRole;
+
+            return response;
+        }
+        public async Task<List<UserViewModel>> GetAllUsers()
+        {
+            var users = await _userManager.Users.ToListAsync();
+            var userViewModels = new List<UserViewModel>();
+
+            foreach (var user in users)
+            {
+                var userViewModel = new UserViewModel
+                {
+                    Id = user.Id,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Username = user.UserName,
+                    Phone = user.PhoneNumber,
+                    Email = user.Email,
+                    PhotoUrl = user.PhotoUrl,
+                    IsActive = user.IsActive
+                };
+
+                // Obtener los roles del usuario
+                var roles = await _userManager.GetRolesAsync(user);
+
+                // Obtener el primer rol asignado al usuario y asignarlo al tipo de usuario
+                if (roles.Any())
+                {
+                    userViewModel.Role = roles.First().ToString();
+                }
+                if (userViewModel.Role != "Admin" || userViewModel.Role != "Developer")
+                {
+                    userViewModels.Add(userViewModel);
+                }
+            }
+
+            return userViewModels;
         }
 
         #region PrivateMethods

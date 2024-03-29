@@ -41,7 +41,7 @@ namespace RealEstateApp.Core.Application.ViewModels.User
 
         [Required(ErrorMessage = "Debe colocar una Foto")]
         [DataType(DataType.Upload)]
-        public IFormFile Photo { get; set; }
+        public IFormFile? Photo { get; set; }
 
         public bool HasError { get; set; }
         public string? Error { get; set; }

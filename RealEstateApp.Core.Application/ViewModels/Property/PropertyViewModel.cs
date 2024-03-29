@@ -19,6 +19,6 @@ namespace RealEstateApp.Core.Application.ViewModels.Property
         public int NumberOfBathrooms { get; set; }
 
         public ICollection<ImprovementViewModel> Improvements { get; set; }
-        public string ImagesUrl { get; set; }
+        public List<string> ImagesUrl { get; set; }
     }
 }
