@@ -26,6 +26,34 @@ namespace RealEstateApp.Core.Application.Services
 			await _repository.AddImagesAsync(photoUrls, propertyId);
 		}
 
+        public async Task AddImprovementToPropertyAsync(List<int> improvementsId, int propertyId)
+        {
+			await _repository.AddImprovementToPropertyAsync(improvementsId, propertyId);
+        }
+
+        public async Task<List<PropertyViewModel>> GetAllPropertiesByAgentId(string Id)
+		{
+			var propertyList = await GetAllWithIncludeAsync();
+			var AgentProperties = propertyList.Where(p => p.AgentId == Id)
+											  .Select(p => new PropertyViewModel
+											  {
+												  Id = p.Id,
+												  PropertyType = p.PropertyType,
+												  Code = p.Code,
+												  SaleType = p.SaleType,
+												  Price = p.Price,
+												  LandSize = p.LandSize,
+												  NumberOfBathrooms = p.NumberOfBathrooms,
+												  NumberOfRooms = p.NumberOfRooms,
+												  AgentId = p.AgentId,
+												  ImagesUrl = p.ImagesUrl
+											  })
+											  .ToList();
+
+			return AgentProperties;
+		}
+
+
 		public async Task<List<PropertyViewModel>> GetAllWithIncludeAsync()
 		{
 			var propertyList = await _repository.GetAllWithIncludeAsync(new List<string> { "SaleType", "PropertyType", "Images", "FavoriteProperties", "ImprovementProperties" });
@@ -39,13 +67,14 @@ namespace RealEstateApp.Core.Application.Services
 				LandSize = p.LandSize,
 				NumberOfBathrooms = p.NumberOfBathrooms,
 				NumberOfRooms = p.NumberOfRooms,
+				AgentId = p.AgentId,
 				ImagesUrl = p.Images.FirstOrDefault().ImageUrl,
-				Improvements = _mapper.Map<List<ImprovementViewModel>>(p.ImprovementProperties.Select(i=>new ImprovementViewModel 
+				Improvements = p.ImprovementProperties.Where(pi => pi.Improvement != null).Select(i=>new ImprovementViewModel 
 				{
 					Name = i.Improvement.Name,
 					Description = i.Improvement.Description
 					
-				}))
+				}).ToList()
 			}).ToList();
 		}
 

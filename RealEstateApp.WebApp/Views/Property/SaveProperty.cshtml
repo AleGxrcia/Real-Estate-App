@@ -1,0 +1,98 @@
+﻿@model RealEstateApp.Core.Application.ViewModels.Property.SavePropertyViewModel
+
+@{
+    ViewData["Title"] = "Guardar propiedad";
+    bool editMode = Model.Id == 0 ? false : true;
+}
+
+<div class="row">
+    <div class="col-6 offset-3">
+        <div class="card border rounded-3 shadow mt-3">
+            <div class="card-header fw-bold">
+                <h4>@(editMode ? $"Editando la propiedad" : "Registrando propiedad")</h4>
+            </div>
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="PropertyTypeId">Property Type</label>
+                        <select class="form-control" asp-for="PropertyTypeId" asp-items="@(new SelectList(Model.PropertyTypes, "Id", "Name"))">
+                            <option value="">-- Select Property Type --</option>
+                        </select>
+                        <span asp-validation-for="PropertyTypeId" class="text-danger"></span>
+
+                    </div>
+
+                    <div class="form-group">
+                        <label for="SalesTypeId">Sale Type</label>
+                        <select class="form-control" asp-for="SalesTypeId" asp-items="@(new SelectList(Model.SalesTypes, "Id", "Name"))">
+                            <option value="">-- Select Sale Type --</option>
+                        </select>
+                        <span asp-validation-for="SalesTypeId" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Price">Price (DOP)</label>
+                        <input type="number" class="form-control" asp-for="Price" />
+                        <span asp-validation-for="Price" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Description">Description</label>
+                        <textarea class="form-control" asp-for="Description"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="LandSize">Land Size (m²)</label>
+                        <input type="number" class="form-control" asp-for="LandSize" />
+                        <span asp-validation-for="LandSize" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="NumberOfRooms">Number of Rooms</label>
+                        <input type="number" class="form-control" asp-for="NumberOfRooms" />
+                        <span asp-validation-for="NumberOfRooms" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="NumberOfBathrooms">Number of Bathrooms</label>
+                        <input type="number" class="form-control" asp-for="NumberOfBathrooms" />
+                        <span asp-validation-for="NumberOfBathrooms" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ImprovementId">Improvements</label>
+                        <select class="form-control" asp-for="ImprovementsId" asp-items="@(new SelectList(Model.Improvements, "Id", "Name"))" multiple>
+                        </select>
+                        <span asp-validation-for="ImprovementsId" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="file1">Imagen de portada</label>
+                        <input type="file" class="form-control" name="file1" />
+                        <span asp-validation-for="file1" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="file2">Imagen 2</label>
+                        <input type="file" class="form-control" name="file2" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="file3">Imagen 3</label>
+                        <input type="file" class="form-control" name="file3" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="file4">Imagen 4</label>
+                        <input type="file" class="form-control" name="file4" />
+                    </div>
+
+                    
+
+                    <button type="submit" class="btn btn-primary">Create Property</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

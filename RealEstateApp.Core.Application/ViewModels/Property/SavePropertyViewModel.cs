@@ -13,7 +13,7 @@ namespace RealEstateApp.Core.Application.ViewModels.Property
 {
     public class SavePropertyViewModel
     {
-        public int? Id { get; set; }
+        public int Id { get; set; }
 
         [Required(ErrorMessage = "Debe elegir un tipo de propiedad.")]
         [Range(0.01, int.MaxValue)]
@@ -51,30 +51,30 @@ namespace RealEstateApp.Core.Application.ViewModels.Property
         public int NumberOfBathrooms { get; set; }
 
 
-        [Required(ErrorMessage = "Debe seleccionar una mejora.")]
+        [Required(ErrorMessage = "Debe seleccionar al menos una mejora.")]
         [Range(0.01, int.MaxValue)]
-        public int ImprovementId { get; set; }
+        public List<int> ImprovementsId { get; set; }
         public ICollection<ImprovementViewModel> Improvements { get; set; }
 
-
+        public int? Code { get; set; }
         public string? AgentId { get; set; }
 
         //Imgagenes
-        [Required(ErrorMessage = "Debe colocar al menos una imagen de la propiedad")]
+        [Required(ErrorMessage = "Debe colocar al menos la imagen de portada de la propiedad")]
         [DataType(DataType.Upload)]
         public IFormFile file1 { get; set; }
         public string? ImgUrl1 { get; set; }
 
         [DataType(DataType.Upload)]
-        public IFormFile file2 { get; set; }
+        public IFormFile? file2 { get; set; }
         public string? ImgUrl2 { get; set; }
 
         [DataType(DataType.Upload)]
-        public IFormFile file3 { get; set; }
+        public IFormFile? file3 { get; set; }
         public string? ImgUrl3 { get; set; }
 
         [DataType(DataType.Upload)]
-        public IFormFile file4 { get; set; }
+        public IFormFile? file4 { get; set; }
         public string? ImgUrl4 { get; set; }
     }
 }
