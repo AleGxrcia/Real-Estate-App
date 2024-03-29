@@ -12,5 +12,9 @@ namespace RealEstateApp.Core.Application.Interfaces.Services
         Task<RegisterResponse> RegisterAsync(SaveUserViewModel vm, string origin);
         Task<ResetPasswordResponse> ResetPasswordAsync(ResetPasswordViewModel vm);
         Task SignOutAsync();
-    }
+
+
+		Task<UserResponse> getUserByIdAsync(string id);
+		Task<List<UserViewModel>> GetAllUsers();
+	}
 }
