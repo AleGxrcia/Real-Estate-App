@@ -1,5 +1,11 @@
 ﻿using AutoMapper;
 using RealEstateApp.Core.Application.Dtos.Account;
+using RealEstateApp.Core.Application.Features.Improvements.Commands.CreateImprovement;
+using RealEstateApp.Core.Application.Features.Improvements.Commands.UpdateImprovement;
+using RealEstateApp.Core.Application.Features.PropertyTypes.Commands.CreatePropertyType;
+using RealEstateApp.Core.Application.Features.PropertyTypes.Commands.UpdatePropertyType;
+using RealEstateApp.Core.Application.Features.SaleTypes.Commands.Create;
+using RealEstateApp.Core.Application.Features.SaleTypes.Commands.UpdateSaleType;
 using RealEstateApp.Core.Application.ViewModels.Improvement;
 using RealEstateApp.Core.Application.ViewModels.Property;
 using RealEstateApp.Core.Application.ViewModels.PropertyType;
@@ -106,6 +112,23 @@ namespace RealEstateApp.Core.Application.Mappings
 
 			#endregion
 
+            #region PropertyTypeProfile
+            CreateMap<PropertyType, PropertyTypeViewModel>()
+                .ReverseMap()
+                .ForMember(x => x.Created, opt => opt.Ignore())
+                .ForMember(x => x.CreatedBy, opt => opt.Ignore())
+                .ForMember(x => x.LastModified, opt => opt.Ignore())
+                .ForMember(x => x.LastModifiedBy, opt => opt.Ignore());
+
+            CreateMap<PropertyType, SavePropertyTypeViewModel>()
+            .ReverseMap()
+            .ForMember(x => x.Id, opt => opt.Ignore())
+            .ForMember(x => x.Created, opt => opt.Ignore())
+            .ForMember(x => x.CreatedBy, opt => opt.Ignore())
+            .ForMember(x => x.LastModified, opt => opt.Ignore())
+            .ForMember(x => x.LastModifiedBy, opt => opt.Ignore());
+            #endregion
+
 
 
 			#region UserProfile
@@ -128,6 +151,79 @@ namespace RealEstateApp.Core.Application.Mappings
                 .ForMember(x => x.HasError, opt => opt.Ignore())
                 .ForMember(x => x.Error, opt => opt.Ignore())
                 .ReverseMap();
+            #endregion
+
+
+            #region CQRS
+
+            CreateMap<CreatePropertyTypeCommand, PropertyType>()
+                .ForMember(x => x.Created, opt => opt.Ignore())
+                .ForMember(x => x.LastModified, opt => opt.Ignore())
+                .ForMember(x => x.LastModifiedBy, opt => opt.Ignore())
+                .ForMember(x => x.CreatedBy, opt => opt.Ignore())
+                .ReverseMap();
+
+            CreateMap<PropertyTypeUpdateResponse, PropertyType>()
+                .ForMember(x => x.Created, opt => opt.Ignore())
+                .ForMember(x => x.LastModified, opt => opt.Ignore())
+                .ForMember(x => x.LastModifiedBy, opt => opt.Ignore())
+                .ForMember(x => x.CreatedBy, opt => opt.Ignore())
+                .ReverseMap();
+
+            CreateMap<UpdatePropertyTypeCommand, PropertyType>()
+                .ForMember(x => x.Created, opt => opt.Ignore())
+                .ForMember(x => x.LastModified, opt => opt.Ignore())
+                .ForMember(x => x.LastModifiedBy, opt => opt.Ignore())
+                .ForMember(x => x.CreatedBy, opt => opt.Ignore())
+                .ReverseMap();
+
+
+
+            CreateMap<CreateSaleTypeCommand, SaleType>()
+                .ForMember(x => x.Created, opt => opt.Ignore())
+                .ForMember(x => x.LastModified, opt => opt.Ignore())
+                .ForMember(x => x.LastModifiedBy, opt => opt.Ignore())
+                .ForMember(x => x.CreatedBy, opt => opt.Ignore())
+                .ReverseMap();
+
+            CreateMap<SaleTypeUpdateResponse, SaleType>()
+                .ForMember(x => x.Created, opt => opt.Ignore())
+                .ForMember(x => x.LastModified, opt => opt.Ignore())
+                .ForMember(x => x.LastModifiedBy, opt => opt.Ignore())
+                .ForMember(x => x.CreatedBy, opt => opt.Ignore())
+                .ReverseMap();
+
+
+            CreateMap<UpdateSaleTypeCommand, SaleType>()
+                .ForMember(x => x.Created, opt => opt.Ignore())
+                .ForMember(x => x.LastModified, opt => opt.Ignore())
+                .ForMember(x => x.LastModifiedBy, opt => opt.Ignore())
+                .ForMember(x => x.CreatedBy, opt => opt.Ignore())
+                .ReverseMap();
+
+            CreateMap<CreateImprovementCommand, Improvement>()
+                .ForMember(x => x.Created, opt => opt.Ignore())
+                .ForMember(x => x.LastModified, opt => opt.Ignore())
+                .ForMember(x => x.LastModifiedBy, opt => opt.Ignore())
+                .ForMember(x => x.CreatedBy, opt => opt.Ignore())
+                .ReverseMap();
+
+            CreateMap<UpdateImprovementCommand, Improvement>()
+                .ForMember(x => x.Created, opt => opt.Ignore())
+                .ForMember(x => x.LastModified, opt => opt.Ignore())
+                .ForMember(x => x.LastModifiedBy, opt => opt.Ignore())
+                .ForMember(x => x.CreatedBy, opt => opt.Ignore())
+                .ReverseMap();
+
+            CreateMap<ImprovementUpdateResponse, Improvement>()
+            .ForMember(x => x.Created, opt => opt.Ignore())
+            .ForMember(x => x.LastModified, opt => opt.Ignore())
+            .ForMember(x => x.LastModifiedBy, opt => opt.Ignore())
+            .ForMember(x => x.CreatedBy, opt => opt.Ignore())
+            .ReverseMap();
+
+
+
             #endregion
 
         }

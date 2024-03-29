@@ -1,12 +1,21 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using RealEstateApp.Core.Application.Dtos.Account;
+using RealEstateApp.Core.Application.Enums;
 using RealEstateApp.Core.Application.Interfaces.Services;
-using RealEstateApp.Core.Application.ViewModels.User;
+using RealEstateApp.Core.Domain.Settings;
 using RealEstateApp.Infrastructure.Identity.Entities;
+using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
+using System.Security.Claims;
 using System.Text;
-
+using System.Threading.Tasks;
+using System.Security.Cryptography;
+using Newtonsoft.Json.Linq;
 
 namespace RealEstateApp.Infrastructure.Identity.Services
 {
@@ -15,12 +24,19 @@ namespace RealEstateApp.Infrastructure.Identity.Services
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailService _emailService;
+        private readonly JWTSettings _jwtSettings;
 
-        public AccountService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IEmailService emailService)
+        public AccountService(
+              UserManager<ApplicationUser> userManager,
+              SignInManager<ApplicationUser> signInManager,
+              IEmailService emailService,
+              IOptions<JWTSettings> jwtSettings
+            )
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailService = emailService;
+            _jwtSettings = jwtSettings.Value;
         }
 
         public async Task<AuthenticationResponse> AuthenticateAsync(AuthenticationRequest request)
@@ -32,13 +48,6 @@ namespace RealEstateApp.Infrastructure.Identity.Services
             {
                 response.HasError = true;
                 response.Error = $"No Accounts registered with {request.Email}";
-                return response;
-            }
-
-            if (!user.IsActive)
-            {
-                response.HasError = true;
-                response.Error = $"Su usuario esta inactivo, comuniquese con el administrador ";
                 return response;
             }
 
@@ -56,6 +65,8 @@ namespace RealEstateApp.Infrastructure.Identity.Services
                 return response;
             }
 
+            JwtSecurityToken jwtSecurityToken = await GenerateJWToken(user);
+
             response.Id = user.Id;
             response.Email = user.Email;
             response.UserName = user.UserName;
@@ -64,6 +75,9 @@ namespace RealEstateApp.Infrastructure.Identity.Services
 
             response.Roles = rolesList.ToList();
             response.IsVerified = user.EmailConfirmed;
+            response.JWToken = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
+            var refreshToken = GenerateRefreshToken();
+            response.RefreshToken = refreshToken.Token;
 
             return response;
         }
@@ -101,20 +115,22 @@ namespace RealEstateApp.Infrastructure.Identity.Services
                 Email = request.Email,
                 FirstName = request.FirstName,
                 LastName = request.LastName,
-                UserName = request.UserName,
-                PhoneNumber = request.Phone,
-                IsActive = true
+                UserName = request.UserName
             };
 
             var result = await _userManager.CreateAsync(user, request.Password);
-
-
             if (result.Succeeded)
             {
-                //Agregar role
-                await _userManager.AddToRoleAsync(user, request.UserType.ToString());
+                if (request.UserType == Roles.Agent)
+                {
 
+                    await _userManager.AddToRoleAsync(user, Roles.Agent.ToString());
+                }
+                else
+                {
+                    await _userManager.AddToRoleAsync(user, Roles.Client.ToString());
 
+                }
                 var verificationUri = await SendVerificationEmailUri(user, origin);
                 await _emailService.SendAsync(new Core.Application.Dtos.Email.EmailRequest()
                 {
@@ -132,6 +148,110 @@ namespace RealEstateApp.Infrastructure.Identity.Services
 
             return response;
         }
+
+        public async Task<RegisterResponse> RegisterAdminUserAsync(RegisterRequest request, string origin)
+        {
+            RegisterResponse response = new()
+            {
+                HasError = false
+            };
+
+            var userWithSameUserName = await _userManager.FindByNameAsync(request.UserName);
+            if (userWithSameUserName != null)
+            {
+                response.HasError = true;
+                response.Error = $"username '{request.UserName}' is already taken.";
+                return response;
+            }
+
+            var userWithSameEmail = await _userManager.FindByEmailAsync(request.Email);
+            if (userWithSameEmail != null)
+            {
+                response.HasError = true;
+                response.Error = $"Email '{request.Email}' is already registered.";
+                return response;
+            }
+
+            var user = new ApplicationUser
+            {
+                Email = request.Email,
+                FirstName = request.FirstName,
+                LastName = request.LastName,
+                UserName = request.UserName,
+                EmailConfirmed = true,
+                IsActive = true,
+                PhoneNumberConfirmed = true,
+            };
+
+            var result = await _userManager.CreateAsync(user, request.Password);
+            if (result.Succeeded)
+            {
+
+                await _userManager.AddToRoleAsync(user, Roles.Client.ToString());
+                await _userManager.AddToRoleAsync(user, Roles.Agent.ToString());
+                await _userManager.AddToRoleAsync(user, Roles.Developer.ToString());
+                await _userManager.AddToRoleAsync(user, Roles.Admin.ToString());
+
+            }
+            else
+            {
+                response.HasError = true;
+                response.Error = $"An error occurred trying to register the user.";
+                return response;
+            }
+
+            return response;
+        }
+
+        public async Task<RegisterResponse> RegisterDevUserAsync(RegisterRequest request, string origin)
+        {
+            RegisterResponse response = new()
+            {
+                HasError = false
+            };
+
+            var userWithSameUserName = await _userManager.FindByNameAsync(request.UserName);
+            if (userWithSameUserName != null)
+            {
+                response.HasError = true;
+                response.Error = $"username '{request.UserName}' is already taken.";
+                return response;
+            }
+
+            var userWithSameEmail = await _userManager.FindByEmailAsync(request.Email);
+            if (userWithSameEmail != null)
+            {
+                response.HasError = true;
+                response.Error = $"Email '{request.Email}' is already registered.";
+                return response;
+            }
+
+            var user = new ApplicationUser
+            {
+                Email = request.Email,
+                FirstName = request.FirstName,
+                LastName = request.LastName,
+                UserName = request.UserName,
+                EmailConfirmed = true,
+                IsActive = true,
+                PhoneNumberConfirmed = true,
+            };
+
+            var result = await _userManager.CreateAsync(user, request.Password);
+            if (result.Succeeded)
+            {
+                await _userManager.AddToRoleAsync(user, Roles.Developer.ToString());
+            }
+            else
+            {
+                response.HasError = true;
+                response.Error = $"An error occurred trying to register the user.";
+                return response;
+            }
+
+            return response;
+        }
+
 
         public async Task<string> ConfirmAccountAsync(string userId, string token)
         {
@@ -210,6 +330,66 @@ namespace RealEstateApp.Infrastructure.Identity.Services
 
             return response;
         }
+
+        #region PrivateMethods
+
+        private async Task<JwtSecurityToken> GenerateJWToken(ApplicationUser user)
+        {
+
+            var userClaims = await _userManager.GetClaimsAsync(user);
+            var roles = await _userManager.GetRolesAsync(user);
+
+
+            var roleClaims = new List<Claim>();
+
+            foreach (var role in roles)
+            {
+                roleClaims.Add(new Claim("roles", role));
+            }
+
+            var claims = new[]
+            {
+                new Claim(JwtRegisteredClaimNames.Sub,user.UserName),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(JwtRegisteredClaimNames.Email,user.Email),
+                new Claim("uid", user.Id)
+            }
+            .Union(userClaims)
+            .Union(roleClaims);
+
+            var symmectricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key));
+            var signingCredetials = new SigningCredentials(symmectricSecurityKey, SecurityAlgorithms.HmacSha256);
+
+            var jwtSecurityToken = new JwtSecurityToken(
+                issuer: _jwtSettings.Issuer,
+                audience: _jwtSettings.Audience,
+                claims: claims,
+                expires: DateTime.UtcNow.AddMinutes(_jwtSettings.DurationInMinutes),
+                signingCredentials: signingCredetials);
+
+            return jwtSecurityToken;
+        }
+
+        private RefreshToken GenerateRefreshToken()
+        {
+            return new RefreshToken
+            {
+                Token = RandomTokenString(),
+                Expires = DateTime.UtcNow.AddDays(7),
+                Created = DateTime.UtcNow
+            };
+        }
+
+        private string RandomTokenString()
+        {
+            using var rngCryptoServiceProvider = new RNGCryptoServiceProvider();
+            var ramdomBytes = new byte[40];
+            rngCryptoServiceProvider.GetBytes(ramdomBytes);
+
+            return BitConverter.ToString(ramdomBytes).Replace("-", "");
+        }
+
+
         private async Task<string> SendVerificationEmailUri(ApplicationUser user, string origin)
         {
             var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -231,155 +411,9 @@ namespace RealEstateApp.Infrastructure.Identity.Services
 
             return verificationUri;
         }
-        public async Task<UserResponse> GetUserWithId(UserRequest request)
-        {
-            UserResponse response = new();
-            var user = await _userManager.FindByIdAsync(request.Id);
-            if (user == null)
-            {
-                response.HasError = true;
-                response.Error = $"No existe la cuenta requerida";
-                return response;
-            }
 
-            response.Id = user.Id;
-            response.FirstName = user.FirstName;
-            response.LastName = user.LastName;
-            response.UserName = user.UserName;
-            response.Phone = user.PhoneNumber;
-            response.Email = user.Email;
-            response.ImgUrl = user.PhotoUrl;
-
-            return response;
-        }
-
-        public async Task<UserResponse> UpdateUser(UserRequest request, SaveUserViewModel vm)
-        {
-            UserResponse response = new();
-            var user = await _userManager.FindByIdAsync(request.Id);
-            if (user == null)
-            {
-                response.HasError = true;
-                response.Error = $"No existe la cuenta requerida";
-                return response;
-            }
-
-            user.FirstName = vm.FirstName;
-            user.LastName = vm.LastName;
-            user.UserName = vm.Username;
-            if (vm.Password != null || vm.Password != "")
-            {
-                var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-                await _userManager.ResetPasswordAsync(user, token, vm.Password);
-            }
-            user.Email = vm.Email;
-            user.PhoneNumber = vm.Phone;
-
-
-
-            await _userManager.UpdateAsync(user);
-
-
-            response.Id = user.Id;
-            response.FirstName = user.FirstName;
-            response.LastName = user.LastName;
-
-
-            return response;
-        }
-
-        public async Task<UserResponse> ActivateUser(UserRequest request)
-        {
-            UserResponse response = new();
-            var user = await _userManager.FindByIdAsync(request.Id);
-            if (user == null)
-            {
-                response.HasError = true;
-                response.Error = $"No existe la cuenta requerida";
-                return response;
-            }
-
-            user.IsActive = true;
-            await _userManager.UpdateAsync(user);
-
-            response.Id = user.Id;
-            response.FirstName = user.FirstName;
-            response.LastName = user.LastName;
-
-            return response;
-
-        }
-
-        public async Task<UserResponse> InactivateUser(UserRequest request)
-        {
-            UserResponse response = new();
-            var user = await _userManager.FindByIdAsync(request.Id);
-            if (user == null)
-            {
-                response.HasError = true;
-                response.Error = $"No existe la cuenta requerida";
-                return response;
-            }
-
-            user.IsActive = false;
-            await _userManager.UpdateAsync(user);
-
-            response.Id = user.Id;
-            response.FirstName = user.FirstName;
-            response.LastName = user.LastName;
-
-            return response;
-        }
-
-        public async Task<int> GetActiveClientsCount()
-        {
-            return await _userManager.Users.CountAsync(u => u.IsActive);
-        }
-
-        public async Task<int> GetInactiveClientsCount()
-        {
-            return await _userManager.Users.CountAsync(u => !u.IsActive);
-        }
-
-        public async Task<List<UserViewModel>> GetAllUsers()
-        {
-            var users = await _userManager.Users.ToListAsync();
-            var userViewModels = new List<UserViewModel>();
-
-            foreach (var user in users)
-            {
-                var userViewModel = new UserViewModel
-                {
-                    Id = user.Id,
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
-                    Username = user.UserName,
-                    Phone = user.PhoneNumber,
-                    Email = user.Email,
-                    IsActive = user.IsActive
-                };
-
-                // Obtener los roles del usuario
-                var roles = await _userManager.GetRolesAsync(user);
-
-                // Obtener el primer rol asignado al usuario y asignarlo al tipo de usuario
-                if (roles.Any())
-                {
-                    userViewModel.Role = roles.First().ToString();
-                }
-
-                userViewModels.Add(userViewModel);
-            }
-
-            return userViewModels;
-        }
-
-        //-----------------------------------------------------------------------
-
-
-
+        #endregion
     }
-
 
 
 }

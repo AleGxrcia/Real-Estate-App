@@ -20,8 +20,9 @@ namespace RealEstateApp.Infrastructure.Identity.Seeds
             defaultUser.LastName = "Doe";
             defaultUser.EmailConfirmed = true;
             defaultUser.PhoneNumberConfirmed = true;
-
             defaultUser.IsActive = true;
+            defaultUser.Properties = 0;
+
 
             if (userManager.Users.All(u => u.Id != defaultUser.Id))
             {
