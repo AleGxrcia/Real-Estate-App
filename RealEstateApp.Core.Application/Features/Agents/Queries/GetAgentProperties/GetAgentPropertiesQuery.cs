@@ -5,41 +5,49 @@ using RealEstateApp.Core.Application.Interfaces.Repositories;
 using RealEstateApp.Core.Application.ViewModels.Improvement;
 using RealEstateApp.Core.Application.ViewModels.Property;
 using RealEstateApp.Core.Application.Wrappers;
+using Swashbuckle.AspNetCore.Annotations;
 using System.Net;
 
-namespace RealEstateApp.Core.Application.Features.Properties.Queries.GetAllProperties
+namespace RealEstateApp.Core.Application.Features.Agents.Queries.GetAgentProperties
 {
-    public class GetAllPropertiesQuery : IRequest<Response<IList<PropertyViewModel>>>
+    public class GetAgentPropertiesQuery : IRequest<Response<IList<PropertyViewModel>>>
     {
+        [SwaggerParameter(Description = "El id del agente del que se desea seleccionar las propiedades")]
+        public string Id { get; set; }
     }
 
-    public class GetAllPropertiesQueryHandler : IRequestHandler<GetAllPropertiesQuery, Response<IList<PropertyViewModel>>>
+    public class GetAgentPropertiesQueryHandler : IRequestHandler<GetAgentPropertiesQuery, Response<IList<PropertyViewModel>>>
     {
         private readonly IPropertyRepository _propertyRepository;
         private readonly IImprovementRepository _improvementRepository;
         private readonly IMapper _mapper;
 
-        public GetAllPropertiesQueryHandler(IPropertyRepository propertyRepository, IImprovementRepository improvementRepository, IMapper mapper)
+        public GetAgentPropertiesQueryHandler(IPropertyRepository propertyRepository, IImprovementRepository improvementRepository, IMapper mapper)
         {
             _improvementRepository = improvementRepository;
             _propertyRepository = propertyRepository;
             _mapper = mapper;
         }
 
-        public async Task<Response<IList<PropertyViewModel>>> Handle(GetAllPropertiesQuery request, CancellationToken cancellationToken)
+        public async Task<Response<IList<PropertyViewModel>>> Handle(GetAgentPropertiesQuery request, CancellationToken cancellationToken)
         {
-            var propertyList = await GetAllViewModel();
+            var propertyList = await GetAgentPropertiesViewModel(request.Id);
             if (propertyList == null || propertyList.Count == 0) throw new Exception("Properties not found");
 
             return new Response<IList<PropertyViewModel>>(propertyList);
         }
 
-        private async Task<List<PropertyViewModel>> GetAllViewModel()
+        private async Task<List<PropertyViewModel>> GetAgentPropertiesViewModel(string Id)
         {
             var propertyList = await _propertyRepository.GetAllWithIncludeAsync(new List<string> { "PropertyType", "SaleType", "ImprovementProperties", "Images" });
 
             if (propertyList == null || propertyList.Count == 0) throw new ApiException($"Properties not found."
                 , (int)HttpStatusCode.NotFound);
+
+            var filteredProperties = propertyList.Where(property => property.AgentId == Id).ToList();
+
+            if (filteredProperties.Count == 0)
+                throw new ApiException($"No properties found for this Agent: {Id}.", (int)HttpStatusCode.NotFound);
 
             var improvementIds = propertyList
             .SelectMany(property => property.ImprovementProperties)
@@ -48,17 +56,18 @@ namespace RealEstateApp.Core.Application.Features.Properties.Queries.GetAllPrope
 
             var improvements = await _improvementRepository.GetAllByIdAsync(improvementIds);
 
-            var listViewModels = propertyList.Select(property => new PropertyViewModel
-            {
-                Id = property.Id,
-                PropertyType = property.PropertyType.Name,
-                Price = property.Price,
-                Code = property.Code,
-                LandSize = property.LandSize,
-                NumberOfBathrooms = property.NumberOfBathrooms,
-                NumberOfRooms = property.NumberOfRooms,
-                SaleType = property.SaleType.Name,
-                Improvements = property.ImprovementProperties
+            var listViewModels = filteredProperties
+                .Select(property => new PropertyViewModel
+                {
+                    Id = property.Id,
+                    PropertyType = property.PropertyType.Name,
+                    Price = property.Price,
+                    Code = property.Code,
+                    LandSize = property.LandSize,
+                    NumberOfBathrooms = property.NumberOfBathrooms,
+                    NumberOfRooms = property.NumberOfRooms,
+                    SaleType = property.SaleType.Name,
+                    Improvements = property.ImprovementProperties
                     .Where(pi => pi.Improvement != null)
                     .Select(pi => new ImprovementViewModel
                     {
@@ -67,9 +76,9 @@ namespace RealEstateApp.Core.Application.Features.Properties.Queries.GetAllPrope
 
                     })
                     .ToList(),
-                ImagesUrl = property.Images.Where(img => img.ImageUrl != null)
+                    ImagesUrl = property.Images.Where(img => img.ImageUrl != null)
                 .Select(img => img.ImageUrl).ToList(),
-            }).ToList();
+                }).ToList();
 
 
             return listViewModels;

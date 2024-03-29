@@ -1,12 +1,16 @@
 ﻿using Asp.Versioning;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using RealEstateApp.Core.Application.Features.Agents.Queries.GetAgentById;
+using RealEstateApp.Core.Application.Features.Agents.Queries.GetAllAgents;
 using RealEstateApp.Core.Application.Features.Improvements.Commands.CreateImprovement;
 using RealEstateApp.Core.Application.Features.Improvements.Commands.DeleteImprovementById;
 using RealEstateApp.Core.Application.Features.Improvements.Commands.UpdateImprovement;
 using RealEstateApp.Core.Application.Features.Improvements.Queries.GetAllImprovements;
 using RealEstateApp.Core.Application.Features.Improvements.Queries.GetImprovementById;
+using RealEstateApp.Core.Application.Features.Properties.Queries.GetAllProperties;
 using RealEstateApp.Core.Application.ViewModels.Improvement;
+using RealEstateApp.Core.Application.ViewModels.User;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Net.Mime;
 
@@ -15,105 +19,60 @@ namespace RealEstateApp.WebApi.Controllers.v1
     [ApiVersion("1.0")]
 
     [SwaggerTag("Mantenimiento de mejoras")]
-    public class ImprovementController : BaseApiController
+    public class AgentController : BaseApiController
     {
         [HttpGet]
         [Authorize(Roles = "Developer, Admin")]
 
 
         [SwaggerOperation(
-          Summary = "Listado de mejoras",
-          Description = "Obtiene todas las mejoras creadas"
+          Summary = "Listado de agentes",
+          Description = "Obtiene todas los agentes creados"
         )]
         [Consumes(MediaTypeNames.Application.Json)]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ImprovementViewModel))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserViewModel))]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Get()
         {
 
-            return Ok(await Mediator.Send(new GetAllImprovementQuery()));
+            return Ok(await Mediator.Send(new GetAllAgentsQuery()));
         }
 
         [HttpGet("{id}")]
         [Authorize(Roles = "Developer, Admin")]
 
         [SwaggerOperation(
-             Summary = "mejora por id",
-             Description = "Obtiene una mejora por id como filtro"
+             Summary = "obtiene un agente por id",
+             Description = "Obtiene un agente por id como filtro"
          )]
         [Consumes(MediaTypeNames.Application.Json)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SaveImprovementViewModel))]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
 
-        public async Task<IActionResult> Get(int id)
+        public async Task<IActionResult> Get(string id)
         {
-            return Ok(await Mediator.Send(new GetImprovementByIdQuery { Id = id }));
+            return Ok(await Mediator.Send(new GetAgentByIdQuery { Id = id }));
         }
 
-        [HttpPost]
-        [Authorize(Roles = "Admin")]
+
+        [HttpGet("Properties/{id}")]
+        [Authorize(Roles = "Developer, Admin")]
 
         [SwaggerOperation(
-                 Summary = "Creacion de mejora",
-                 Description = "Recibe los parametros necesarios para crear una nueva mejora"
-        )]
-        [Consumes(MediaTypeNames.Application.Json)]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-
-        public async Task<IActionResult> Post(CreateImprovementCommand command)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest();
-            }
-
-            return Ok(await Mediator.Send(command));
-        }
-
-        [HttpPut("{id}")]
-        [Authorize(Roles = "Admin")]
-
-        [SwaggerOperation(
-                  Summary = "Actualizacion de una mejora",
-                  Description = "Recibe los parametros necesarios para modificar una mejora"
-        )]
+             Summary = "obtiene las propiedades de un agente por id",
+             Description = "Obtiene las propiedades de un agente por id como filtro"
+         )]
         [Consumes(MediaTypeNames.Application.Json)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SaveImprovementViewModel))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-
-        public async Task<IActionResult> Put(int id, UpdateImprovementCommand command)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest();
-            }
-            if (id != command.Id)
-            {
-                return BadRequest();
-            }
-            return Ok(await Mediator.Send(command));
-        }
-
-        [HttpDelete("{id}")]
-        [Authorize(Roles = "Admin")]
-
-        [SwaggerOperation(
-              Summary = "Eliminar una mejora",
-              Description = "Recibe los parametros necesarios para eliminar ua mejora existente"
-        )]
-        [Consumes(MediaTypeNames.Application.Json)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
 
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> GetAgentProperties(string id)
         {
-            await Mediator.Send(new DeleteImprovementByIdCommand { Id = id });
-            return NoContent();
+            return Ok(await Mediator.Send(new GetAgentPropertiesQuery { Id = id }));
         }
+
     }
 }

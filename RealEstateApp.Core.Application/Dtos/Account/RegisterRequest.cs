@@ -24,7 +24,7 @@ namespace RealEstateApp.Core.Application.Dtos.Account
         public IFormFile? Photo { get; set; }
 
 
-        public Roles UserType { get; set; }
+        public Roles? UserType { get; set; }
 
     }
 }
