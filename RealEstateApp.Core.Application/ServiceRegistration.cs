@@ -17,6 +17,9 @@ namespace RealEstateApp.Core.Application
             services.AddMediatR(Assembly.GetExecutingAssembly());
             #region Services
             services.AddTransient(typeof(IGenericService<,,>), typeof(GenericService<,,>));
+            services.AddTransient<IPropertyTypeService, PropertyTypeService>();
+            services.AddTransient<ISaleTypeService, SaleTypeService>();
+            services.AddTransient<IImprovementService, ImprovementService>();
 
 
 

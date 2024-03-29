@@ -1,4 +1,5 @@
 ﻿using RealEstateApp.Core.Application.Dtos.Account;
+using RealEstateApp.Core.Application.ViewModels.User;
 using System.Threading.Tasks;
 
 namespace RealEstateApp.Core.Application.Interfaces.Services
@@ -14,5 +15,8 @@ namespace RealEstateApp.Core.Application.Interfaces.Services
         Task<RegisterResponse> RegisterDevUserAsync(RegisterRequest request, string origin);
         Task<RegisterResponse> RegisterAdminUserAsync(RegisterRequest request, string origin);
         Task SignOutAsync();
-    }
+
+		Task<UserResponse> GetUserWithId(UserRequest request);
+		Task<List<UserViewModel>> GetAllUsers();
+	}
 }

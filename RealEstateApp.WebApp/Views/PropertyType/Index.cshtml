@@ -1,0 +1,54 @@
+﻿@using RealEstateApp.Core.Application.ViewModels.PropertyType
+@model List<PropertyTypeViewModel>
+
+@{
+    ViewData["Title"] = "Tipos de propiedades";
+}
+
+<div class="container">
+    <h1 class="">Tipos de propiedades</h1>
+    <a asp-controller="PropertyType" asp-action="Create" class="btn btn-primary m-3">
+        <i class="bi bi-plus-circle-fill"></i>
+        Crear tipo de propiedad
+    </a>
+    <div class="border rounded-3 shadow bg-white p-4 mt-4">
+        <table class="table table-hover">
+            <thead class="fw-bold fs-6">
+                <tr>
+                    <th class="">Nombre</th>
+                    <th class="">Descripcion</th>
+                    <th class="">Propiedades asociadas</th>
+                    <th class="text-end">Opciones</th>
+                </tr>
+            </thead>
+            <tbody class="table-group-divider">
+                @foreach (PropertyTypeViewModel propType in Model)
+                {
+                    <tr class="align-middle">
+                        <td class="py-3 fs-6">
+                            @propType.Name
+                        </td>
+                        <td class="py-3">
+                            @propType.Description
+                        </td>                        
+                        <td class="py-3">
+                            @propType.PropertyCount
+                        </td>
+                        <td class="text-end align-items-center py-3">
+
+                            <a class="btn btn-secondary btn-sm" asp-controller="PropertyType" asp-action="Edit" asp-route-id=@propType.Id>
+                                <i class="bi bi-pencil-square"></i>
+                                Editar
+                            </a>
+                            <a class="btn btn-danger btn-sm" asp-controller="PropertyType" asp-action="Delete" asp-route-id=@propType.Id>
+                                <i class="bi bi-trash-fill"></i>
+                                Eliminar
+                            </a>
+
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

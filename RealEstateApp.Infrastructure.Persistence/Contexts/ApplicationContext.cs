@@ -73,7 +73,7 @@ namespace RealEstateApp.Infrastructure.Persistence.Contexts
                 .HasMany<Property>(pt => pt.Properties)
                 .WithOne(p => p.PropertyType)
                 .HasForeignKey(p => p.PropertyTypeId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Property>()
                 .HasMany<FavoriteProperty>(p => p.FavoriteProperties)
@@ -85,7 +85,7 @@ namespace RealEstateApp.Infrastructure.Persistence.Contexts
                 .HasMany<Property>(st => st.Properties)
                 .WithOne(p => p.SaleType)
                 .HasForeignKey(p => p.SaleTypeId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Property>()
                 .HasMany<ImprovementProperty>(p => p.ImprovementProperties)

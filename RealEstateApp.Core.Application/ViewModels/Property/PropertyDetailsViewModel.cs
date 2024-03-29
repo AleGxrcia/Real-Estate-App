@@ -18,7 +18,7 @@ namespace RealEstateApp.Core.Application.ViewModels.Property
         public int NumberOfRooms { get; set; }
         public int NumberOfBathrooms { get; set; }
         public string Description { get; set; }
-        public ICollection<ImprovementViewModel> ImproveMentes { get; set; }
+        public ICollection<ImprovementViewModel>? ImproveMentes { get; set; }
 
         public string AgentName { get; set; }
         public string AgentPhoneNumber { get; set; }
