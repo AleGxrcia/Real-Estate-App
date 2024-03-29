@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RealEstateApp.Core.Application.Dtos.Account;
 using RealEstateApp.Core.Application.Interfaces.Services;
@@ -31,16 +32,34 @@ namespace RealEstateApp.WebApi.Controllers
             return Ok(await _accountService.AuthenticateAsync(request));
         }
 
-        [HttpPost("register")]
+        [Authorize(Roles = "Admin")]
+
+        [HttpPost("registerAdmin")]
         [SwaggerOperation(
-            Summary = "Creacion de usuario basico",
-            Description = "Recibe los parametros necesarios para crear un usuario con el rol basico"
+            Summary = "Creacion de usuario administrador",
+            Description = "Recibe los parametros necesarios para crear un usuario con el rol administrador"
         )]
         [Consumes(MediaTypeNames.Application.Json)]
-        public async Task<IActionResult> RegisterAsync(RegisterRequest request)
+        public async Task<IActionResult> RegisterAdminAsync(RegisterRequest request)
         {
             var origin = Request.Headers["origin"];
-            return Ok(await _accountService.RegisterBasicUserAsync(request, origin));
+            return Ok(await _accountService.RegisterDevUserAsync(request, origin));
+        }
+
+        [Authorize(Roles = "Admin")]
+
+
+        [HttpPost("registerDev")]
+        [SwaggerOperation(
+        Summary = "Creacion de usuario desarrollador",
+        Description = "Recibe los parametros necesarios para crear un usuario con el rol desarrollador"
+        )]
+
+        [Consumes(MediaTypeNames.Application.Json)]
+        public async Task<IActionResult> RegisterDevAsync(RegisterRequest request)
+        {
+            var origin = Request.Headers["origin"];
+            return Ok(await _accountService.RegisterDevUserAsync(request, origin));
         }
 
         [HttpGet("confirm-email")]
@@ -53,6 +72,8 @@ namespace RealEstateApp.WebApi.Controllers
         {
             return Ok(await _accountService.ConfirmAccountAsync(userId, token));
         }
+
+
 
         [HttpPost("forgot-password")]
         [SwaggerOperation(

@@ -10,6 +10,9 @@ namespace RealEstateApp.Core.Application.Interfaces.Services
         Task<ForgotPasswordResponse> ForgotPasswordAsync(ForgotPasswordRequest request, string origin);
         Task<RegisterResponse> RegisterBasicUserAsync(RegisterRequest request, string origin);
         Task<ResetPasswordResponse> ResetPasswordAsync(ResetPasswordRequest request);
+
+        Task<RegisterResponse> RegisterDevUserAsync(RegisterRequest request, string origin);
+        Task<RegisterResponse> RegisterAdminUserAsync(RegisterRequest request, string origin);
         Task SignOutAsync();
     }
 }

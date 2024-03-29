@@ -49,6 +49,9 @@ namespace RealEstateApp.Core.Application.Features.Properties.Queries.GetAllPrope
 
             var property = propertyList.FirstOrDefault(f => f.Code == code);
 
+            if (property == null) throw new ApiException($"Property not found."
+, (int)HttpStatusCode.NotFound);
+
             var listViewModels = propertyList.Select(property => new PropertyViewModel
             {
                 Id = property.Id,

@@ -8,6 +8,7 @@ namespace RealEstateApp.Core.Application.ViewModels.PropertyType
 {
     public class PropertyTypeViewModel
     {
+        public int id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
     }

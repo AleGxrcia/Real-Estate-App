@@ -26,13 +26,13 @@ namespace RealEstateApp.Core.Application.Features.Properties.Queries.GetAllPrope
 
         public async Task<Response<IList<PropertyViewModel>>> Handle(GetAllPropertiesQuery request, CancellationToken cancellationToken)
         {
-            var propertyList = await GetAllViewModelWithFilters();
+            var propertyList = await GetAllViewModel();
             if (propertyList == null || propertyList.Count == 0) throw new Exception("Properties not found");
 
             return new Response<IList<PropertyViewModel>>(propertyList);
         }
 
-        private async Task<List<PropertyViewModel>> GetAllViewModelWithFilters()
+        private async Task<List<PropertyViewModel>> GetAllViewModel()
         {
             var propertyList = await _propertyRepository.GetAllWithIncludeAsync(new List<string> { "PropertyType", "SaleType", "ImprovementProperties", "Images" });
 

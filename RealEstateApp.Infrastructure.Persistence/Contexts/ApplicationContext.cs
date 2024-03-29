@@ -55,11 +55,11 @@ namespace RealEstateApp.Infrastructure.Persistence.Contexts
             #region "primary keys"
             modelBuilder.Entity<Property>().HasKey(p => p.Id);
             modelBuilder.Entity<PropertyType>().HasKey(p => p.Id);
-            modelBuilder.Entity<PropertyImage>().HasKey(p => p.Id);
             modelBuilder.Entity<Improvement>().HasKey(p => p.Id);
             modelBuilder.Entity<FavoriteProperty>().HasKey(p => p.Id);
             modelBuilder.Entity<SaleType>().HasKey(p => p.Id);
             modelBuilder.Entity<ImprovementProperty>().HasKey(ip => new { ip.ImprovementId, ip.PropertyId });
+            modelBuilder.Entity<PropertyImage>().HasKey(p => p.id);
             #endregion
 
             #region relationships
@@ -109,24 +109,24 @@ namespace RealEstateApp.Infrastructure.Persistence.Contexts
 
             modelBuilder.Entity<Property>().
                 Property(p => p.Price)
-                .IsRequired();            
-            
+                .IsRequired();
+
             modelBuilder.Entity<Property>().
                 Property(p => p.LandSize)
-                .IsRequired();            
-            
+                .IsRequired();
+
             modelBuilder.Entity<Property>().
                 Property(p => p.NumberOfBathrooms)
-                .IsRequired();            
-            
+                .IsRequired();
+
             modelBuilder.Entity<Property>().
                 Property(p => p.Description)
-                .IsRequired();            
-            
+                .IsRequired();
+
             modelBuilder.Entity<Property>().
                 Property(p => p.SaleTypeId)
-                .IsRequired();            
-            
+                .IsRequired();
+
             modelBuilder.Entity<Property>().
                 Property(p => p.PropertyTypeId)
                 .IsRequired();
@@ -135,8 +135,8 @@ namespace RealEstateApp.Infrastructure.Persistence.Contexts
             #region "Property Types"
             modelBuilder.Entity<PropertyType>().
                 Property(pt => pt.Name)
-                .IsRequired();            
-            
+                .IsRequired();
+
             modelBuilder.Entity<PropertyType>().
                 Property(pt => pt.Description)
                 .IsRequired();
@@ -145,8 +145,8 @@ namespace RealEstateApp.Infrastructure.Persistence.Contexts
             #region "Property Images"
             modelBuilder.Entity<PropertyImage>().
                 Property(pi => pi.ImageUrl)
-                .IsRequired();            
-            
+                .IsRequired();
+
             modelBuilder.Entity<PropertyImage>().
                 Property(pi => pi.PropertyId)
                 .IsRequired();
@@ -166,7 +166,7 @@ namespace RealEstateApp.Infrastructure.Persistence.Contexts
             modelBuilder.Entity<FavoriteProperty>().
                 Property(fp => fp.ClientId)
                 .IsRequired();
-            
+
             modelBuilder.Entity<FavoriteProperty>().
                 Property(fp => fp.PropertyId)
                 .IsRequired();

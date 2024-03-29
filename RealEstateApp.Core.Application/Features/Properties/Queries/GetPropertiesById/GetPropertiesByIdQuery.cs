@@ -43,8 +43,14 @@ namespace RealEstateApp.Core.Application.Features.Properties.Queries.GetProperty
         {
             var propertyList = await _propertyRepository.GetAllWithIncludeAsync(new List<string> { "PropertyType", "SaleType", "ImprovementProperties", "Images" });
 
+            if (propertyList == null || propertyList.Count == 0) throw new ApiException($"Properties not found."
+         , (int)HttpStatusCode.NotFound);
+
 
             var property = propertyList.FirstOrDefault(f => f.Id == id);
+
+            if (property == null) throw new ApiException($"Property not found."
+         , (int)HttpStatusCode.NotFound);
 
             PropertyViewModel propertyVm = new()
             {
@@ -57,13 +63,13 @@ namespace RealEstateApp.Core.Application.Features.Properties.Queries.GetProperty
                 NumberOfRooms = property.NumberOfRooms,
                 SaleType = property.SaleType.Name,
                 Improvements = property.ImprovementProperties
-                    .Where(pi => pi.Improvement != null)
-                    .Select(pi => new ImprovementViewModel
-                    {
-                        Name = pi.Improvement.Name,
-                    }).ToList(),
+                        .Where(pi => pi.Improvement != null)
+                        .Select(pi => new ImprovementViewModel
+                        {
+                            Name = pi.Improvement.Name,
+                        }).ToList(),
                 ImagesUrl = property.Images.Where(img => img.ImageUrl != null)
-                .Select(img => img.ImageUrl).ToList(),
+                    .Select(img => img.ImageUrl).ToList(),
             };
 
             return propertyVm;
