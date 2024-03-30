@@ -63,13 +63,13 @@ namespace RealEstateApp.Core.Application.Features.Properties.Queries.GetAllPrope
                 NumberOfRooms = property.NumberOfRooms,
                 SaleType = property.SaleType.Name,
                 Improvements = property.ImprovementProperties
-                    .Where(pi => pi.Improvement != null)
-                    .Select(pi => new ImprovementViewModel
-                    {
-                        Name = pi.Improvement.Name,
-                    }).ToList(),
+                        .Where(pi => pi.Improvement != null)
+                        .Select(pi => new ImprovementViewModel
+                        {
+                            Name = pi.Improvement.Name,
+                        }).ToList(),
                 ImagesUrl = property.Images.Where(img => img.ImageUrl != null)
-                .Select(img => img.ImageUrl).ToList(),
+                    .Select(img => img.ImageUrl).FirstOrDefault()
             }).ToList();
 
 
