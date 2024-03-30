@@ -50,7 +50,17 @@ namespace RealEstateApp.Core.Application.Services
             return await _accountService.ResetPasswordAsync(resetRequest);
         }
 
-		public async Task<List<UserViewModel>> GetAllUsers()
+        public async Task<string> ActiveUser(string id)
+        {
+           return await _accountService.ActivateUserAsync(id);
+        }
+
+        public async Task<string> InactiveUser(string id)
+        {
+           return await _accountService.InactivateUserAsync(id);
+        }
+
+        public async Task<List<UserViewModel>> GetAllUsers()
 		{
 			return await _accountService.GetAllUsers();
 		}

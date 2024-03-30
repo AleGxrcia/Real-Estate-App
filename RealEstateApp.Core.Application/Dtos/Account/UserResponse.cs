@@ -10,6 +10,7 @@
         public string Phone { get; set; }
         public string ImgUrl { get; set; }
         public string Role { get; set; }
+        public bool IsActive { get; set; }
 
 
         public bool HasError { get; set; }
