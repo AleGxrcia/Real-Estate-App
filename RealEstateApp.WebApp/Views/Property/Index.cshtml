@@ -1,0 +1,52 @@
+﻿@model List<RealEstateApp.Core.Application.ViewModels.Property.PropertyViewModel>
+
+<div class="container-fluid">
+	<div class="row m-3">
+		<div class="col-3 offset-9">
+			<a asp-action="Create" asp-controller="Property" class="btn btn-success">Registrar Propiedad</a>
+		</div>
+	</div>
+
+	<div class="row">
+
+		@if (Model == null || Model.Count == 0)
+		{
+			<h4>No hay propiedades</h4>
+		}
+
+		@foreach (var propiedad in Model)
+		{
+			<div class="col-4 mt-3">
+				<div class="card">
+					<div class="card">
+						<img class="card-img-top" height="200" width="200" src="@propiedad.ImagesUrl"></img>
+						<div class="card-body">
+							<h4>@propiedad.PropertyType</h4>
+							<p>Codigo</p>
+							<h4>@propiedad.Code</h4>
+							<p>@propiedad.SaleType</p>
+							<h4 style="color: red">DO$ @propiedad.Price</h4>
+							<hr>
+							<h4>
+								<i class="fa-solid fa-landmark"></i>
+								@propiedad.LandSize
+							</h4>
+							<h4>
+								<i class="fa-solid fa-bed"></i>
+								@propiedad.NumberOfRooms
+							</h4>
+							<h4>
+								<i class="fa-solid fa-bath"></i>
+								@propiedad.NumberOfBathrooms
+							</h4>
+							<div class="btn-group">
+								<a asp-action="Edit" asp-controller="Property" asp-route-id="@propiedad.Id" class="btn btn-info">Editar</a>
+								<a asp-action="Delete" asp-controller="Property" asp-route-id="@propiedad.Id" class="btn btn-danger">Eliminar</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		}
+	</div>
+</div>

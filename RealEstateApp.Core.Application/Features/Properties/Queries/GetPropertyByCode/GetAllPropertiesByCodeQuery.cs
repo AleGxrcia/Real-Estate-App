@@ -23,13 +23,11 @@ namespace RealEstateApp.Core.Application.Features.Properties.Queries.GetAllPrope
 
     public class GetPropertiesByCodeQueryHandler : IRequestHandler<GetPropertiesByCodeQuery, Response<IList<PropertyViewModel>>>
     {
-        private readonly IImprovementRepository _improvementRepository;
-        private readonly IPropertyRepository _propertyRepository;
+                private readonly IPropertyRepository _propertyRepository;
         private readonly IMapper _mapper;
 
-        public GetPropertiesByCodeQueryHandler(IPropertyRepository propertyRepository, IImprovementRepository improvementRepository, IMapper mapper)
+        public GetPropertiesByCodeQueryHandler(IPropertyRepository propertyRepository, IMapper mapper)
         {
-            _improvementRepository = improvementRepository;
             _propertyRepository = propertyRepository;
             _mapper = mapper;
         }
@@ -52,16 +50,7 @@ namespace RealEstateApp.Core.Application.Features.Properties.Queries.GetAllPrope
             var property = propertyList.FirstOrDefault(f => f.Code == code);
 
             if (property == null) throw new ApiException($"Property not found."
-        , (int)HttpStatusCode.NotFound);
-
-            var improvementIds = property.ImprovementProperties
-              .Where(ip => ip.ImprovementId != null)
-              .Select(ip => ip.ImprovementId)
-              .ToList();
-
-            var improvements = await _improvementRepository.GetAllByIdAsync(improvementIds);
-
-
+, (int)HttpStatusCode.NotFound);
 
             var listViewModels = propertyList.Select(property => new PropertyViewModel
             {
@@ -74,20 +63,18 @@ namespace RealEstateApp.Core.Application.Features.Properties.Queries.GetAllPrope
                 NumberOfRooms = property.NumberOfRooms,
                 SaleType = property.SaleType.Name,
                 Improvements = property.ImprovementProperties
-                    .Where(pi => pi.Improvement != null)
-                    .Select(pi => new ImprovementViewModel
-                    {
-                        Name = improvements.FirstOrDefault(i => i.Id == pi.ImprovementId)?.Name,
-                        Description = improvements.FirstOrDefault(i => i.Id == pi.ImprovementId)?.Description,
-
-                    })
-                    .ToList(),
+                        .Where(pi => pi.Improvement != null)
+                        .Select(pi => new ImprovementViewModel
+                        {
+                            Name = pi.Improvement.Name,
+                        }).ToList(),
                 ImagesUrl = property.Images.Where(img => img.ImageUrl != null)
-                .Select(img => img.ImageUrl).ToList(),
+                    .Select(img => img.ImageUrl).FirstOrDefault()
             }).ToList();
 
 
             return listViewModels;
+   
         }
     }
 }

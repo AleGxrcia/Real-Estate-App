@@ -7,18 +7,16 @@ using System.Threading.Tasks;
 
 namespace RealEstateApp.Core.Application.ViewModels.Property
 {
-    public class PropertyViewModel
-    {
-        public int? Id { get; set; }
-        public string PropertyType { get; set; }
-        public int Code { get; set; }
-        public string SaleType { get; set; }
-        public decimal Price { get; set; }
-        public decimal LandSize { get; set; }
-        public int NumberOfRooms { get; set; }
-        public int NumberOfBathrooms { get; set; }
+     public int? Id { get; set; }
+ public string PropertyType { get; set; }
+ public int Code { get; set; }
+ public string SaleType { get; set; }
+ public decimal Price { get; set; }
+ public decimal LandSize { get; set; }
+ public int NumberOfRooms { get; set; }
+ public int NumberOfBathrooms { get; set; }
+	public string AgentId { get; set; }
 
-        public ICollection<ImprovementViewModel> Improvements { get; set; }
-        public List<string> ImagesUrl { get; set; }
-    }
+	public ICollection<ImprovementViewModel> Improvements { get; set; }
+ public string ImagesUrl { get; set; }
 }
