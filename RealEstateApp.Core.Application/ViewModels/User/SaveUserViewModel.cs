@@ -43,6 +43,9 @@ namespace RealEstateApp.Core.Application.ViewModels.User
         [DataType(DataType.Upload)]
         public IFormFile? Photo { get; set; }
 
+        [Required(ErrorMessage = "Debe elegir un tipo de usuario")]
+        public string UserType { get; set; }
+
         public bool HasError { get; set; }
         public string? Error { get; set; }
     }
