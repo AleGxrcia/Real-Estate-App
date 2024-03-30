@@ -475,59 +475,7 @@ namespace RealEstateApp.Infrastructure.Identity.Services
             return verificationUri;
         }
 
-        public async Task<UserResponse> GetUserWithId(UserRequest request)
-        {
-            UserResponse response = new();
-            var user = await _userManager.FindByIdAsync(request.Id);
-            if (user == null)
-            {
-                response.HasError = true;
-                response.Error = $"No existe la cuenta requerida";
-                return response;
-            }
-
-            response.Id = user.Id;
-            response.FirstName = user.FirstName;
-            response.LastName = user.LastName;
-            response.UserName = user.UserName;
-            response.Phone = user.PhoneNumber;
-            response.Email = user.Email;
-
-            return response;
-        }
-
-        public async Task<List<UserViewModel>> GetAllUsers()
-        {
-            var users = await _userManager.Users.ToListAsync();
-            var userViewModels = new List<UserViewModel>();
-
-            foreach (var user in users)
-            {
-                var userViewModel = new UserViewModel
-                {
-                    Id = user.Id,
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
-                    Username = user.UserName,
-                    Phone = user.PhoneNumber,
-                    Email = user.Email,
-                    IsActive = user.IsActive
-                };
-
-                // Obtener los roles del usuario
-                var roles = await _userManager.GetRolesAsync(user);
-
-                // Obtener el primer rol asignado al usuario y asignarlo al tipo de usuario
-                if (roles.Any())
-                {
-                    userViewModel.Role = roles.First().ToString();
-                }
-
-                userViewModels.Add(userViewModel);
-            }
-
-            return userViewModels;
-        }
+       
 
         #endregion
     }
