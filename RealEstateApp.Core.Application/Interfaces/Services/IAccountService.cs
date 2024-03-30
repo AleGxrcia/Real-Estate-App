@@ -1,4 +1,5 @@
-﻿using RealEstateApp.Core.Application.Dtos.Account;
+﻿using Microsoft.AspNetCore.Http;
+using RealEstateApp.Core.Application.Dtos.Account;
 using RealEstateApp.Core.Application.ViewModels.User;
 using System.Threading.Tasks;
 
@@ -9,7 +10,7 @@ namespace RealEstateApp.Core.Application.Interfaces.Services
         Task<AuthenticationResponse> AuthenticateAsync(AuthenticationRequest request);
         Task<string> ConfirmAccountAsync(string userId, string token);
         Task<ForgotPasswordResponse> ForgotPasswordAsync(ForgotPasswordRequest request, string origin);
-        Task<RegisterResponse> RegisterBasicUserAsync(RegisterRequest request, string origin);
+        Task<RegisterResponse> RegisterBasicUserAsync(RegisterRequest request, string origin, IFormFile file);
         Task<ResetPasswordResponse> ResetPasswordAsync(ResetPasswordRequest request);
 
         Task<RegisterResponse> RegisterDevUserAsync(RegisterRequest request, string origin);

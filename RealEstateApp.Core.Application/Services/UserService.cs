@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using RealEstateApp.Core.Application.Dtos.Account;
 using RealEstateApp.Core.Application.Interfaces.Services;
 using RealEstateApp.Core.Application.ViewModels.User;
@@ -27,10 +28,10 @@ namespace RealEstateApp.Core.Application.Services
             await _accountService.SignOutAsync();
         }
 
-        public async Task<RegisterResponse> RegisterAsync(SaveUserViewModel vm, string origin)
+        public async Task<RegisterResponse> RegisterAsync(SaveUserViewModel vm, string origin, IFormFile file)
         {
             RegisterRequest registerRequest = _mapper.Map<RegisterRequest>(vm);
-            return await _accountService.RegisterBasicUserAsync(registerRequest, origin);
+            return await _accountService.RegisterBasicUserAsync(registerRequest, origin, vm.Photo);
         }
 
         public async Task<string> ConfirmEmailAsync(string userId, string token)
