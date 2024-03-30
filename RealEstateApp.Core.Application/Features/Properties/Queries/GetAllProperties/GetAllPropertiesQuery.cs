@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using MediatR;
 using RealEstateApp.Core.Application.Exceptions;
 using RealEstateApp.Core.Application.Interfaces.Repositories;
@@ -16,10 +16,12 @@ namespace RealEstateApp.Core.Application.Features.Properties.Queries.GetAllPrope
     public class GetAllPropertiesQueryHandler : IRequestHandler<GetAllPropertiesQuery, Response<IList<PropertyViewModel>>>
     {
         private readonly IPropertyRepository _propertyRepository;
+        private readonly IImprovementRepository _improvementRepository;
         private readonly IMapper _mapper;
 
-        public GetAllPropertiesQueryHandler(IPropertyRepository propertyRepository, IMapper mapper)
+        public GetAllPropertiesQueryHandler(IPropertyRepository propertyRepository, IImprovementRepository improvementRepository, IMapper mapper)
         {
+            _improvementRepository = improvementRepository;
             _propertyRepository = propertyRepository;
             _mapper = mapper;
         }
@@ -33,33 +35,33 @@ namespace RealEstateApp.Core.Application.Features.Properties.Queries.GetAllPrope
         }
 
         private async Task<List<PropertyViewModel>> GetAllViewModel()
-        {
-            var propertyList = await _propertyRepository.GetAllWithIncludeAsync(new List<string> { "PropertyType", "SaleType", "ImprovementProperties", "Images" });
+{
+    var propertyList = await _propertyRepository.GetAllWithIncludeAsync(new List<string> { "PropertyType", "SaleType", "ImprovementProperties", "Images" });
 
-            if (propertyList == null || propertyList.Count == 0) throw new ApiException($"Properties not found."
-                , (int)HttpStatusCode.NotFound);
+    if (propertyList == null || propertyList.Count == 0) throw new ApiException($"Properties not found."
+        , (int)HttpStatusCode.NotFound);
 
-            var listViewModels = propertyList.Select(property => new PropertyViewModel
+    var listViewModels = propertyList.Select(property => new PropertyViewModel
+    {
+        Id = property.Id,
+        PropertyType = property.PropertyType.Name,
+        Price = property.Price,
+        Code = property.Code,
+        LandSize = property.LandSize,
+        NumberOfBathrooms = property.NumberOfBathrooms,
+        NumberOfRooms = property.NumberOfRooms,
+        SaleType = property.SaleType.Name,
+        Improvements = property.ImprovementProperties
+            .Where(pi => pi.Improvement != null)
+            .Select(pi => new ImprovementViewModel
             {
-                Id = property.Id,
-                PropertyType = property.PropertyType.Name,
-                Price = property.Price,
-                Code = property.Code,
-                LandSize = property.LandSize,
-                NumberOfBathrooms = property.NumberOfBathrooms,
-                NumberOfRooms = property.NumberOfRooms,
-                SaleType = property.SaleType.Name,
-                Improvements = property.ImprovementProperties
-                    .Where(pi => pi.Improvement != null)
-                    .Select(pi => new ImprovementViewModel
-                    {
-                        Name = pi.Improvement.Name,
-                    }).ToList(),
-                ImagesUrl = property.Images.FirstOrDefault().ImageUrl
-			}).ToList();
+                Name = pi.Improvement.Name,
+            }).ToList(),
+        ImagesUrl = property.Images.FirstOrDefault().ImageUrl
+	}).ToList();
 
 
-            return listViewModels;
-        }
+    return listViewModels;
+}
     }
 }

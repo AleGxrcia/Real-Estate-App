@@ -25,10 +25,12 @@ namespace RealEstateApp.Core.Application.Features.Properties.Queries.GetProperty
     public class GetPropertyByIdQueryHadler : IRequestHandler<GetPropertiesByIdQuery, Response<PropertyViewModel>>
     {
         private readonly IPropertyRepository _propertyRepository;
+        private readonly IImprovementRepository _improvementRepository;
         private readonly IMapper _mapper;
 
-        public GetPropertyByIdQueryHadler(IPropertyRepository propertyRepository, IMapper mapper)
+        public GetPropertyByIdQueryHadler(IPropertyRepository propertyRepository, IImprovementRepository improvementRepository, IMapper mapper)
         {
+            _improvementRepository = improvementRepository;
             _propertyRepository = propertyRepository;
             _mapper = mapper;
         }
@@ -39,41 +41,41 @@ namespace RealEstateApp.Core.Application.Features.Properties.Queries.GetProperty
             return new Response<PropertyViewModel>(property);
         }
 
-        private async Task<PropertyViewModel> GetByIdViewModel(int id)
-        {
-            var propertyList = await _propertyRepository.GetAllWithIncludeAsync(new List<string> { "PropertyType", "SaleType", "ImprovementProperties", "Images" });
+       private async Task<PropertyViewModel> GetByIdViewModel(int id)
+{
+    var propertyList = await _propertyRepository.GetAllWithIncludeAsync(new List<string> { "PropertyType", "SaleType", "ImprovementProperties", "Images" });
 
-            if (propertyList == null || propertyList.Count == 0) throw new ApiException($"Properties not found."
-         , (int)HttpStatusCode.NotFound);
+    if (propertyList == null || propertyList.Count == 0) throw new ApiException($"Properties not found."
+ , (int)HttpStatusCode.NotFound);
 
 
-            var property = propertyList.FirstOrDefault(f => f.Id == id);
+    var property = propertyList.FirstOrDefault(f => f.Id == id);
 
-            if (property == null) throw new ApiException($"Property not found."
-         , (int)HttpStatusCode.NotFound);
+    if (property == null) throw new ApiException($"Property not found."
+ , (int)HttpStatusCode.NotFound);
 
-            PropertyViewModel propertyVm = new()
-            {
-                Id = property.Id,
-                PropertyType = property.PropertyType.Name,
-                Price = property.Price,
-                Code = property.Code,
-                LandSize = property.LandSize,
-                NumberOfBathrooms = property.NumberOfBathrooms,
-                NumberOfRooms = property.NumberOfRooms,
-                SaleType = property.SaleType.Name,
-                Improvements = property.ImprovementProperties
-                        .Where(pi => pi.Improvement != null)
-                        .Select(pi => new ImprovementViewModel
-                        {
-                            Name = pi.Improvement.Name,
-                        }).ToList(),
-                ImagesUrl = property.Images.Where(img => img.ImageUrl != null)
-                    .Select(img => img.ImageUrl).FirstOrDefault()
-            };
+    PropertyViewModel propertyVm = new()
+    {
+        Id = property.Id,
+        PropertyType = property.PropertyType.Name,
+        Price = property.Price,
+        Code = property.Code,
+        LandSize = property.LandSize,
+        NumberOfBathrooms = property.NumberOfBathrooms,
+        NumberOfRooms = property.NumberOfRooms,
+        SaleType = property.SaleType.Name,
+        Improvements = property.ImprovementProperties
+                .Where(pi => pi.Improvement != null)
+                .Select(pi => new ImprovementViewModel
+                {
+                    Name = pi.Improvement.Name,
+                }).ToList(),
+        ImagesUrl = property.Images.Where(img => img.ImageUrl != null)
+            .Select(img => img.ImageUrl).FirstOrDefault()
+    };
 
-            return propertyVm;
-        }
+    return propertyVm;
+}
     }
 
 

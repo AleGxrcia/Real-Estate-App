@@ -23,7 +23,7 @@ namespace RealEstateApp.Core.Application.Features.Properties.Queries.GetAllPrope
 
     public class GetPropertiesByCodeQueryHandler : IRequestHandler<GetPropertiesByCodeQuery, Response<IList<PropertyViewModel>>>
     {
-        private readonly IPropertyRepository _propertyRepository;
+                private readonly IPropertyRepository _propertyRepository;
         private readonly IMapper _mapper;
 
         public GetPropertiesByCodeQueryHandler(IPropertyRepository propertyRepository, IMapper mapper)
@@ -74,6 +74,7 @@ namespace RealEstateApp.Core.Application.Features.Properties.Queries.GetAllPrope
 
 
             return listViewModels;
+   
         }
     }
 }
