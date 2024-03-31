@@ -13,5 +13,6 @@ namespace RealEstateApp.Core.Application.Interfaces.Services
 		Task<List<PropertyViewModel>> GetAllPropertiesByAgentId(string Id);
         Task AddImagesAsync(List<string> photoUrls, int propertyId);
         Task AddImprovementToPropertyAsync(List<int> improvementsId, int propertyId);
-    }
+		public Task<List<PropertyViewModel>> GetAllWithFilters(FiltersPropertyViewModel filters);
+	}
 }

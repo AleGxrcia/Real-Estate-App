@@ -4,6 +4,7 @@ using RealEstateApp.Core.Application.Interfaces.Services;
 using RealEstateApp.Core.Application.ViewModels.Improvement;
 using RealEstateApp.Core.Application.ViewModels.Property;
 using RealEstateApp.Core.Domain.Entities;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace RealEstateApp.Core.Application.Services
 {
@@ -53,8 +54,70 @@ public async Task<List<PropertyViewModel>> GetAllPropertiesByAgentId(string Id)
 	return AgentProperties;
 }
 
+		public async Task<List<PropertyViewModel>> GetAllWithFilters(FiltersPropertyViewModel filters)
+		{
+			var propertyList = await _repository.GetAllWithIncludeAsync(new List<string> { "SaleType", "PropertyType", "Images", "FavoriteProperties", "ImprovementProperties" });
+			var propertiesWithFilters = propertyList.Select(p => new PropertyViewModel
+			{
+				Id = p.Id,
+				PropertyType = p.PropertyType.Name,
+				Code = p.Code,
+				SaleType = p.SaleType.Name,
+				Price = p.Price,
+				LandSize = p.LandSize,
+				NumberOfBathrooms = p.NumberOfBathrooms,
+				NumberOfRooms = p.NumberOfRooms,
+				AgentId = p.AgentId,
+				ImagesUrl = p.Images.Where(img => img.ImageUrl != null).Select(img => img.ImageUrl).ToList(),
+				Improvements = p.ImprovementProperties.Where(pi => pi.Improvement != null).Select(i => new ImprovementViewModel
+				{
+					Name = i.Improvement.Name,
+					Description = i.Improvement.Description
 
-public async Task<List<PropertyViewModel>> GetAllWithIncludeAsync()
+				}).ToList()
+			}).ToList();
+
+			if (filters.PropertyType != null && filters.MinPrice != null && filters.MaxPrice != null && filters.NumberOfBathRooms != null && filters.NumberOfBathRooms != null)
+			{
+				propertiesWithFilters = propertiesWithFilters.Where(p => p.PropertyType == filters.PropertyType
+				&& p.Price >= filters.MinPrice && p.Price <= filters.MaxPrice
+				&& p.NumberOfBathrooms == filters.NumberOfBathRooms
+				&& p.NumberOfRooms == filters.NumberOfRooms)
+				.ToList();
+
+			}
+			else if (filters.PropertyType != null)
+			{
+				propertiesWithFilters = propertiesWithFilters.Where(p => p.PropertyType == filters.PropertyType).ToList();
+			}
+			else if (filters.MinPrice != null)
+			{
+				propertiesWithFilters = propertiesWithFilters.Where(p => p.Price >= filters.MinPrice).ToList();
+			}
+			else if (filters.MaxPrice != null)
+			{
+				propertiesWithFilters = propertiesWithFilters.Where(p => p.Price <= filters.MaxPrice).ToList();
+			}
+			else if (filters.MaxPrice != null && filters.MinPrice != null)
+			{
+				propertiesWithFilters = propertiesWithFilters.Where(p => p.Price >= filters.MinPrice && p.Price <= filters.MaxPrice).ToList();
+			}
+			else if (filters.NumberOfRooms != null) 
+			{
+				propertiesWithFilters = propertiesWithFilters.Where(p => p.NumberOfRooms == filters.NumberOfRooms).ToList();
+			}
+			else if (filters.NumberOfBathRooms != null)
+			{
+				propertiesWithFilters = propertiesWithFilters.Where(p => p.NumberOfBathrooms == filters.NumberOfBathRooms).ToList();
+			}
+
+
+
+			return propertiesWithFilters;
+		}
+
+
+		public async Task<List<PropertyViewModel>> GetAllWithIncludeAsync()
 {
 	var propertyList = await _repository.GetAllWithIncludeAsync(new List<string> { "SaleType", "PropertyType", "Images", "FavoriteProperties", "ImprovementProperties" });
 	return propertyList.Select(p => new PropertyViewModel
