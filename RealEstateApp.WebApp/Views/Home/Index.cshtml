@@ -79,7 +79,10 @@
 						<div class="card">
 							<img class="card-img-top" height="200" width="200" src="@propiedad.ImagesUrl"></img>
 							<div class="card-body">
-								<h4>@propiedad.PropertyType</h4>
+								<a asp-controller="Home" asp-action="Details" asp-route-id="@propiedad.Id">
+									<h4>@propiedad.PropertyType</h4>
+								</a>
+	
 								<p>Codigo</p>
 								<h4>@propiedad.Code</h4>
 								<p>@propiedad.SaleType</p>

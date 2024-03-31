@@ -10,10 +10,12 @@ namespace RealEstateApp.WebApp.Controllers
     {
         private readonly IPropertyService _propertyService;
         private readonly IPropertyTypeService _propertyTypeService;
-        public HomeController(IPropertyService propertyService, IPropertyTypeService propertyTypeService)
+        private readonly IUserService _userService;
+        public HomeController(IPropertyService propertyService, IPropertyTypeService propertyTypeService, IUserService userService)
         {
             _propertyService = propertyService;
             _propertyTypeService = propertyTypeService;
+            _userService = userService;
         }
 
         public async Task<IActionResult> Index(string SearchString)
@@ -33,6 +35,18 @@ namespace RealEstateApp.WebApp.Controllers
             ViewBag.PropetyTypes = await _propertyTypeService.GetAllViewModel();
             return View("Index", await _propertyService.GetAllWithFilters(vm));
         }
+
+
+        public async Task<IActionResult> Details(int id) 
+        {
+            return View(await _propertyService.GetPropertyDetails(id));
+        }
+
+        /*
+        public async Task<IActionResult> Agents() 
+        {
+            return View(await _userService.getAllAgents());
+        }*/
 
 
     }

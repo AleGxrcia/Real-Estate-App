@@ -1,4 +1,16 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http
+@using RealEstateApp.Core.Application.Dtos.Account
+@using RealEstateApp.Core.Application.Enums
+@using RealEstateApp.Core.Application.Helpers
+@inject IHttpContextAccessor httpContextAccessor
+@{
+    var User = httpContextAccessor.HttpContext.Session.Get<AuthenticationResponse>("user");
+    var isAdmin = User != null ? User.Roles.Any(r => r == Roles.Admin.ToString()) : false;
+    var isClient = User != null ? User.Roles.Any(r => r == Roles.Client.ToString()) : false;
+    var isAgent = User != null ? User.Roles.Any(r => r == Roles.Agent.ToString()) : false;
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -26,9 +38,91 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
+                        @if (User == null)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Agents">Agentes</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Auth" asp-action="Register">Unete a la App</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Auth" asp-action="Index">Iniciar sesion</a>
+                            </li>
+                        }
+                        else if (isAdmin)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="" asp-action="">Home</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="" asp-action="">Listado de agentes</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="" asp-action="">Mant Administradores</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="" asp-action="">Mant Desarrolladores</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="" asp-action="">Mant tipo de propiedades</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="" asp-action="">Mant tipo de ventas</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="" asp-action="">Mant de mejoras</a>
+                            </li>
+                        }
+                        else if (isAgent)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Property" asp-action="Index">Home</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Agent" asp-action="Properties">Mant. de Propiedades</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Agent" asp-action="">Profile</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Auth" asp-action="LogOut">Cerrar session</a>
+                            </li>
+                        }
+                        else if (isClient)
+                        {
+                             <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Client" asp-action="Index">Home</a>
+                            </li>
+
+                             <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Home" asp-action="">Agents</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Client" asp-action="FavoriteProperties">Mis propiedades</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Auth" asp-action="LogOut">Cerrar session</a>
+                            </li>
+                        }
+                        
                     </ul>
                 </div>
             </div>
