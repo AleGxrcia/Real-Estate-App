@@ -35,7 +35,7 @@ namespace RedSocial.Controllers
             if (uservm != null && uservm.HasError != true)
             {
                 HttpContext.Session.Set<AuthenticationResponse>("user", uservm);
-                return RedirectToRoute(new { controller = "Home", action = "Index" });
+                return RedirectToRoute(new { controller = "Client", action = "Index" });
             }
             else 
             {
