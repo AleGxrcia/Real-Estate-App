@@ -386,6 +386,38 @@ namespace RealEstateApp.Infrastructure.Identity.Services
             return response;
         }
 
+        public async Task<string> ChangeUserStatusAsync(string id, bool activate)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return "User not found";
+            }
+
+            user.IsActive = activate;
+
+            var result = await _userManager.UpdateAsync(user);
+            if (result.Succeeded)
+            {
+                if (activate)
+                {
+                    return $"User successfully activated.";
+                }
+
+                return $"User successfully inactivated.";
+            }
+            else
+            {
+                if (activate)
+                {
+                    return $"An error occurred trying to activate the user.";
+                }
+
+                return $"An error occurred trying to inactivate the user.";
+            }
+        }
+
+
         public async Task<UserResponse> GetUserWithId(UserRequest request)
         {
             UserResponse response = new();
@@ -404,7 +436,7 @@ namespace RealEstateApp.Infrastructure.Identity.Services
             response.Phone = user.PhoneNumber;
             response.Email = user.Email;
             response.ImgUrl = user.PhotoUrl;
-            response.isActive = user.IsActive;
+            response.IsActive = user.IsActive;
 
             var roles = await _userManager.GetRolesAsync(user);
             var userRole = roles.FirstOrDefault().ToString();
@@ -446,7 +478,7 @@ namespace RealEstateApp.Infrastructure.Identity.Services
             response.UserName = user.UserName;
             response.Phone = user.PhoneNumber;
             response.Email = user.Email;
-            response.isActive = isActive;
+            response.IsActive = isActive;
 
             return response;
         }

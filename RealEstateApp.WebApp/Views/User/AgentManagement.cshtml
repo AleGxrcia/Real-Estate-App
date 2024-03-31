@@ -1,0 +1,64 @@
+﻿@using RealEstateApp.Core.Application.Enums;
+@using RealEstateApp.Core.Application.ViewModels.User;
+@model List<AgentViewModel>
+
+@{
+    ViewData["Title"] = "Listado de agentes";
+}
+
+<div class="container">
+    <h1 class="">Listado de agentes</h1>
+    <div class="border rounded-3 shadow bg-white p-4 mt-4">
+        <table class="table table-hover">
+            <thead class="fw-bold fs-5">
+                <tr>
+                    <th class="">Nombre</th>
+                    <th class="">Correo</th>
+                    <th class="">Cantidad de Propiedades</th>
+                    <th class="">Estado</th>
+                    <th class="text-end">Opciones</th>
+                </tr>
+            </thead>
+            <tbody class="table-group-divider">
+                @foreach (AgentViewModel user in Model)
+                {
+                    <tr class="align-middle">
+                        <td class="py-3 fs-6 truncate-text">
+                            @user.FirstName @user.LastName
+                        </td>
+                        <td class="py-3 truncate-text">
+                            @user.Email
+                        </td>
+                        <td class="py-3 truncate-text">
+                            @user.PropertyCount
+                        </td>
+                        <td class="py-3 truncate-text">
+                            <span>@(user.IsActive ? "Activo" : "Inactivo")</span>
+                        </td>
+                        <td class="text-end align-items-center py-3">
+                            @if (!user.IsActive)
+                            {
+                                <a class="btn btn-warning btn-sm" asp-controller="User" asp-action="ConfirmStatusChange" asp-route-id=@user.Id>
+                                    <i class="bi bi-person-lines-fill"></i>
+                                    Activar
+                                </a>
+                            }
+                            else
+                            {
+                                <a class="btn btn-warning btn-sm" asp-controller="User" asp-action="ConfirmStatusChange" asp-route-id=@user.Id>
+                                    <i class="bi bi-person-lines-fill"></i>
+                                    Desactivar
+                                </a>
+                            }
+                            <a class="btn btn-danger btn-sm" asp-controller="User" asp-action="Delete" asp-route-id=@user.Id>
+                                <i class="bi bi-trash-fill"></i>
+                                Eliminar
+                            </a>
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -21,6 +21,7 @@ namespace RealEstateApp.Core.Application.Interfaces.Services
         Task<List<UserViewModel>> GetAllUsers();
 
         Task<UserResponse> UpdateIsActiveAgent(string id, bool isActive);
+        Task<string> ChangeUserStatusAsync(string id, bool activate);
 
     }
 }
