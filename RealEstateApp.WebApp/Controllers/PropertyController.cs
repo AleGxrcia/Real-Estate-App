@@ -12,7 +12,7 @@ using System.Text;
 
 namespace RealEstateApp.WebApp.Controllers
 {
-	//[Authorize(Roles = "Admin")]
+	[Authorize(Roles = "Admin")]
 	public class PropertyController : Controller
 	{
 		private readonly IPropertyService _propertyService;
