@@ -76,8 +76,7 @@ namespace RealEstateApp.Core.Application.Features.Agents.Queries.GetAgentPropert
 
                     })
                     .ToList(),
-                    ImagesUrl = property.Images.Where(img => img.ImageUrl != null)
-                .Select(img => img.ImageUrl).FirstOrDefault(),
+                    ImagesUrl = property.Images.Where(img => img.ImageUrl != null).Select(img => img.ImageUrl).ToList()
                 }).ToList();
 
 

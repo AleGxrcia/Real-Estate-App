@@ -68,8 +68,8 @@ public async Task<List<PropertyViewModel>> GetAllWithIncludeAsync()
 		NumberOfBathrooms = p.NumberOfBathrooms,
 		NumberOfRooms = p.NumberOfRooms,
 		AgentId = p.AgentId,
-		ImagesUrl = p.Images.FirstOrDefault().ImageUrl,
-		Improvements = p.ImprovementProperties.Where(pi => pi.Improvement != null).Select(i=>new ImprovementViewModel 
+		ImagesUrl = p.Images.Where(img => img.ImageUrl != null).Select(img => img.ImageUrl).ToList(),
+        Improvements = p.ImprovementProperties.Where(pi => pi.Improvement != null).Select(i=>new ImprovementViewModel 
 		{
 			Name = i.Improvement.Name,
 			Description = i.Improvement.Description
