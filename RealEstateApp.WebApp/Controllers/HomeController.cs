@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using RealEstateApp.Core.Application.Interfaces.Services;
+using RealEstateApp.Core.Application.ViewModels.Property;
 using RealEstateApp.WebApp.Models;
 using System.Diagnostics;
 
@@ -6,19 +8,32 @@ namespace RealEstateApp.WebApp.Controllers
 {
     public class HomeController : Controller
     {
-        public HomeController()
+        private readonly IPropertyService _propertyService;
+        private readonly IPropertyTypeService _propertyTypeService;
+        public HomeController(IPropertyService propertyService, IPropertyTypeService propertyTypeService)
         {
+            _propertyService = propertyService;
+            _propertyTypeService = propertyTypeService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index(string SearchString)
         {
-            return View();
+            var propiedades = await _propertyService.GetAllWithIncludeAsync();
+            if (!string.IsNullOrEmpty(SearchString)) 
+            {
+				propiedades = propiedades.Where(p => p.Code.ToString().Contains(SearchString)).ToList();
+			}
+			return View(propiedades);
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+
+
+        public async Task<IActionResult> IndexFilter(FiltersPropertyViewModel vm) 
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            ViewBag.PropetyTypes = await _propertyTypeService.GetAllViewModel();
+            return View("Index", await _propertyService.GetAllWithFilters(vm));
         }
+
+
     }
 }

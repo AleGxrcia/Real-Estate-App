@@ -46,11 +46,15 @@ namespace RealEstateApp.Infrastructure.Identity.Services
         {
             AuthenticationResponse response = new();
 
-            var user = await _userManager.FindByEmailAsync(request.Email);
+            var user = await _userManager.FindByEmailAsync(request.EmailOrUserName);
+            if (user == null)
+            {
+                user = await _userManager.FindByNameAsync(request.EmailOrUserName);
+            }
             if (user == null)
             {
                 response.HasError = true;
-                response.Error = $"No Accounts registered with {request.Email}";
+                response.Error = $"No Accounts registered with {request.EmailOrUserName}";
                 return response;
             }
 
@@ -58,13 +62,13 @@ namespace RealEstateApp.Infrastructure.Identity.Services
             if (!result.Succeeded)
             {
                 response.HasError = true;
-                response.Error = $"Invalid credentials for {request.Email}";
+                response.Error = $"Invalid credentials for {request.EmailOrUserName}";
                 return response;
             }
             if (!user.EmailConfirmed)
             {
                 response.HasError = true;
-                response.Error = $"Account no confirmed for {request.Email}";
+                response.Error = $"Account no confirmed for {request.EmailOrUserName}";
                 return response;
             }
 
@@ -440,6 +444,46 @@ namespace RealEstateApp.Infrastructure.Identity.Services
 
             return response;
         }
+
+        public async Task<UserResponse> UpdateIsActiveAgent(string id, bool isActive)
+        {
+            UserResponse response = new();
+            var user = await _userManager.FindByIdAsync(id);
+
+            if (user == null)
+            {
+                response.HasError = true;
+                response.Error = $"No existe la cuenta requerida";
+                return response;
+            }
+
+            var roles = await _userManager.GetRolesAsync(user);
+            var userRole = roles.FirstOrDefault().ToString();
+
+
+
+            if (!userRole.Contains("Agent"))
+            {
+                response.HasError = true;
+                response.Error = $"No existe el agente requerido";
+                return response;
+            }
+
+            user.IsActive = isActive;
+            await _userManager.UpdateAsync(user);
+
+            response.Id = user.Id;
+            response.FirstName = user.FirstName;
+            response.LastName = user.LastName;
+            response.UserName = user.UserName;
+            response.Phone = user.PhoneNumber;
+            response.Email = user.Email;
+            response.IsActive = isActive;
+
+            return response;
+        }
+
+
         public async Task<List<UserViewModel>> GetAllUsers()
         {
             var users = await _userManager.Users.ToListAsync();

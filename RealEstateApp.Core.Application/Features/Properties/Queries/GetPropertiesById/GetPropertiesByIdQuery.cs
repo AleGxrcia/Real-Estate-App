@@ -54,24 +54,23 @@ namespace RealEstateApp.Core.Application.Features.Properties.Queries.GetProperty
     if (property == null) throw new ApiException($"Property not found."
  , (int)HttpStatusCode.NotFound);
 
-    PropertyViewModel propertyVm = new()
-    {
-        Id = property.Id,
-        PropertyType = property.PropertyType.Name,
-        Price = property.Price,
-        Code = property.Code,
-        LandSize = property.LandSize,
-        NumberOfBathrooms = property.NumberOfBathrooms,
-        NumberOfRooms = property.NumberOfRooms,
-        SaleType = property.SaleType.Name,
-        Improvements = property.ImprovementProperties
-                .Where(pi => pi.Improvement != null)
-                .Select(pi => new ImprovementViewModel
-                {
-                    Name = pi.Improvement.Name,
-                }).ToList(),
-        ImagesUrl = property.Images.Where(img => img.ImageUrl != null)
-            .Select(img => img.ImageUrl).FirstOrDefault()
+            PropertyViewModel propertyVm = new()
+            {
+                Id = property.Id,
+                PropertyType = property.PropertyType.Name,
+                Price = property.Price,
+                Code = property.Code,
+                LandSize = property.LandSize,
+                NumberOfBathrooms = property.NumberOfBathrooms,
+                NumberOfRooms = property.NumberOfRooms,
+                SaleType = property.SaleType.Name,
+                Improvements = property.ImprovementProperties
+                        .Where(pi => pi.Improvement != null)
+                        .Select(pi => new ImprovementViewModel
+                        {
+                            Name = pi.Improvement.Name,
+                        }).ToList(),
+                ImagesUrl = property.Images.Where(img => img.ImageUrl != null).Select(img => img.ImageUrl).ToList()
     };
 
     return propertyVm;

@@ -17,8 +17,11 @@ namespace RealEstateApp.Core.Application.Interfaces.Services
         Task<RegisterResponse> RegisterAdminUserAsync(RegisterRequest request, string origin);
         Task SignOutAsync();
 
-		Task<UserResponse> GetUserWithId(UserRequest request);
-		Task<List<UserViewModel>> GetAllUsers();
+        Task<UserResponse> GetUserWithId(UserRequest request);
+        Task<List<UserViewModel>> GetAllUsers();
+
+        Task<UserResponse> UpdateIsActiveAgent(string id, bool isActive);
         Task<string> ChangeUserStatusAsync(string id, bool activate);
+
     }
 }

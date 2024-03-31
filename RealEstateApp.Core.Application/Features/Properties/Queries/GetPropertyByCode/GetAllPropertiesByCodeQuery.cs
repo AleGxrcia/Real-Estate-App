@@ -68,8 +68,7 @@ namespace RealEstateApp.Core.Application.Features.Properties.Queries.GetAllPrope
                         {
                             Name = pi.Improvement.Name,
                         }).ToList(),
-                ImagesUrl = property.Images.Where(img => img.ImageUrl != null)
-                    .Select(img => img.ImageUrl).FirstOrDefault()
+                ImagesUrl = property.Images.Where(img => img.ImageUrl != null).Select(img => img.ImageUrl).ToList()
             }).ToList();
 
 
