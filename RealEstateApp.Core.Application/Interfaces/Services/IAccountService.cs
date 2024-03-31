@@ -19,7 +19,6 @@ namespace RealEstateApp.Core.Application.Interfaces.Services
 
 		Task<UserResponse> GetUserWithId(UserRequest request);
 		Task<List<UserViewModel>> GetAllUsers();
-        Task<string> ActivateUserAsync(string id);
-        Task<string> InactivateUserAsync(string id);
+        Task<string> ChangeUserStatusAsync(string id, bool activate);
     }
 }

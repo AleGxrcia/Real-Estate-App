@@ -1,55 +1,54 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using RealEstateApp.Core.Application.Dtos.Account;
 using RealEstateApp.Core.Application.Enums;
 using RealEstateApp.Core.Application.Interfaces.Services;
+using RealEstateApp.Core.Application.ViewModels.User;
 
 namespace RealEstateApp.WebApp.Controllers
 {
     public class UserController : Controller
     {
         private readonly IUserService _userService;
+        private readonly IPropertyService _propertyService;
+        private readonly IMapper _mapper;
 
-        public UserController(IUserService userService)
+        public UserController(IUserService userService, IPropertyService propertyService, IMapper mapper)
         {
             _userService = userService;
+            _propertyService = propertyService;
+            _mapper = mapper;
         }
 
-        public async Task<IActionResult> Agent()
+        public async Task<IActionResult> AgentManagement()
         {
             var users = await _userService.GetAllUsers();
-            var agents = users.Select(a => a.Role == Roles.Agent.ToString()).ToList();
+            var agents = users.Where(a => a.Role == Roles.Agent.ToString()).ToList();
 
-            return View("Agent", agents);
+            List<AgentViewModel> agentUsers = _mapper.Map<List<AgentViewModel>>(agents);
+
+            foreach (var agent in agentUsers)
+            {
+                var properties = await _propertyService.GetAllPropertiesByAgentId(agent.Id);
+                agent.PropertyCount = properties.Count;
+            }
+
+            return View("AgentManagement", agentUsers);
         }
 
-        public async Task<IActionResult> ConfirmUserStatus(string id)
+        public async Task<IActionResult> ConfirmStatusChange(string id)
         {
             UserResponse user = await _userService.getUserByIdAsync(id);
-            return View("ConfirmUserStatus", user);
+            return View("ConfirmStatusChange", user);
         }
 
         [HttpPost]
-        public async Task<IActionResult> ActiveUser(UserResponse vm)
+        public async Task<IActionResult> ChangeUserStatus(UserResponse vm)
         {
-            UserRequest userRequest = new()
-            {
-                Id = vm.Id,
-            };
+            bool activate = vm.IsActive ? false : true;
 
-            var result = await _userService.ActiveUser(userRequest.Id);
-            return RedirectToRoute(new { controller = "User", action = "Agent" });
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> InactiveUser(UserResponse vm)
-        {
-            UserRequest userRequest = new()
-            {
-                Id = vm.Id,
-            };
-
-            var result = await _userService.InactiveUser(userRequest.Id);
-            return RedirectToRoute(new { controller = "User", action = "Agent" });
+            var result = await _userService.ChangeUserStatus(vm.Id, activate);
+            return RedirectToRoute(new { controller = "User", action = "AgentManagement" });
         }
     }
 }
