@@ -51,7 +51,7 @@ namespace RedSocial.Controllers
         {
             await _service.SignOutAsync();
             HttpContext.Session.Remove("user");
-            return RedirectToRoute(new { controller = "User", action = "Index" });
+            return RedirectToRoute(new { controller = "Auth", action = "Index" });
         }
 
         //--------------------------------------------Register------------------------------------------------
@@ -83,7 +83,7 @@ namespace RedSocial.Controllers
             }
             
 
-            return RedirectToRoute(new { controller = "User", action = "Index" });
+            return RedirectToRoute(new { controller = "Auth", action = "Index" });
 
         }
 

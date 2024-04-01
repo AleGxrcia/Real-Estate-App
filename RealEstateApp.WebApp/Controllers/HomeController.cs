@@ -21,33 +21,42 @@ namespace RealEstateApp.WebApp.Controllers
         public async Task<IActionResult> Index(string SearchString)
         {
             var propiedades = await _propertyService.GetAllWithIncludeAsync();
-            if (!string.IsNullOrEmpty(SearchString)) 
+			ViewBag.PropetyTypes = await _propertyTypeService.GetAllViewModel();
+			if (!string.IsNullOrEmpty(SearchString)) 
             {
 				propiedades = propiedades.Where(p => p.Code.ToString().Contains(SearchString)).ToList();
 			}
 			return View(propiedades);
         }
 
-
-
         public async Task<IActionResult> IndexFilter(FiltersPropertyViewModel vm) 
         {
             ViewBag.PropetyTypes = await _propertyTypeService.GetAllViewModel();
             return View("Index", await _propertyService.GetAllWithFilters(vm));
         }
-
-
-        public async Task<IActionResult> Details(int id) 
+		
+        public async Task<IActionResult> Agents(string SearchString) 
         {
-            return View(await _propertyService.GetPropertyDetails(id));
+            var agents = await _userService.GetAllAgents();
+            if (!string.IsNullOrEmpty(SearchString)) 
+            {
+                agents = agents.Where(a => a.FirstName.Contains(SearchString)).ToList();
+            }
+            return View(agents);
         }
 
-        /*
-        public async Task<IActionResult> Agents() 
+        public async Task<IActionResult> PropertiesByAgentId(string id) 
         {
-            return View(await _userService.getAllAgents());
-        }*/
+            ViewBag.PropetyTypes = await _propertyTypeService.GetAllViewModel();
+            var PropertiesByAgent = await _propertyService.GetAllPropertiesByAgentId(id);
+            return View("Index", PropertiesByAgent);
+        }
 
+		public async Task<IActionResult> Details(int id)
+		{
+            
+            return View(await _propertyService.GetPropertyDetails(id));
+		}
 
-    }
+	}
 }
