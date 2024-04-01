@@ -520,9 +520,49 @@ namespace RealEstateApp.Infrastructure.Identity.Services
             return userViewModels;
         }
 
-        #region PrivateMethods
 
-        private async Task<JwtSecurityToken> GenerateJWToken(ApplicationUser user)
+		public async Task<List<UserViewModel>> GetAllAgents()
+		{
+			var users = await _userManager.Users.ToListAsync();
+			var userViewModels = new List<UserViewModel>();
+
+			foreach (var user in users)
+			{
+				var userViewModel = new UserViewModel
+				{
+					Id = user.Id,
+					FirstName = user.FirstName,
+					LastName = user.LastName,
+					Username = user.UserName,
+					Phone = user.PhoneNumber,
+					Email = user.Email,
+					PhotoUrl = user.PhotoUrl,
+					IsActive = user.IsActive
+				};
+
+				// Obtener los roles del usuario
+				var roles = await _userManager.GetRolesAsync(user);
+
+				// Obtener el primer rol asignado al usuario y asignarlo al tipo de usuario
+				if (roles.Any())
+				{
+					userViewModel.Role = roles.First().ToString();
+				}
+				if (userViewModel.Role == Roles.Agent.ToString() && user.IsActive)
+				{
+					userViewModels.Add(userViewModel);
+				}
+			}
+
+			return userViewModels;
+		}
+
+
+
+
+		#region PrivateMethods
+
+		private async Task<JwtSecurityToken> GenerateJWToken(ApplicationUser user)
         {
 
             var userClaims = await _userManager.GetClaimsAsync(user);
@@ -583,7 +623,7 @@ namespace RealEstateApp.Infrastructure.Identity.Services
         {
             var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
             code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-            var route = "User/ConfirmEmail";
+            var route = "Auth/ConfirmEmail";
             var Uri = new Uri(string.Concat($"{origin}/", route));
             var verificationUri = QueryHelpers.AddQueryString(Uri.ToString(), "userId", user.Id);
             verificationUri = QueryHelpers.AddQueryString(verificationUri, "token", code);
@@ -594,7 +634,7 @@ namespace RealEstateApp.Infrastructure.Identity.Services
         {
             var code = await _userManager.GeneratePasswordResetTokenAsync(user);
             code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-            var route = "User/ResetPassword";
+            var route = "Auth/ResetPassword";
             var Uri = new Uri(string.Concat($"{origin}/", route));
             var verificationUri = QueryHelpers.AddQueryString(Uri.ToString(), "token", code);
 

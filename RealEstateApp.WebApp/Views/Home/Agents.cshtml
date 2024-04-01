@@ -1,0 +1,35 @@
+﻿@model List<RealEstateApp.Core.Application.ViewModels.User.UserViewModel>
+
+<div class="container-fluid">
+	<div class="row m-3">
+		<form class="d-flex" asp-controller="Home" asp-action="Index">
+			<input name="SearchString" type="search" placeholder="Buscar por nombre" class="form-control h-100">
+			<button type="submit" class="btn btn-dark btn-sm">Search</button>
+		</form>
+	</div>
+
+
+
+			<div class="row">
+				@if (Model == null || Model.Count == 0)
+				{
+					<h4>No hay agentes</h4>
+				}
+
+				@foreach (var agente in Model)
+				{
+					<div class="col-4 mt-3">
+						<div class="card">
+							<div class="card">
+								<img class="card-img-top" height="200" width="200" src="@agente.PhotoUrl"></img>
+								<div class="card-body">
+									<a asp-controller="Home" asp-action="PropertiesByAgentId" asp-route-id="@agente.Id">
+										<h4>@agente.FirstName</h4>
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				}
+			</div>
+</div>

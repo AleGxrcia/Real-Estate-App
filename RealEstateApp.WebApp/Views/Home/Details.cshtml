@@ -1,0 +1,62 @@
+﻿@model RealEstateApp.Core.Application.ViewModels.Property.PropertyDetailsViewModel
+
+@{
+    ViewData["Title"] = "Property Details";
+}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8">
+            <!-- Slider with property images -->
+            <div id="propertyImageSlider" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img src="@Model.ImgUrl1" class="d-block w-100" alt="Property Image 1">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="@Model.ImgUrl2" class="d-block w-100" alt="Property Image 2">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="@Model.ImgUrl3" class="d-block w-100" alt="Property Image 3">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="@Model.ImgUrl4" class="d-block w-100" alt="Property Image 4">
+                    </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#propertyImageSlider" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#propertyImageSlider" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <!-- Property details -->
+            <h2>@Model.PropertyType</h2>
+            <p><strong>Código de Propiedad:</strong> @Model.Code</p>
+            <p><strong>Tipo de Venta:</strong> @Model.SalesType</p>
+            <p><strong>Costo de Propiedad:</strong> $@Model.Price</p>
+            <p><strong>Cantidad de Habitaciones:</strong> @Model.NumberOfRooms</p>
+            <p><strong>Cantidad de Baños:</strong> @Model.NumberOfBathrooms</p>
+            <p><strong>Tamaño (m²):</strong> @Model.LandSize</p>
+            <p><strong>Descripción:</strong> @Model.Description</p>
+            <p><strong>Listado de Mejoras:</strong></p>
+            <ul>
+                @foreach (var improvement in Model.ImproveMentes)
+                {
+                    <li>@improvement.Name</li>
+                }
+            </ul>
+            <hr>
+            <!-- Agent information -->
+            <h3>Agente Inmobiliario</h3>
+            <img src="@Model.AgentImgUrl" alt="Agent Image" class="img-fluid rounded-circle" style="max-width: 150px;">
+            <p><strong>Nombre:</strong> @Model.AgentName</p>
+            <p><strong>Teléfono:</strong> @Model.AgentPhoneNumber</p>
+            <p><strong>Correo:</strong> @Model.AgentEmail</p>
+        </div>
+    </div>
+</div>

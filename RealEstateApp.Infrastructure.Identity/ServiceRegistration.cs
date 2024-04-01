@@ -30,8 +30,8 @@ namespace RealEstateApp.Infrastructure.Identity
 
             services.ConfigureApplicationCookie(options =>
             {
-                options.LoginPath = "/User";
-                options.AccessDeniedPath = "/User/AccessDenied";
+                options.LoginPath = "/Auth";
+                options.AccessDeniedPath = "/Auth/AccessDenied";
             });
 
             services.Configure<JWTSettings>(configuration.GetSection("JWTSettings"));
@@ -97,8 +97,8 @@ namespace RealEstateApp.Infrastructure.Identity
 
             services.ConfigureApplicationCookie(options =>
             {
-                options.LoginPath = "/User";
-                options.AccessDeniedPath = "/User/AccessDenied";
+                options.LoginPath = "/Auth";
+                options.AccessDeniedPath = "/Auth/AccessDenied";
             });
 
             services.AddAuthentication();

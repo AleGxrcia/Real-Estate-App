@@ -61,6 +61,11 @@ namespace RealEstateApp.Core.Application.Services
 			return await _accountService.GetAllUsers();
 		}
 
+		public async Task<List<UserViewModel>> GetAllAgents()
+		{
+			return await _accountService.GetAllAgents();
+		}
+
 		public async Task<UserResponse> getUserByIdAsync(string id)
 		{
 			UserRequest userId = new();
