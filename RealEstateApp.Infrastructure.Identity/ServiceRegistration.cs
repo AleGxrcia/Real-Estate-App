@@ -101,6 +101,8 @@ namespace RealEstateApp.Infrastructure.Identity
                 options.AccessDeniedPath = "/Auth/AccessDenied";
             });
 
+            services.Configure<JWTSettings>(configuration.GetSection("JWTSettings"));
+
             services.AddAuthentication();
             #endregion
 
