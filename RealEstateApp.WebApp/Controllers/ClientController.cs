@@ -17,6 +17,7 @@ namespace RealEstateApp.WebApp.Controllers
 
         public ClientController(IPropertyService propertyService, IPropertyTypeService propertyTypeService, IUserService userService, IHttpContextAccessor httpContextAccessor)
         {
+            _httpContextAccessor = httpContextAccessor;
             _propertyService = propertyService;
             _propertyTypeService = propertyTypeService;
             _userService = userService;

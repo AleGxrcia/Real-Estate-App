@@ -10,7 +10,7 @@ namespace RedSocial.Controllers
 {
     public class AuthController : Controller
     {
-        private readonly IUserService  _service;
+        private readonly IUserService _service;
         public AuthController(IUserService service)
         {
             _service = service;
@@ -25,9 +25,9 @@ namespace RedSocial.Controllers
         }
         [ServiceFilter(typeof(LoginAuthorize))]
         [HttpPost]
-        public async Task<IActionResult> Index(LoginViewModel vm) 
+        public async Task<IActionResult> Index(LoginViewModel vm)
         {
-            if (!ModelState.IsValid) 
+            if (!ModelState.IsValid)
             {
                 return View(vm);
             }
@@ -35,9 +35,10 @@ namespace RedSocial.Controllers
             if (uservm != null && uservm.HasError != true)
             {
                 HttpContext.Session.Set<AuthenticationResponse>("user", uservm);
+
                 return RedirectToRoute(new { controller = "Client", action = "Index" });
             }
-            else 
+            else
             {
                 vm.HasError = uservm.HasError;
                 vm.Error = uservm.Error;
@@ -47,7 +48,7 @@ namespace RedSocial.Controllers
 
 
         //----------------------------------------------LogOut--------------------------------------------
-        public async Task<IActionResult> LogOut() 
+        public async Task<IActionResult> LogOut()
         {
             await _service.SignOutAsync();
             HttpContext.Session.Remove("user");
@@ -56,7 +57,7 @@ namespace RedSocial.Controllers
 
         //--------------------------------------------Register------------------------------------------------
         [ServiceFilter(typeof(LoginAuthorize))]
-        public IActionResult Register() 
+        public IActionResult Register()
         {
             return View(new SaveUserViewModel());
         }
@@ -64,44 +65,44 @@ namespace RedSocial.Controllers
 
         [ServiceFilter(typeof(LoginAuthorize))]
         [HttpPost]
-        public async Task<IActionResult> Register(SaveUserViewModel vm) 
+        public async Task<IActionResult> Register(SaveUserViewModel vm)
         {
-            if (!ModelState.IsValid) 
+            if (!ModelState.IsValid)
             {
                 return View(vm);
             }
             var origin = Request.Headers["origin"];
 
-            
+
             RegisterResponse response = await _service.RegisterAsync(vm, origin, vm.Photo);
-            
-            if (response.HasError) 
+
+            if (response.HasError)
             {
                 vm.HasError = response.HasError;
                 vm.Error = response.Error;
                 return View(vm);
             }
-            
+
 
             return RedirectToRoute(new { controller = "Auth", action = "Index" });
 
         }
 
         //-----------------------------------------------------ConfitmEmail------------------------------------
-        public async Task<IActionResult> ConfirmEmail(string UserId, string token) 
+        public async Task<IActionResult> ConfirmEmail(string UserId, string token)
         {
             string response = await _service.ConfirmEmailAsync(UserId, token);
             return View("ConfirmEmail", response);
         }
 
         //---------------------------------------------------ForgotPassword-------------------------------
-        public IActionResult ForgotPassword() 
+        public IActionResult ForgotPassword()
         {
             return View(new ForgotPasswordViewModel());
         }
 
         [HttpPost]
-        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel vm) 
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel vm)
         {
             if (!ModelState.IsValid)
             {
@@ -120,7 +121,7 @@ namespace RedSocial.Controllers
 
 
         //-----------------------------------------------------ResetPassword--------------------------------------
-        public IActionResult ResetPassword(string token) 
+        public IActionResult ResetPassword(string token)
         {
             return View(new ResetPasswordViewModel { Token = token });
         }
@@ -149,6 +150,6 @@ namespace RedSocial.Controllers
             return View();
         }
 
-       
+
     }
 }
