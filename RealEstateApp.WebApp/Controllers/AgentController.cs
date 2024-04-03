@@ -24,13 +24,7 @@ namespace RealEstateApp.WebApp.Controllers
         }
 
 
-        public async Task<IActionResult> Properties() 
-        {
-            return View(await _propertyService.GetAllPropertiesByAgentId(user.Id));
-        }
-
-        
-
+       
         public async Task<IActionResult> Profile()
         {
             return View(await _userService.getUserByIdAsync(user.Id));

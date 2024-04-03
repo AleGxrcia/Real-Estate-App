@@ -10,18 +10,36 @@
             <!-- Slider with property images -->
             <div id="propertyImageSlider" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-inner">
-                    <div class="carousel-item active">
-                        <img src="@Model.ImgUrl1" class="d-block w-100" alt="Property Image 1">
-                    </div>
-                    <div class="carousel-item">
-                        <img src="@Model.ImgUrl2" class="d-block w-100" alt="Property Image 2">
-                    </div>
-                    <div class="carousel-item">
-                        <img src="@Model.ImgUrl3" class="d-block w-100" alt="Property Image 3">
-                    </div>
-                    <div class="carousel-item">
-                        <img src="@Model.ImgUrl4" class="d-block w-100" alt="Property Image 4">
-                    </div>
+                    @if (!string.IsNullOrEmpty(Model.ImgUrl1))
+                    {
+                        <div class="carousel-item active">
+                            <img src="@Model.ImgUrl1" class="d-block w-100" alt="Property Image 1">
+                        </div>
+                    }
+
+                    @if (!string.IsNullOrEmpty(Model.ImgUrl2))
+                    {
+                        <div class="carousel-item">
+                            <img src="@Model.ImgUrl2" class="d-block w-100" alt="Property Image 2">
+                        </div>
+                    }
+
+                    @if (!string.IsNullOrEmpty(Model.ImgUrl3))
+                    {
+                        <div class="carousel-item">
+                            <img src="@Model.ImgUrl3" class="d-block w-100" alt="Property Image 3">
+                        </div>
+                    }
+
+                    @if (!string.IsNullOrEmpty(Model.ImgUrl4))
+                    {
+                        <div class="carousel-item">
+                            <img src="@Model.ImgUrl4" class="d-block w-100" alt="Property Image 4">
+                        </div>
+                    }
+                   
+                   
+                    
                 </div>
                 <button class="carousel-control-prev" type="button" data-bs-target="#propertyImageSlider" data-bs-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
