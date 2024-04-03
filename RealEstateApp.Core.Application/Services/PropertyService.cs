@@ -68,6 +68,7 @@ public async Task<List<PropertyViewModel>> GetAllPropertiesByAgentId(string Id)
 				NumberOfBathrooms = p.NumberOfBathrooms,
 				NumberOfRooms = p.NumberOfRooms,
 				AgentId = p.AgentId,
+				PropertyTypeId = p.PropertyType.Id,
 				ImagesUrl = p.Images.Where(img => img.ImageUrl != null).Select(img => img.ImageUrl).ToList(),
 				Improvements = p.ImprovementProperties.Where(pi => pi.Improvement != null).Select(i => new ImprovementViewModel
 				{
@@ -79,7 +80,7 @@ public async Task<List<PropertyViewModel>> GetAllPropertiesByAgentId(string Id)
 
 			if (filters.PropertyType != null && filters.MinPrice != null && filters.MaxPrice != null && filters.NumberOfBathRooms != null && filters.NumberOfBathRooms != null)
 			{
-				propertiesWithFilters = propertiesWithFilters.Where(p => p.PropertyType == filters.PropertyType
+				propertiesWithFilters = propertiesWithFilters.Where(p => p.PropertyTypeId == filters.PropertyType
 				&& p.Price >= filters.MinPrice && p.Price <= filters.MaxPrice
 				&& p.NumberOfBathrooms == filters.NumberOfBathRooms
 				&& p.NumberOfRooms == filters.NumberOfRooms)
@@ -88,7 +89,7 @@ public async Task<List<PropertyViewModel>> GetAllPropertiesByAgentId(string Id)
 			}
 			else if (filters.PropertyType != null)
 			{
-				propertiesWithFilters = propertiesWithFilters.Where(p => p.PropertyType == filters.PropertyType).ToList();
+				propertiesWithFilters = propertiesWithFilters.Where(p => p.PropertyTypeId == filters.PropertyType).ToList();
 			}
 			else if (filters.MinPrice != null)
 			{
@@ -143,7 +144,7 @@ public async Task<List<PropertyViewModel>> GetAllPropertiesByAgentId(string Id)
 
 public async Task<PropertyDetailsViewModel> GetPropertyDetails(int Id)
 {
-	var propertyList = await _repository.GetAllWithIncludeAsync(new List<string> { "SaleType", "PropertyType", "Images", "FavoriteProperties", "ImprovementProperties" });
+	var propertyList = await _repository.GetAllWithIncludeAsync(new List<string> { "SaleType", "PropertyType", "Images", "FavoriteProperties", "ImprovementProperties.Improvement" });
 	var property = propertyList.FirstOrDefault(x => x.Id == Id);
 	var Agent = await _userService.getUserByIdAsync(property.AgentId);
 	if (property == null)
@@ -152,6 +153,16 @@ public async Task<PropertyDetailsViewModel> GetPropertyDetails(int Id)
 	}
 
 	var images = property.Images?.ToList();
+
+	 // Obtener los mejoramientos (improvements)
+    var improvements = property.ImprovementProperties
+        .Where(pi => pi.Improvement != null)
+        .Select(i => new ImprovementViewModel
+        {
+            Name = i.Improvement.Name,
+            Description = i.Improvement.Description
+        }).ToList();
+
 
 	var viewModel = new PropertyDetailsViewModel
 	{
@@ -164,7 +175,7 @@ public async Task<PropertyDetailsViewModel> GetPropertyDetails(int Id)
 		NumberOfBathrooms = property.NumberOfBathrooms,
 		NumberOfRooms = property.NumberOfRooms,
 		Description = property.Description,
-		ImproveMentes = _mapper.Map<List<ImprovementViewModel>>(property.ImprovementProperties),
+		ImproveMentes = improvements,
 		ImgUrl1 = images.Count > 0 ? images[0].ImageUrl : null,
 		ImgUrl2 = images.Count > 1 ? images[1].ImageUrl : null,
 		ImgUrl3 = images.Count > 2 ? images[2].ImageUrl : null,
@@ -177,5 +188,10 @@ public async Task<PropertyDetailsViewModel> GetPropertyDetails(int Id)
 
 	return viewModel;
 }
+
+
+
+
+		
     }
 }

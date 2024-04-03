@@ -18,19 +18,13 @@
 					<h4 class="card-title">Tipos de Propiedad</h4>
 
 					<form method="post" asp-controller="Home" asp-action="IndexFilter">
-						<div class="mb-3">
-							<div class="form-check">
-								<input class="form-check-input" value="null" type="radio" name="PropertyType" id="PropertyType-all">
-								<label class="form-check-label" for="PropertyType-all">Todas</label>
-							</div>
-						</div>
 
 						@foreach (var propertyType in ViewBag.PropetyTypes)
 						{
 							<div class="mb-3">
 								<div class="form-check">
-									<input class="form-check-input" value="@propertyType.Id" type="radio" name="PropertyType" id="propertyType-@propertyType.Id">
-									<label class="form-check-label" for="genero-@propertyType.Id">@propertyType.Name</label>
+									<input class="form-check-input" value="@propertyType.Id" type="radio" name="PropertyType">
+									<label class="form-check-label">@propertyType.Name</label>
 								</div>
 							</div>
 						}
@@ -77,7 +71,7 @@
 					<div class="col-4 mt-3">
 						<div class="card">
 							<div class="card">
-								<img class="card-img-top" height="200" width="200" src="@propiedad.ImagesUrl"></img>
+								<img class="card-img-top" height="200" width="200" src="@propiedad.ImagesUrl.FirstOrDefault()">
 								<div class="card-body">
 									<a asp-controller="Home" asp-action="Details" asp-route-id="@propiedad.Id">
 										<h4>@propiedad.PropertyType</h4>
@@ -100,10 +94,7 @@
 										<i class="fa-solid fa-bath"></i>
 										@propiedad.NumberOfBathrooms
 									</h4>
-									<div class="btn-group">
-										<a asp-action="Edit" asp-controller="Property" asp-route-id="@propiedad.Id" class="btn btn-info">Editar</a>
-										<a asp-action="Delete" asp-controller="Property" asp-route-id="@propiedad.Id" class="btn btn-danger">Eliminar</a>
-									</div>
+
 								</div>
 							</div>
 						</div>

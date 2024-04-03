@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RealEstateApp.Core.Application.Dtos.Account;
+using RealEstateApp.Core.Application.Enums;
 using RealEstateApp.Core.Application.Helpers;
 using RealEstateApp.Core.Application.Interfaces.Services;
 using RealEstateApp.Core.Application.ViewModels.User;
@@ -35,8 +36,11 @@ namespace RedSocial.Controllers
             if (uservm != null && uservm.HasError != true)
             {
                 HttpContext.Session.Set<AuthenticationResponse>("user", uservm);
-
-                return RedirectToRoute(new { controller = "Client", action = "Index" });
+                
+                return RedirectToRoute(new { controller = 
+                    uservm.Roles.FirstOrDefault() == Roles.Agent.ToString() ? "Property" : 
+                    uservm.Roles.FirstOrDefault() == Roles.Client.ToString()? "Client" : "Admin"
+                    , action = "Index" });
             }
             else
             {

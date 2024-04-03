@@ -23,8 +23,9 @@
 							<div class="card">
 								<img class="card-img-top" height="200" width="200" src="@agente.PhotoUrl"></img>
 								<div class="card-body">
+								<h4>@agente.FirstName</h4>
 									<a asp-controller="Home" asp-action="PropertiesByAgentId" asp-route-id="@agente.Id">
-										<h4>@agente.FirstName</h4>
+										-Propiedades
 									</a>
 								</div>
 							</div>

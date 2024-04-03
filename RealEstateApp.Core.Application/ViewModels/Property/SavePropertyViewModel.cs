@@ -19,13 +19,13 @@ namespace RealEstateApp.Core.Application.ViewModels.Property
         [Range(0.01, int.MaxValue)]
         public int PropertyTypeId { get; set; }
 
-        public ICollection<PropertyTypeViewModel> PropertyTypes { get; set; }
+        public ICollection<PropertyTypeViewModel>? PropertyTypes { get; set; }
 
         [Required(ErrorMessage = "Debe elegir un tipo de venta.")]
         [Range(0.01, int.MaxValue)]
-        public int SalesTypeId { get; set; }
+        public int SaleTypeId { get; set; }
 
-        public ICollection<SaleTypeViewModel> SalesTypes { get; set; }
+        public ICollection<SaleTypeViewModel>? SalesTypes { get; set; }
 
         [Required(ErrorMessage = "El precio es requerido.")]
         [Range(0.01, double.MaxValue, ErrorMessage = "El precio debe ser mayor que cero.")]
@@ -52,9 +52,9 @@ namespace RealEstateApp.Core.Application.ViewModels.Property
 
 
         [Required(ErrorMessage = "Debe seleccionar al menos una mejora.")]
-        [Range(0.01, int.MaxValue)]
+        //[Range(0.01, int.MaxValue)]
         public List<int> ImprovementsId { get; set; }
-        public ICollection<ImprovementViewModel> Improvements { get; set; }
+        public ICollection<ImprovementViewModel>? Improvements { get; set; }
 
         public int? Code { get; set; }
         public string? AgentId { get; set; }

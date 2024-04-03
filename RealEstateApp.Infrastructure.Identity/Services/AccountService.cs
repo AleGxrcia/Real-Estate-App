@@ -22,7 +22,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace RealEstateApp.Infrastructure.Identity.Services
 {
-    public class AccountService : IAccountService
+    public class AccountService :  IAccountService
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
@@ -122,7 +122,8 @@ namespace RealEstateApp.Infrastructure.Identity.Services
                 Email = request.Email,
                 FirstName = request.FirstName,
                 LastName = request.LastName,
-                UserName = request.UserName
+                UserName = request.UserName,
+                PhoneNumber = request.Phone
             };
 
             var result = await _userManager.CreateAsync(user, request.Password);
