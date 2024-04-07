@@ -436,7 +436,7 @@ namespace RealEstateApp.Infrastructure.Identity.Services
             response.UserName = user.UserName;
             response.Phone = user.PhoneNumber;
             response.Email = user.Email;
-            response.ImgUrl = user.PhotoUrl;
+            response.PhotoUrl = user.PhotoUrl;
             response.IsActive = user.IsActive;
 
             var roles = await _userManager.GetRolesAsync(user);
@@ -642,7 +642,64 @@ namespace RealEstateApp.Infrastructure.Identity.Services
             return verificationUri;
         }
 
-       
+        public async Task<string> UpdateUser(EditUserViewModel vm)
+        {
+            string Error = "";
+            var user = await _userManager.FindByIdAsync(vm.Id);
+            if (user == null)
+            {
+                Error = $"No se encontró ningún usuario con el ID: {vm.Id}";
+                return Error;
+            }
+
+            // Verificar si el nuevo nombre de usuario está en uso por otro usuario
+            if (user.UserName != vm.Username)
+            {
+                var existingUser = await _userManager.FindByNameAsync(vm.Username);
+                
+                if (existingUser != null && existingUser.Id != user.Id)
+                {
+                    Error = $"El nombre de usuario '{vm.Username}' ya está en uso por otro usuario.";
+                    return Error;
+                }
+            }
+
+            if (user.PhoneNumber != vm.Phone)
+            {
+                var existingUser = await _userManager.FindByNameAsync(vm.Username);
+
+                if (existingUser != null && existingUser.Id != user.Id)
+                {
+                    Error = $"El numero de telefono '{vm.Username}' ya está en uso por otro usuario.";
+                    return Error;
+                }
+            }
+
+            user.FirstName = vm.FirstName;
+            user.LastName = vm.LastName;
+            user.UserName = vm.Username;
+
+            // Actualizar la foto solo si se proporciona una nueva
+            if (vm.Photo != null)
+            {
+                user.PhotoUrl = UploadFile(vm.Photo, user.Id, true, user.PhotoUrl);
+            }
+
+            var result = await _userManager.UpdateAsync(user);
+
+            if (!result.Succeeded)
+            {
+                var errors = result.Errors.Select(e => e.Description);
+                Error = $"Error al actualizar el usuario: {string.Join(", ", errors)}";
+                return Error;
+            }
+
+
+            return Error;
+        }
+
+
+
 
         #endregion
     }
