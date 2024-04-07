@@ -60,9 +60,9 @@ namespace RealEstateApp.Core.Application.ViewModels.Property
         public string? AgentId { get; set; }
 
         //Imgagenes
-        [Required(ErrorMessage = "Debe colocar al menos la imagen de portada de la propiedad")]
+        //[Required(ErrorMessage = "Debe colocar al menos la imagen de portada de la propiedad")]
         [DataType(DataType.Upload)]
-        public IFormFile file1 { get; set; }
+        public IFormFile? file1 { get; set; }
         public string? ImgUrl1 { get; set; }
 
         [DataType(DataType.Upload)]

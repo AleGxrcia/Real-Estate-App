@@ -19,5 +19,6 @@ namespace RealEstateApp.Core.Application.Interfaces.Services
 		Task<List<UserViewModel>> GetAllUsers();
 		Task<List<UserViewModel>> GetAllAgents();
 		Task<string> ChangeUserStatus(string id, bool activate);
+        Task<string> UpdateUser(EditUserViewModel vm);
     }
 }

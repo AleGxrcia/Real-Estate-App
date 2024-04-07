@@ -4,6 +4,7 @@ using RealEstateApp.Core.Application.Interfaces.Services;
 using RealEstateApp.Core.Application.ViewModels.Improvement;
 using RealEstateApp.Core.Application.ViewModels.Property;
 using RealEstateApp.Core.Domain.Entities;
+using System.Reflection.Metadata.Ecma335;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace RealEstateApp.Core.Application.Services
@@ -183,15 +184,65 @@ public async Task<PropertyDetailsViewModel> GetPropertyDetails(int Id)
 		AgentName = Agent.FirstName,
 		AgentEmail = Agent.Email,
 		AgentPhoneNumber = Agent.Phone,
-		AgentImgUrl = Agent.ImgUrl
-	};
+		AgentImgUrl = Agent.PhotoUrl
+    };
 
 	return viewModel;
 }
 
+        public async Task UpdateImagesAsync(List<string> photoUrls, int propertyId)
+        {
+			await _repository.UpdateImagesAsync(photoUrls, propertyId);
+        }
 
-
+        public async Task UpdateImprovementsAsync(List<int> improvementsId, int propertyId)
+        {
+			await _repository.UpdateImprovementsAsync(improvementsId, propertyId);
+        }
 
 		
+        public override async Task<SavePropertyViewModel> GetByIdSaveViewModel(int id)
+        {
+			var propertyList = await _repository.GetAllWithIncludeAsync(new List<string> { "SaleType", "PropertyType", "Images", "FavoriteProperties", "ImprovementProperties" });
+            var p = propertyList.FirstOrDefault(x => x.Id == id);
+
+            if (p == null)
+            {
+                return null;
+            }
+
+            var images = p.Images?.ToList();
+
+			var viewmodel = new SavePropertyViewModel
+			{
+				Id = p.Id,
+				PropertyTypeId = p.PropertyType.Id,
+				Code = p.Code,
+				SaleTypeId = p.SaleType.Id,
+				Price = p.Price,
+				LandSize = p.LandSize,
+				NumberOfBathrooms = p.NumberOfBathrooms,
+				NumberOfRooms = p.NumberOfRooms,
+				Description = p.Description,
+				AgentId = p.AgentId,
+				ImgUrl1 = images.Count > 0 ? images[0].ImageUrl : null,
+				ImgUrl2 = images.Count > 1 ? images[1].ImageUrl : null,
+				ImgUrl3 = images.Count > 2 ? images[2].ImageUrl : null,
+				ImgUrl4 = images.Count > 3 ? images[3].ImageUrl : null,
+				Improvements = p.ImprovementProperties.Where(pi => pi.Improvement != null).Select(i => new ImprovementViewModel
+				{
+					Name = i.Improvement.Name,
+					Description = i.Improvement.Description
+
+				}).ToList()
+			};
+
+			return viewmodel;
+        }
+
+        public async Task DeleteImprovementPropertiesAsync(int propertyId)
+        {
+			await _repository.DeleteImprovementPropertiesAsync(propertyId);
+        }
     }
 }

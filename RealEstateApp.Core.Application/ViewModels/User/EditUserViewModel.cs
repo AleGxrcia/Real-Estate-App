@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace RealEstateApp.Core.Application.ViewModels.User
 {
-    public class SaveUserViewModel
+    public class EditUserViewModel
     {
         public string? Id { get; set; }
         [Required(ErrorMessage = "Debe colocar el nombre del usuario")]
@@ -23,19 +23,6 @@ namespace RealEstateApp.Core.Application.ViewModels.User
         [DataType(DataType.Text)]
         public string Username { get; set; }
 
-        [Required(ErrorMessage = "Debe colocar una contraseña")]
-        [DataType(DataType.Password)]
-        public string Password { get; set; }
-
-        [Compare(nameof(Password), ErrorMessage = "Las contraseñas no coiciden")]
-        [Required(ErrorMessage = "Debe colocar una contraseña")]
-        [DataType(DataType.Password)]
-        public string ConfirmPassword { get; set; }
-
-        [Required(ErrorMessage = "Debe colocar un correo")]
-        [DataType(DataType.EmailAddress)]
-        public string Email { get; set; }
-
         [Required(ErrorMessage = "Debe colocar un telefono")]
         [DataType(DataType.Text)]
         public string Phone { get; set; }
@@ -43,9 +30,7 @@ namespace RealEstateApp.Core.Application.ViewModels.User
         [Required(ErrorMessage = "Debe colocar una Foto")]
         [DataType(DataType.Upload)]
         public IFormFile? Photo { get; set; }
-
-        [Required(ErrorMessage = "Debe elegir un tipo de usuario")]
-        public string UserType { get; set; }
+        public string? PhotoUrl { get; set; }
 
         public bool HasError { get; set; }
         public string? Error { get; set; }

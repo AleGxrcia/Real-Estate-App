@@ -44,5 +44,64 @@ namespace RealEstateApp.Infrastructure.Persistence.Repository
             }
             await _dbContext.SaveChangesAsync();
         }
+
+
+
+        public async Task UpdateImprovementsAsync(List<int> improvementsId, int propertyId)
+        {
+            // Eliminar todas las mejoras existentes para esta propiedad
+            var existingImprovements = _dbContext.ImprovementProperties.Where(ip => ip.PropertyId == propertyId);
+            _dbContext.ImprovementProperties.RemoveRange(existingImprovements);
+
+            // Añadir las nuevas mejoras
+            foreach (int improvementId in improvementsId)
+            {
+                var improvementProperty = new ImprovementProperty
+                {
+                    PropertyId = propertyId,
+                    ImprovementId = improvementId
+                };
+
+                _dbContext.ImprovementProperties.Add(improvementProperty);
+            }
+
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task UpdateImagesAsync(List<string> photoUrls, int propertyId)
+        {
+            // Eliminar todas las imágenes existentes para esta propiedad
+            var existingImages = _dbContext.PropertyImages.Where(pi => pi.PropertyId == propertyId);
+            _dbContext.PropertyImages.RemoveRange(existingImages);
+
+            // Añadir las nuevas imágenes
+            foreach (string photoUrl in photoUrls)
+            {
+                var propertyImage = new PropertyImage
+                {
+                    PropertyId = propertyId,
+                    ImageUrl = photoUrl
+                };
+
+                _dbContext.PropertyImages.Add(propertyImage);
+            }
+
+            await _dbContext.SaveChangesAsync();
+        }
+
+
+        public async Task DeleteImprovementPropertiesAsync(int propertyId)
+        {
+            // Obtener todas las ImprovementProperties asociadas a la propiedad
+            var improvementProperties = _dbContext.ImprovementProperties.Where(ip => ip.PropertyId == propertyId);
+
+            // Remover todas las ImprovementProperties asociadas
+            _dbContext.ImprovementProperties.RemoveRange(improvementProperties);
+
+            // Guardar los cambios en la base de datos
+            await _dbContext.SaveChangesAsync();
+        }
+
+
     }
 }

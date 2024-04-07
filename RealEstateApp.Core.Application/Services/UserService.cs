@@ -73,5 +73,11 @@ namespace RealEstateApp.Core.Application.Services
 			return await _accountService.GetUserWithId(userId);
 
 		}
+
+        public async Task<string> UpdateUser(EditUserViewModel vm) 
+        {
+            return await _accountService.UpdateUser(vm);
+            
+        }
 	}
 }
