@@ -19,6 +19,9 @@ using Newtonsoft.Json.Linq;
 using RealEstateApp.Core.Application.ViewModels.User;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
+using RealEstateApp.Infrastructure.Persistence.Contexts;
+using RealEstateApp.Core.Domain.Entities;
+using RealEstateApp.Core.Application.ViewModels.Property;
 
 namespace RealEstateApp.Infrastructure.Identity.Services
 {
@@ -28,18 +31,21 @@ namespace RealEstateApp.Infrastructure.Identity.Services
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailService _emailService;
         private readonly JWTSettings _jwtSettings;
+        private readonly ApplicationContext _db;
 
         public AccountService(
               UserManager<ApplicationUser> userManager,
               SignInManager<ApplicationUser> signInManager,
               IEmailService emailService,
-              IOptions<JWTSettings> jwtSettings
+              IOptions<JWTSettings> jwtSettings,
+              ApplicationContext db
             )
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailService = emailService;
             _jwtSettings = jwtSettings.Value;
+            _db = db;
         }
 
         public async Task<AuthenticationResponse> AuthenticateAsync(AuthenticationRequest request)
@@ -699,10 +705,60 @@ namespace RealEstateApp.Infrastructure.Identity.Services
         }
 
 
+		public async Task AddFavorite(string clienteId, int propertyId)
+		{
 
+			// Verificar si ya existe la propiedad en favoritos
+			var existingFavorite = await _db.FavoriteProperties
+				.FirstOrDefaultAsync(fp => fp.ClientId == clienteId && fp.PropertyId == propertyId);
 
-        #endregion
-    }
+			if (existingFavorite != null)
+			{
+				// La propiedad ya está en favoritos
+				return;
+			}
+
+			// Crear una nueva relación de favoritos
+			var newFavorite = new FavoriteProperty
+			{
+				ClientId = clienteId,
+				PropertyId = propertyId
+			};
+
+			_db.FavoriteProperties.Add(newFavorite);
+			await _db.SaveChangesAsync();
+		}
+
+		public async Task RemoveFavorite(string clienteId, int propertyId)
+		{
+
+			// Buscar la propiedad en favoritos
+			var favorite = await _db.FavoriteProperties
+				.FirstOrDefaultAsync(fp => fp.ClientId == clienteId && fp.PropertyId == propertyId);
+
+			if (favorite != null)
+			{
+				// La propiedad está en favoritos, la eliminamos
+				_db.FavoriteProperties.Remove(favorite);
+				await _db.SaveChangesAsync();
+			}
+		}
+
+		public async Task<List<Property>> GetFavoriteProperties(string userId)
+		{
+			var favoriteProperties = await _db.FavoriteProperties
+				.Where(fp => fp.ClientId == userId)
+				.Join(_db.Properties,
+					fp => fp.PropertyId,
+					p => p.Id,
+					(fp, p) => p)
+				.ToListAsync();
+
+			return favoriteProperties;
+		}
+
+		#endregion
+	}
 
 
 }

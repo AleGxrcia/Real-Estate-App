@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
+
 using RealEstateApp.Core.Application.Dtos.Account;
+using RealEstateApp.Core.Application.ViewModels.Property;
 using RealEstateApp.Core.Application.ViewModels.User;
+using RealEstateApp.Core.Domain.Entities;
 using System.Threading.Tasks;
 
 namespace RealEstateApp.Core.Application.Interfaces.Services
@@ -25,5 +28,9 @@ namespace RealEstateApp.Core.Application.Interfaces.Services
 
         Task<string> UpdateUser(EditUserViewModel vm);
 
-    }
+        Task AddFavorite(string clienteId, int propertyId);
+		Task RemoveFavorite(string clienteId, int propertyId);
+
+        Task<List<Property>> GetFavoriteProperties(string userId);
+	}
 }
