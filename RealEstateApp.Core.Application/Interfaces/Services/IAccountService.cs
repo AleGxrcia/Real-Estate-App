@@ -25,13 +25,13 @@ namespace RealEstateApp.Core.Application.Interfaces.Services
         Task<List<UserViewModel>> GetAllAgents();
         Task<UserResponse> UpdateIsActiveAgent(string id, bool isActive);
         Task<string> ChangeUserStatusAsync(string id, bool activate);
+        Task<string> UpdateUserAsync(RegisterRequest request, string userId);
 
         Task<string> UpdateUser(EditUserViewModel vm);
-
         Task AddFavorite(string clienteId, int propertyId);
 		Task RemoveFavorite(string clienteId, int propertyId);
 
         Task<List<Property>> GetFavoriteProperties(string userId);
-        Task<string> UpdateUserAsync(RegisterRequest request, string userId);
+        Task<string> DeleteUserAsync(string userId);
     }
 }

@@ -346,6 +346,24 @@ namespace RealEstateApp.Infrastructure.Identity.Services
             }
         }
 
+        public async Task<string> DeleteUserAsync(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return "User not found.";
+            }
+
+            var result = await _userManager.DeleteAsync(user);
+            if (result.Succeeded)
+            {
+                return "User successfully deleted.";
+            }
+            else
+            {
+                return "An error occurred trying to delete the user.";
+            }
+        }
 
         public async Task<string> ConfirmAccountAsync(string userId, string token)
         {
