@@ -115,12 +115,17 @@
                                 <a class="nav-link text-dark" asp-controller="Client" asp-action="FavoriteProperties">Mis propiedades</a>
                             </li>
 
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Auth" asp-action="LogOut">Cerrar session</a>
-                            </li>
+                        
                         }
                         
                     </ul>
+                    @if (User != null)
+                    {
+                        <a class="nav-link text-dark float-end" asp-area="" asp-controller="Auth" asp-action="LogOut">
+                            <i class="fa-solid fa-right-from-bracket"></i>
+                            Cerrar Sesion
+                        </a>
+                    }
                 </div>
             </div>
         </nav>

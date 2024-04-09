@@ -26,10 +26,13 @@
                         <input class="form-control" asp-for="Password">
                     </div>
 
-                    <button type="submit" class="btn btn-primary float-end">Iniciar sección</button>
-                    <a asp-controller="Auth" asp-action="ForgotPassword" class="btn btn-warning float-end me-2">I forgot my password</a>
-                    <a asp-controller="Auth" asp-action="Register">Registrar</a>
+                    <button type="submit" class="btn btn-outline-light float-end">Iniciar sesión</button>
+                    <div class="d-grid">
 
+                    <a asp-controller="Auth" asp-action="ForgotPassword" class="m-2 text-light">Olvidate tu contrasena?</a>
+                    <a asp-controller="Auth" asp-action="Register" class="m-2 text-light" >Registrar</a>
+
+                    </div>
                 </form>
             </div>
         </div>

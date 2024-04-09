@@ -41,18 +41,25 @@ namespace RealEstateApp.Core.Application.Features.Properties.Queries.GetProperty
             return new Response<PropertyViewModel>(property);
         }
 
-       private async Task<PropertyViewModel> GetByIdViewModel(int id)
-{
-    var propertyList = await _propertyRepository.GetAllWithIncludeAsync(new List<string> { "PropertyType", "SaleType", "ImprovementProperties", "Images" });
+        private async Task<PropertyViewModel> GetByIdViewModel(int id)
+        {
+            var propertyList = await _propertyRepository.GetAllWithIncludeAsync(new List<string> { "PropertyType", "SaleType", "ImprovementProperties", "Images" });
 
-    if (propertyList == null || propertyList.Count == 0) throw new ApiException($"Properties not found."
- , (int)HttpStatusCode.NotFound);
+            if (propertyList == null || propertyList.Count == 0) throw new ApiException($"Properties not found."
+         , (int)HttpStatusCode.NotFound);
 
 
-    var property = propertyList.FirstOrDefault(f => f.Id == id);
+            var property = propertyList.FirstOrDefault(f => f.Id == id);
 
-    if (property == null) throw new ApiException($"Property not found."
- , (int)HttpStatusCode.NotFound);
+            if (property == null) throw new ApiException($"Property not found."
+         , (int)HttpStatusCode.NotFound);
+
+            var improvementIds = property.ImprovementProperties
+          .Where(ip => ip.ImprovementId != null)
+          .Select(ip => ip.ImprovementId)
+          .ToList();
+
+            var improvements = await _improvementRepository.GetAllByIdAsync(improvementIds);
 
             PropertyViewModel propertyVm = new()
             {
@@ -68,13 +75,14 @@ namespace RealEstateApp.Core.Application.Features.Properties.Queries.GetProperty
                         .Where(pi => pi.Improvement != null)
                         .Select(pi => new ImprovementViewModel
                         {
-                            Name = pi.Improvement.Name,
+                            Name = improvements.FirstOrDefault(i => i.Id == pi.ImprovementId)?.Name,
+                            Description = improvements.FirstOrDefault(i => i.Id == pi.ImprovementId)?.Description,
                         }).ToList(),
                 ImagesUrl = property.Images.Where(img => img.ImageUrl != null).Select(img => img.ImageUrl).ToList()
-    };
+            };
 
-    return propertyVm;
-}
+            return propertyVm;
+        }
     }
 
 

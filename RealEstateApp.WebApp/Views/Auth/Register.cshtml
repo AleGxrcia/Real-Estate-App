@@ -8,7 +8,7 @@
         <div class="col-6 offset-3">
             <div class="card bg-dark text-white rounded border-0">
                 <div class="card-header ">
-                    <h4>Registrar</h4>
+                    <h2 class="text-center card-title m-2">Registro</h2>
                 </div>
                 <div class="card-body">
                     @if (Model.HasError)
@@ -18,66 +18,69 @@
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                     }
-                    <form method="post" asp-controller="Auth" asp-action="Register" enctype="multipart/form-data">
+                    <form method="post"  class="lead fw-bold" asp-controller="Auth" asp-action="Register" enctype="multipart/form-data">
                         <div class="mb-3">
-                            <label asp-for="FirstName" class="form-label">Nombre: </label>
-                            <input asp-for="FirstName" class="form-control" />
+                            <label asp-for="FirstName" >Nombre: </label>
+                            <input asp-for="FirstName" placeholder="Ingrese su nombre" class="form-control" />
                             <span asp-validation-for="FirstName" class="text-danger"></span>
                         </div>
                         <div class="mb-3">
-                            <label asp-for="LastName" class="form-label">Apellido: </label>
-                            <input asp-for="LastName" class="form-control" />
+                            <label asp-for="LastName" >Apellido: </label>
+                            <input asp-for="LastName" placeholder="Ingrese su apellido" class="form-control" />
                             <span asp-validation-for="LastName" class="text-danger"></span>
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="Username" class="form-label">Nombre de usuario: </label>
-                            <input asp-for="Username" class="form-control" />
+                            <label asp-for="Username" >Nombre de usuario: </label>
+                            <input asp-for="Username" placeholder="Ingrese su nombre de usuario" class="form-control" />
                             <span asp-validation-for="Username" class="text-danger"></span>
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="Password" class="form-label">Contraseña: </label>
-                            <input asp-for="Password" class="form-control" />
+                            <label asp-for="Password" >Contraseña: </label>
+                            <input asp-for="Password" placeholder="Ingrese su contrasena" class="form-control" />
                             <span asp-validation-for="Password" class="text-danger"></span>
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="ConfirmPassword" class="form-label">Confirmar contraseña: </label>
-                            <input asp-for="ConfirmPassword" class="form-control" />
+                            <label asp-for="ConfirmPassword" >Confirmar contraseña: </label>
+                            <input asp-for="ConfirmPassword" placeholder="Confirme su contrasena" class="form-control" />
                             <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="Phone" class="form-label">Telefono: </label>
-                            <input asp-for="Phone" class="form-control" />
+                            <label asp-for="Phone" >Telefono: </label>
+                            <input asp-for="Phone" placeholder="Ingrese su numero telefonico" class="form-control" />
                             <span asp-validation-for="Phone" class="text-danger"></span>
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="Email" class="form-label">Correo: </label>
-                            <input asp-for="Email" class="form-control" />
+                            <label asp-for="Email" >Correo: </label>
+                            <input asp-for="Email" placeholder="Ingrese su correo electronico" class="form-control" />
                             <span asp-validation-for="Email" class="text-danger"></span>
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="Photo" class="form-label">Foto: </label>
-                            <input asp-for="Photo" class="form-control" />
+                            <label asp-for="Photo" >Foto: </label>
+                            <input asp-for="Photo" placeholder="Seleccione su foto de perfil" class="form-control" />
                             <span asp-validation-for="Photo" class="text-danger"></span>
                         </div>
 
 
                         <div class="mb-3">
-                            <label asp-for="UserType" class="form-label">Tipo de Usuario: </label>
-                            <select asp-for="UserType" class="form-control">
+                            <label asp-for="UserType" >Tipo de Usuario: </label>
+                            <select asp-for="UserType" placeholder="Seleccione que tipo de usuario quiere ser" class="form-control">
                                 <option value="@RealEstateApp.Core.Application.Enums.Roles.Agent.ToString()">Agente</option>
                                 <option value="@RealEstateApp.Core.Application.Enums.Roles.Client.ToString()">Cliente</option>
                             </select>
                             <span asp-validation-for="UserType" class="text-danger"></span>
                         </div>
 
-                        <button type="submit" class="btn btn-primary">Guardar</button>
-                        <a asp-controller="Auth" asp-action="Index" class="btn btn-warning">Volver atras</a>
+                        <div class="btn-group float-end">
+                            <a asp-controller="Auth" asp-action="Index" class="btn btn-outline-warning">Volver atras</a>
+                            <button type="submit" class="btn btn-outline-light">Registrarse</button>
+
+                        </div>
                     </form>
                 </div>
             </div>
