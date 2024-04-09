@@ -18,8 +18,12 @@ namespace RealEstateApp.Core.Application.Interfaces.Services
 
 		Task<UserResponse> getUserByIdAsync(string id);
 		Task<List<UserViewModel>> GetAllUsers();
+        Task<string> ChangeUserStatus(string id, bool activate);
+        Task<RegisterResponse> RegisterAdminAsync(SaveUserAdminViewModel vm, string origin);
+        Task UpdateAsync(SaveUserAdminViewModel vm, string id);
+        Task<RegisterResponse> RegisterDevAsync(SaveUserAdminViewModel vm, string origin);
+
 		Task<List<UserViewModel>> GetAllAgents();
-		Task<string> ChangeUserStatus(string id, bool activate);
         Task<string> UpdateUser(EditUserViewModel vm);
 
 

@@ -240,6 +240,7 @@ namespace RealEstateApp.Infrastructure.Identity.Services
                 FirstName = request.FirstName,
                 LastName = request.LastName,
                 UserName = request.UserName,
+                IdNumber = request.Identification,
                 EmailConfirmed = true,
                 IsActive = true,
                 PhoneNumberConfirmed = true,
@@ -248,12 +249,7 @@ namespace RealEstateApp.Infrastructure.Identity.Services
             var result = await _userManager.CreateAsync(user, request.Password);
             if (result.Succeeded)
             {
-
-                await _userManager.AddToRoleAsync(user, Roles.Client.ToString());
-                await _userManager.AddToRoleAsync(user, Roles.Agent.ToString());
-                await _userManager.AddToRoleAsync(user, Roles.Developer.ToString());
                 await _userManager.AddToRoleAsync(user, Roles.Admin.ToString());
-
             }
             else
             {
@@ -294,6 +290,7 @@ namespace RealEstateApp.Infrastructure.Identity.Services
                 FirstName = request.FirstName,
                 LastName = request.LastName,
                 UserName = request.UserName,
+                IdNumber = request.Identification,
                 EmailConfirmed = true,
                 IsActive = true,
                 PhoneNumberConfirmed = true,
@@ -312,6 +309,41 @@ namespace RealEstateApp.Infrastructure.Identity.Services
             }
 
             return response;
+        }
+
+        public async Task<string> UpdateUserAsync(RegisterRequest request, string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return "User not found.";
+            }
+
+            user.FirstName = request.FirstName;
+            user.LastName = request.LastName;
+            user.Email = request.Email;
+            user.IdNumber = request.Identification;
+            user.UserName = request.UserName;
+
+            if (request.Password != null)
+            {
+                var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                var resetResult = await _userManager.ResetPasswordAsync(user, token, request.Password);
+                if (!resetResult.Succeeded)
+                {
+                    return $"An error occurred while trying to reset the password.";
+                }
+            }
+
+            var result = await _userManager.UpdateAsync(user);
+            if (result.Succeeded)
+            {
+                return $"Update successful.";
+            }
+            else
+            {
+                return $"An error ocurred trying to update the user.";
+            }
         }
 
 
@@ -444,6 +476,7 @@ namespace RealEstateApp.Infrastructure.Identity.Services
             response.Email = user.Email;
             response.PhotoUrl = user.PhotoUrl;
             response.IsActive = user.IsActive;
+            response.IdNumber = user.IdNumber;
 
             var roles = await _userManager.GetRolesAsync(user);
             var userRole = roles.FirstOrDefault().ToString();
@@ -507,6 +540,7 @@ namespace RealEstateApp.Infrastructure.Identity.Services
                     Phone = user.PhoneNumber,
                     Email = user.Email,
                     PhotoUrl = user.PhotoUrl,
+                    IdNumber = user.IdNumber,
                     IsActive = user.IsActive
                 };
 
