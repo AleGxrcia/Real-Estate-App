@@ -54,6 +54,11 @@ namespace RealEstateApp.Core.Application.Services
             await _accountService.UpdateUserAsync(registerRequest, id);
         }
 
+        public async Task<string> DeleteUser(string id)
+        {
+            return await _accountService.DeleteUserAsync(id);
+        }
+
         public async Task<string> ConfirmEmailAsync(string userId, string token)
         {
             return await _accountService.ConfirmAccountAsync(userId, token);

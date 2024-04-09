@@ -7,3 +7,16 @@
     font-weight: 600 !important;
     font-size: 1rem !important;
 }
+
+.truncate-text {
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.bsb-circle i {
+    font-size: 2.5rem;
+    padding: 8px 19px;
+    border-radius: 50%;
+}

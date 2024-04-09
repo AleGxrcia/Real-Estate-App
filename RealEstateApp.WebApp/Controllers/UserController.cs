@@ -166,5 +166,23 @@ namespace RealEstateApp.WebApp.Controllers
             return View("Delete", user);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> DeleteAgent(string id)
+        {
+            var agentProperties = await _propertyService.GetAllPropertiesByAgentId(id);
+            if (agentProperties != null)
+            {
+                foreach (var property in agentProperties)
+                {
+                    await _propertyService.DeleteImprovementPropertiesAsync(property.Id.Value);
+                    await _propertyService.Delete(property.Id.Value);
+                }
+            }
+
+            await _userService.DeleteUser(id);
+
+            return RedirectToRoute(new { controller = "User", action = "AgentManagement" });
+        }
+
     }
 }

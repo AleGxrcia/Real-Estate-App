@@ -59,31 +59,31 @@
                         else if (isAdmin)
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="" asp-action="">Home</a>
+                                <a class="nav-link text-dark" asp-controller="Admin" asp-action="Index">Home</a>
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="" asp-action="">Listado de agentes</a>
+                                <a class="nav-link text-dark" asp-controller="User" asp-action="AgentManagement">Listado de agentes</a>
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="" asp-action="">Mant Administradores</a>
+                                <a class="nav-link text-dark" asp-controller="User" asp-action="AdminManagement">Mant Administradores</a>
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="" asp-action="">Mant Desarrolladores</a>
+                                <a class="nav-link text-dark" asp-controller="User" asp-action="DevManagement">Mant Desarrolladores</a>
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="" asp-action="">Mant tipo de propiedades</a>
+                                <a class="nav-link text-dark" asp-controller="PropertyType" asp-action="Index">Mant tipo de propiedades</a>
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="" asp-action="">Mant tipo de ventas</a>
+                                <a class="nav-link text-dark" asp-controller="SaleType" asp-action="Index">Mant tipo de ventas</a>
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="" asp-action="">Mant de mejoras</a>
+                                <a class="nav-link text-dark" asp-controller="Improvement" asp-action="Index">Mant de mejoras</a>
                             </li>
                         }
                         else if (isAgent)
