@@ -8,8 +8,8 @@ namespace RealEstateApp.Infrastructure.Identity.Entities
         public string FirstName { get; set; }
         public string LastName { get; set; }
 
+        public string? IdNumber { get; set; }
         public int? Properties { get; set; }
-
         public string? PhotoUrl { get; set; }
         public bool IsActive { get; set; }
 

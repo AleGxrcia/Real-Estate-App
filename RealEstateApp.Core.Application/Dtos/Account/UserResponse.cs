@@ -11,6 +11,8 @@
         public string ImgUrl { get; set; }
         public string Role { get; set; }
         public bool IsActive { get; set; }
+        public string? IdNumber { get; set; }
+
 
 
         public bool HasError { get; set; }
