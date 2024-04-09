@@ -141,6 +141,13 @@ namespace RealEstateApp.Core.Application.Mappings
                 .ForMember(x => x.Error, opt => opt.Ignore())
                 .ReverseMap();
 
+            CreateMap<RegisterRequest, SaveUserAdminViewModel>()
+                .ForMember(x => x.IdNumber, opt => opt.MapFrom(src => src.Identification))
+                .ForMember(x => x.HasError, opt => opt.Ignore())
+                .ForMember(x => x.Error, opt => opt.Ignore())
+                .ReverseMap()
+                .ForMember(x => x.Identification, opt => opt.MapFrom(src => src.IdNumber));
+
             CreateMap<ForgotPasswordRequest, ForgotPasswordViewModel>()
                 .ForMember(x => x.HasError, opt => opt.Ignore())
                 .ForMember(x => x.Error, opt => opt.Ignore())
@@ -152,6 +159,12 @@ namespace RealEstateApp.Core.Application.Mappings
                 .ReverseMap();
 
             CreateMap<UserViewModel, AgentViewModel>()
+                .ForMember(x => x.HasError, opt => opt.Ignore())
+                .ForMember(x => x.Error, opt => opt.Ignore())
+                .ReverseMap();
+
+            CreateMap<UserResponse, SaveUserAdminViewModel>()
+                .ForMember(x => x.UserType, opt => opt.MapFrom(src => src.Role))
                 .ForMember(x => x.HasError, opt => opt.Ignore())
                 .ForMember(x => x.Error, opt => opt.Ignore())
                 .ReverseMap();

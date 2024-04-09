@@ -1,6 +1,7 @@
-﻿@model RealEstateApp.Core.Application.Dtos.Account.UserResponse
+﻿@using RealEstateApp.Core.Application.Enums
+@model RealEstateApp.Core.Application.Dtos.Account.UserResponse
 @{
-    ViewData["Title"] = "Confirmar cambio";
+    ViewData["Title"] = "Confirmar accion";
     bool isActive = Model.IsActive == true ? true : false;
 }
 
@@ -14,6 +15,7 @@
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                 <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="Role" />
                 <input type="hidden" asp-for="IsActive" />
 
                 <div class="mb-3">
@@ -22,7 +24,14 @@
                 <div class="border-top bg-white">
                     <div class="mt-2">
                         <button type="submit" class="btn btn-danger">Confirmar</button>
-                        <a class="btn btn-secondary" asp-action="AgentManagement">Cancelar</a>
+                        @if (Model.Role == Roles.Agent.ToString())
+                        {
+                            <a class="btn btn-secondary" asp-action="AgentManagement">Cancelar</a>
+                        }
+                        else
+                        {
+                            <a class="btn btn-secondary" asp-action="@(Model.Role == Roles.Admin.ToString() ? "AdminManagement" : "DevManagement")">Cancelar</a>
+                        }
                     </div>
                 </div>
             </form>

@@ -1,0 +1,102 @@
+﻿@using RealEstateApp.Core.Application.ViewModels.User
+@using RealEstateApp.Core.Application.Enums
+@model SaveUserAdminViewModel
+
+@{
+    ViewData["Title"] = "Registrar desarrollador";
+    bool editMode = Model.Id == null ? false : true;
+
+}
+
+<div class="container mt-5 w-50">
+    <div class="card border rounded-3 shadow">
+        <div class="card-header fw-bold">
+            <h3>@(editMode ? $"Editando al desarrollador: {Model.Username}" : "Registrando un desarrollador")</h3>
+        </div>
+        <div class="card-body">
+            @if (Model.HasError)
+            {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <p>@Model.Error</p>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+            <form method="post" asp-controller="User" asp-action="@(editMode ? "Edit":"CreateDev")">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label asp-for="FirstName" class="form-label"></label>
+                            <input asp-for="FirstName" class="form-control" />
+                            <span asp-validation-for="FirstName" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label asp-for="LastName" class="form-label"></label>
+                            <input asp-for="LastName" class="form-control" />
+                            <span asp-validation-for="LastName" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label asp-for="IdNumber" class="form-label"></label>
+                            <input asp-for="IdNumber" class="form-control" />
+                            <span asp-validation-for="IdNumber" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label asp-for="Email" class="form-label"></label>
+                            <input asp-for="Email" class="form-control" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Username" class="form-label"></label>
+                    <div class="input-group">
+                        <div class="input-group-text">@@</div>
+                        <input asp-for="Username" class="form-control" />
+                    </div>
+                    <span asp-validation-for="Username" class="text-danger"></span>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label asp-for="Password" class="form-label"></label>
+                            @if (editMode)
+                            {
+                                <input asp-for="Password" class="form-control" />
+                            }
+                            else
+                            {
+                                <input required asp-for="Password" class="form-control" />
+                            }
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label asp-for="ConfirmPassword" class="form-label"></label>
+                            <input asp-for="ConfirmPassword" class="form-control" />
+                            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-end mt-4">
+                    <button class="btn btn-primary">Guardar</button>
+                    <a class="btn btn-secondary" asp-action="DevManagement">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

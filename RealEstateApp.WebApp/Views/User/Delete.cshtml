@@ -1,0 +1,25 @@
+﻿@model RealEstateApp.Core.Application.Dtos.Account.UserResponse
+@{
+    ViewData["Title"] = "Eliminar agente";
+}
+
+<div class="container mt-5 w-50">
+    <div class="card border rounded-3 shadow">
+        <div class="card-header fw-bold">
+            <h4>Eliminar al agente: @Model.UserName</h4>
+        </div>
+        <form method="post" asp-controller="User" asp-action="DeleteAgent">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+
+            <div class="card-body">
+                <span>¿Está seguro de que desea eliminar al agente y sus propiedades asociadas?</span>
+            </div>
+
+            <div class="card-footer mt-2 bg-white">
+                <button type="submit" class="btn btn-danger">Confirmar</button>
+                <a class="btn btn-secondary" asp-action="AgentManagement">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
