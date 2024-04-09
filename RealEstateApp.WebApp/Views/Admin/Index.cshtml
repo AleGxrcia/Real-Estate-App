@@ -1,0 +1,95 @@
+﻿@model RealEstateApp.Core.Application.ViewModels.Dashboard.AdminDashboardViewModel
+
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<div class="container mb-3">
+    <div class="row justify-content-md-center">
+        <h1 class="text-center">Dashboard</h1>
+        <hr class="w-50 mx-auto mb-3 border-dark-subtle">
+    </div>
+</div>
+</div>
+
+<div class="container">
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+        <div class="col">
+            <div class="card border rounded-3 shadow h-100">
+                <div class="card-body text-center">
+                    <div class="d-flex align-items-center justify-content-center mb-3 bsb-circle">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                    <h5 class="display-6 fw-bold m-1">@Model.TotalActiveAgents+</h5>
+                    <p class="text-secondary m-0">Total active agents</p>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card border rounded-3 shadow h-100">
+                <div class="card-body text-center">
+                    <div class="d-flex align-items-center justify-content-center mb-3 bsb-circle">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                    <h5 class="display-6 fw-bold m-1">@Model.TotalInactiveAgents+</h5>
+                    <p class="text-secondary m-0">Total inactive agents</p>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card border rounded-3 shadow h-100">
+                <div class="card-body text-center">
+                    <div class="d-flex align-items-center justify-content-center mb-3 bsb-circle">
+                        <i class="fa-solid fa-user-tie"></i>
+                    </div>
+                    <h5 class="display-6 fw-bold m-1">@Model.TotalActiveAdmins+</h5>
+                    <p class="text-secondary m-0">Total active admins</p>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card border rounded-3 shadow h-100">
+                <div class="card-body text-center">
+                    <div class="d-flex align-items-center justify-content-center mb-3 bsb-circle">
+                        <i class="fa-solid fa-user-tie"></i>
+                    </div>
+                    <h5 class="display-6 fw-bold m-1">@Model.TotalInactiveAdmins+</h5>
+                    <p class="text-secondary m-0">Total inactive admins</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card border rounded-3 shadow h-100">
+                <div class="card-body text-center">
+                    <div class="d-flex align-items-center justify-content-center mb-3 bsb-circle">
+                        <i class="fa-solid fa-user-gear"></i>
+                    </div>
+                    <h5 class="display-6 fw-bold m-1">@Model.TotalActiveDevs+</h5>
+                    <p class="text-secondary m-0">Total active developers</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card border rounded-3 shadow h-100">
+                <div class="card-body text-center">
+                    <div class="d-flex align-items-center justify-content-center mb-3 bsb-circle">
+                        <i class="fa-solid fa-user-gear"></i>
+                    </div>
+                    <h5 class="display-6 fw-bold m-1">@Model.TotalInactiveDevs+</h5>
+                    <p class="text-secondary m-0">Total inactive developers</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card border rounded-3 shadow h-100">
+                <div class="card-body text-center">
+                    <div class="d-flex align-items-center justify-content-center mb-3 bsb-circle">
+                        <i class="fa-solid fa-house"></i>
+                    </div>
+                    <h5 class="display-6 fw-bold m-1">@Model.TotalPropertiesRegistered+</h5>
+                    <p class="text-secondary m-0">Total properties registered</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
