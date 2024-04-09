@@ -32,7 +32,6 @@ namespace RealEstateApp.Core.Application.Interfaces.Services
 		Task RemoveFavorite(string clienteId, int propertyId);
 
         Task<List<Property>> GetFavoriteProperties(string userId);
-	}
         Task<string> UpdateUserAsync(RegisterRequest request, string userId);
     }
 }
