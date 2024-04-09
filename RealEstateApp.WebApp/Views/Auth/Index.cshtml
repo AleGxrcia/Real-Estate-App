@@ -15,11 +15,11 @@
                     </div>
                 }
 
-                <form method="post" asp-controller="User" asp-action="Index" class="m-3">
+                <form method="post" asp-controller="Auth" asp-action="Index" class="m-3">
 
                     <div class="mb-3">
-                        <label asp-for="Email" class="form-label">Correo del usuario</label>
-                        <input class="form-control" asp-for="Email">
+                        <label asp-for="EmailOrUserName" class="form-label">Correo del usuario</label>
+                        <input class="form-control" asp-for="EmailOrUserName">
                     </div>
                     <div class="mb-3">
                         <label asp-for="Password" class="form-label">Contraseña</label>
@@ -27,8 +27,8 @@
                     </div>
 
                     <button type="submit" class="btn btn-primary float-end">Iniciar sección</button>
-                    <a asp-controller="User" asp-action="ForgotPassword" class="btn btn-warning float-end me-2">I forgot my password</a>
-                    <a asp-controller="User" asp-action="Register">Registrar</a>
+                    <a asp-controller="Auth" asp-action="ForgotPassword" class="btn btn-warning float-end me-2">I forgot my password</a>
+                    <a asp-controller="Auth" asp-action="Register">Registrar</a>
 
                 </form>
             </div>

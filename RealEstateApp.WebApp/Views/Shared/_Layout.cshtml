@@ -31,7 +31,7 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">RealEstateApp</a>
+                <a class="navbar-brand" asp-area="" asp-controller="" asp-action="">RealEstateApp</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -89,15 +89,12 @@
                         else if (isAgent)
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Property" asp-action="Index">Home</a>
+                                <a class="nav-link text-dark" asp-controller="Property" asp-action="Index">Mant. de Propiedades</a>
                             </li>
 
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Agent" asp-action="Properties">Mant. de Propiedades</a>
-                            </li>
 
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Agent" asp-action="">Profile</a>
+                                <a class="nav-link text-dark" asp-controller="Agent" asp-action="Profile">Profile</a>
                             </li>
 
                             <li class="nav-item">
@@ -111,7 +108,7 @@
                             </li>
 
                              <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Home" asp-action="">Agents</a>
+                                <a class="nav-link text-dark" asp-controller="Home" asp-action="Agents">Agentes</a>
                             </li>
 
                             <li class="nav-item">

@@ -1,12 +1,14 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using RealEstateApp.Core.Application.Dtos.Account;
+using RealEstateApp.Core.Application.Interfaces.Repositories;
 using RealEstateApp.Core.Application.Interfaces.Services;
+using RealEstateApp.Core.Application.ViewModels.Property;
 using RealEstateApp.Core.Application.ViewModels.User;
 
 namespace RealEstateApp.Core.Application.Services
 {
-    public class UserService : IUserService
+	public class UserService : IUserService
     {
         private readonly IAccountService _accountService;
         private readonly IMapper _mapper;
@@ -79,6 +81,11 @@ namespace RealEstateApp.Core.Application.Services
 			return await _accountService.GetAllUsers();
 		}
 
+		public async Task<List<UserViewModel>> GetAllAgents()
+		{
+			return await _accountService.GetAllAgents();
+		}
+
 		public async Task<UserResponse> getUserByIdAsync(string id)
 		{
 			UserRequest userId = new();
@@ -86,5 +93,29 @@ namespace RealEstateApp.Core.Application.Services
 			return await _accountService.GetUserWithId(userId);
 
 		}
+
+        public async Task<string> UpdateUser(EditUserViewModel vm) 
+        {
+            return await _accountService.UpdateUser(vm);
+            
+        }
+
+		public async Task AddFavorite(string clienteId, int propertyId)
+		{
+			await _accountService.AddFavorite(clienteId, propertyId);   
+		}
+
+		public async Task RemoveFavorite(string clienteId, int propertyId)
+		{
+			await _accountService.RemoveFavorite(clienteId, propertyId);
+		}
+
+        public async Task<List<PropertyViewModel>> GetFavoriteProperties(string userId) 
+        {
+            var favoriteProperties = _mapper.Map<List<PropertyViewModel>>(await _accountService.GetFavoriteProperties(userId));
+
+
+            return favoriteProperties;
+        }
 	}
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using RealEstateApp.Core.Application.Dtos.Account;
+using RealEstateApp.Core.Application.ViewModels.Property;
 using RealEstateApp.Core.Application.ViewModels.User;
 using System.Threading.Tasks;
 
@@ -22,4 +23,14 @@ namespace RealEstateApp.Core.Application.Interfaces.Services
         Task UpdateAsync(SaveUserAdminViewModel vm, string id);
         Task<RegisterResponse> RegisterDevAsync(SaveUserAdminViewModel vm, string origin);
     }
+		Task<List<UserViewModel>> GetAllAgents();
+		Task<string> ChangeUserStatus(string id, bool activate);
+        Task<string> UpdateUser(EditUserViewModel vm);
+
+
+		Task AddFavorite(string clienteId, int propertyId);
+		Task RemoveFavorite(string clienteId, int propertyId);
+
+		Task<List<PropertyViewModel>> GetFavoriteProperties(string userId);
+	}
 }

@@ -34,10 +34,11 @@ namespace RealEstateApp.Core.Application.Mappings
             .ForMember(x => x.CreatedBy, opt => opt.Ignore())
             .ForMember(x => x.LastModified, opt => opt.Ignore())
             .ForMember(x => x.LastModifiedBy, opt => opt.Ignore());
-            #endregion
 
-            #region SaleTypeProfile
-            CreateMap<SaleType, SaleTypeViewModel>()
+			#endregion
+
+			#region SaleTypeProfile
+			CreateMap<SaleType, SaleTypeViewModel>()
                 .ReverseMap()
                 .ForMember(x => x.Created, opt => opt.Ignore())
                 .ForMember(x => x.CreatedBy, opt => opt.Ignore())
@@ -168,6 +169,22 @@ namespace RealEstateApp.Core.Application.Mappings
                 .ForMember(x => x.HasError, opt => opt.Ignore())
                 .ForMember(x => x.Error, opt => opt.Ignore())
                 .ReverseMap();
+
+
+            CreateMap<SaveUserViewModel, EditUserViewModel>()
+                .ReverseMap()
+                .ForMember(x => x.UserType, opt => opt.Ignore())
+                .ForMember(x => x.Password, opt => opt.Ignore())
+                .ForMember(x => x.ConfirmPassword, opt => opt.Ignore())
+                .ForMember(x => x.Email, opt => opt.Ignore());
+
+            CreateMap<EditUserViewModel, UserResponse>()
+                .ForMember(x => x.Role, opt => opt.Ignore())
+                .ForMember(x => x.IsActive, opt => opt.Ignore())
+                .ReverseMap()
+                .ForMember(x => x.Photo, opt=>opt.Ignore());
+
+
             #endregion
 
 

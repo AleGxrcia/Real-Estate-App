@@ -12,7 +12,10 @@
                 <h4>@(editMode ? $"Editando la propiedad" : "Registrando propiedad")</h4>
             </div>
             <div class="card-body">
-                <form method="post" enctype="multipart/form-data">
+                <form method="post" asp-controller="Property" asp-action="@(editMode? "Edit" : "Create")" enctype="multipart/form-data">
+
+                    <input type="hidden" asp-for="Id">
+
                     <div class="form-group">
                         <label for="PropertyTypeId">Property Type</label>
                         <select class="form-control" asp-for="PropertyTypeId" asp-items="@(new SelectList(Model.PropertyTypes, "Id", "Name"))">
@@ -23,11 +26,11 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="SalesTypeId">Sale Type</label>
-                        <select class="form-control" asp-for="SalesTypeId" asp-items="@(new SelectList(Model.SalesTypes, "Id", "Name"))">
+                        <label for="SaleTypeId">Sale Type</label>
+                        <select class="form-control" asp-for="SaleTypeId" asp-items="@(new SelectList(Model.SalesTypes, "Id", "Name"))">
                             <option value="">-- Select Sale Type --</option>
                         </select>
-                        <span asp-validation-for="SalesTypeId" class="text-danger"></span>
+                        <span asp-validation-for="SaleTypeId" class="text-danger"></span>
                     </div>
 
                     <div class="form-group">
@@ -69,8 +72,14 @@
 
                     <div class="form-group">
                         <label for="file1">Imagen de portada</label>
-                        <input type="file" class="form-control" name="file1" />
-                        <span asp-validation-for="file1" class="text-danger"></span>
+                        @if (editMode)
+                        {
+                            <input asp-for="file1" class="form-control" />
+                        }
+                        else
+                        {
+                            <input required asp-for="file1" class="form-control" />
+                        }
                     </div>
 
                     <div class="form-group">

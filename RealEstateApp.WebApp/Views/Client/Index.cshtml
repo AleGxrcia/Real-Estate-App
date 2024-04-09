@@ -1,4 +1,5 @@
-﻿@model List<RealEstateApp.Core.Application.ViewModels.Property.PropertyViewModel>
+﻿@using RealEstateApp.Core.Application.ViewModels.Property
+@model List<RealEstateApp.Core.Application.ViewModels.Property.PropertyViewModel>
 
 <div class="container-fluid">
 	<div class="row m-3">
@@ -66,7 +67,7 @@
 					<h4>No hay propiedades</h4>
 				}
 
-				
+
 				@foreach (var propiedad in Model)
 				{
 					<div class="col-4 mt-3">
@@ -96,6 +97,25 @@
 										@propiedad.NumberOfBathrooms
 									</h4>
 
+									@if (ViewBag.FavoriteProperties != null)
+									{
+										var favoriteProperties = ViewBag.FavoriteProperties as List<PropertyViewModel>;
+										var isFavorite = favoriteProperties.Any(f => f.Id == propiedad.Id);
+										<div class="d-flex justify-content-end">
+											@if (isFavorite)
+											{
+												<a class="btn btn-warning" asp-controller="Client" asp-action="DisLikeProperty" asp-route-id="@propiedad.Id">
+													<i class="bi bi-star-fill"></i> Dislike
+												</a>
+											}
+											else
+											{
+												<a class="btn btn-warning" asp-controller="Client" asp-action="LikeProperty" asp-route-id="@propiedad.Id">
+													<i class="bi bi-star"></i> Like
+												</a>
+											}
+										</div>
+									}
 
 								</div>
 							</div>

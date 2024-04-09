@@ -1,6 +1,6 @@
-﻿@model RealEstateApp.Core.Application.ViewModels.User.SaveUserViewModel
+﻿@model RealEstateApp.Core.Application.ViewModels.User.EditUserViewModel
 @{
-    ViewData["Title"] = "Registro";
+    ViewData["Title"] = "Profile";
 }
 
 <div class="container-fluid">
@@ -11,14 +11,16 @@
                     <h4>Registrar</h4>
                 </div>
                 <div class="card-body">
-                    @if (Model.HasError)
+                    @if (!string.IsNullOrEmpty(ViewBag.Error))
                     {
                         <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            <p>@Model.Error</p>
+                            <p>@ViewBag.Error</p>
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                     }
-                    <form method="post" asp-controller="Auth" asp-action="Register" enctype="multipart/form-data">
+                    <form method="post" asp-controller="Agent" asp-action="Edit" enctype="multipart/form-data">
+
+                        <input type="hidden" asp-for="Id">
                         <div class="mb-3">
                             <label asp-for="FirstName" class="form-label">Nombre: </label>
                             <input asp-for="FirstName" class="form-control" />
@@ -37,47 +39,22 @@
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="Password" class="form-label">Contraseña: </label>
-                            <input asp-for="Password" class="form-control" />
-                            <span asp-validation-for="Password" class="text-danger"></span>
-                        </div>
-
-                        <div class="mb-3">
-                            <label asp-for="ConfirmPassword" class="form-label">Confirmar contraseña: </label>
-                            <input asp-for="ConfirmPassword" class="form-control" />
-                            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-                        </div>
-
-                        <div class="mb-3">
                             <label asp-for="Phone" class="form-label">Telefono: </label>
                             <input asp-for="Phone" class="form-control" />
                             <span asp-validation-for="Phone" class="text-danger"></span>
                         </div>
 
-                        <div class="mb-3">
-                            <label asp-for="Email" class="form-label">Correo: </label>
-                            <input asp-for="Email" class="form-control" />
-                            <span asp-validation-for="Email" class="text-danger"></span>
-                        </div>
 
                         <div class="mb-3">
                             <label asp-for="Photo" class="form-label">Foto: </label>
                             <input asp-for="Photo" class="form-control" />
-                            <span asp-validation-for="Photo" class="text-danger"></span>
+
                         </div>
 
 
-                        <div class="mb-3">
-                            <label asp-for="UserType" class="form-label">Tipo de Usuario: </label>
-                            <select asp-for="UserType" class="form-control">
-                                <option value="@RealEstateApp.Core.Application.Enums.Roles.Agent.ToString()">Agente</option>
-                                <option value="@RealEstateApp.Core.Application.Enums.Roles.Client.ToString()">Cliente</option>
-                            </select>
-                            <span asp-validation-for="UserType" class="text-danger"></span>
-                        </div>
 
-                        <button type="submit" class="btn btn-primary">Guardar</button>
-                        <a asp-controller="Auth" asp-action="Index" class="btn btn-warning">Volver atras</a>
+                        <button type="submit" class="btn btn-primary">Editar</button>
+                        <a asp-controller="Property" asp-action="Index" class="btn btn-warning">Volver atras</a>
                     </form>
                 </div>
             </div>
