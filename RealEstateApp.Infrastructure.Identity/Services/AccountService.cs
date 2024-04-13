@@ -22,6 +22,7 @@ using Microsoft.AspNetCore.Http;
 using RealEstateApp.Infrastructure.Persistence.Contexts;
 using RealEstateApp.Core.Domain.Entities;
 using RealEstateApp.Core.Application.ViewModels.Property;
+using RealEstateApp.Core.Application.Helpers;
 
 namespace RealEstateApp.Infrastructure.Identity.Services
 {
@@ -136,7 +137,7 @@ namespace RealEstateApp.Infrastructure.Identity.Services
             if (result.Succeeded)
             {
                 var userCreated = await _userManager.FindByEmailAsync(user.Email);
-                userCreated.PhotoUrl = UploadFile(file, userCreated.Id);
+                userCreated.PhotoUrl = FileManagerHelper.UploadFile(file, userCreated.Id, "UserProfile");
                 await _userManager.UpdateAsync(userCreated);
                 if (request.UserType == Roles.Agent.ToString())
                 {
@@ -164,52 +165,7 @@ namespace RealEstateApp.Infrastructure.Identity.Services
             }
 
             return response;
-        }
-
-
-        private string UploadFile(IFormFile file, string id, bool isEditMode = false, string imagePath = "")
-        {
-            if (isEditMode)
-            {
-                if (file == null)
-                {
-                    return imagePath;
-                }
-            }
-            string basePath = $"/Images/UserProfile/{id}";
-            string path = Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot{basePath}");
-
-            //create folder if not exist
-            if (!Directory.Exists(path))
-            {
-                Directory.CreateDirectory(path);
-            }
-
-            //get file extension
-            Guid guid = Guid.NewGuid();
-            FileInfo fileInfo = new(file.FileName);
-            string fileName = guid + fileInfo.Extension;
-
-            string fileNameWithPath = Path.Combine(path, fileName);
-
-            using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
-            {
-                file.CopyTo(stream);
-            }
-
-            if (isEditMode)
-            {
-                string[] oldImagePart = imagePath.Split("/");
-                string oldImagePath = oldImagePart[^1];
-                string completeImageOldPath = Path.Combine(path, oldImagePath);
-
-                if (System.IO.File.Exists(completeImageOldPath))
-                {
-                    System.IO.File.Delete(completeImageOldPath);
-                }
-            }
-            return $"{basePath}/{fileName}";
-        }
+        }  
 
         public async Task<RegisterResponse> RegisterAdminUserAsync(RegisterRequest request, string origin)
         {
@@ -357,6 +313,7 @@ namespace RealEstateApp.Infrastructure.Identity.Services
             var result = await _userManager.DeleteAsync(user);
             if (result.Succeeded)
             {
+                FileManagerHelper.DeleteFile(userId, "UserProfile");
                 return "User successfully deleted.";
             }
             else
@@ -740,7 +697,7 @@ namespace RealEstateApp.Infrastructure.Identity.Services
             // Actualizar la foto solo si se proporciona una nueva
             if (vm.Photo != null)
             {
-                user.PhotoUrl = UploadFile(vm.Photo, user.Id, true, user.PhotoUrl);
+                user.PhotoUrl = FileManagerHelper.UploadFile(vm.Photo, user.Id, "UserProfile", true, user.PhotoUrl);
             }
 
             var result = await _userManager.UpdateAsync(user);

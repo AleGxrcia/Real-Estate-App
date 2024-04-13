@@ -4,7 +4,18 @@ namespace RealEstateApp.Core.Application.Helpers
 {
     public static class FileManagerHelper
     {
+        public static string UploadFile(IFormFile file, int id, string entity = "", bool isEditMode = false, string imagePath = "")
+        {
+            string idString = id.ToString();
+            return UploadFileCommon(file, idString, entity, isEditMode, imagePath);
+        }
+
         public static string UploadFile(IFormFile file, string id, string entity = "", bool isEditMode = false, string imagePath = "")
+        {
+            return UploadFileCommon(file, id, entity, isEditMode, imagePath);
+        }
+
+        private static string UploadFileCommon(IFormFile file, string id, string entity = "", bool isEditMode = false, string imagePath = "")
         {
             if (isEditMode && file == null)
             {
@@ -49,6 +60,17 @@ namespace RealEstateApp.Core.Application.Helpers
         }
 
         public static void DeleteFile(int id, string entity = "")
+        {
+            string idString = id.ToString();
+            DeleteFileCommon(idString, entity);
+        }
+
+        public static void DeleteFile(string id, string entity = "")
+        {
+            DeleteFileCommon(id, entity);
+        }
+
+        private static void DeleteFileCommon(string id, string entity = "")
         {
             //get directory path
             string basePath = $"/Images/{entity}/{id}";

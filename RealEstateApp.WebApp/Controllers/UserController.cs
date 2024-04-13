@@ -178,10 +178,12 @@ namespace RealEstateApp.WebApp.Controllers
                     await _propertyService.DeleteImprovementPropertiesAsync(property.Id.Value);
                     await _propertyService.Delete(property.Id.Value);
 
-                    FileManagerHelper.DeleteFile(property.Id.Value, "Properties");
+                    FileManagerHelper.DeleteFile(property.Id.Value, "PropertyImages");
                 }
             }
+
             await _userService.DeleteUser(id);
+            FileManagerHelper.DeleteFile(id, "UserProfile");
 
             return RedirectToRoute(new { controller = "User", action = "AgentManagement" });
         }
