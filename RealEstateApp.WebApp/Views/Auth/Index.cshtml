@@ -3,38 +3,39 @@
     ViewData["Title"] = "Login";
 }
 
-<div class="row mt-5">
-    <div class="col-6 offset-3">
-        <div class="card-body bg-dark text-white rounded border-0">
-                @Html.ValidationSummary(false, "", new { @class="text-danger"})
-                @if (Model.HasError)
-                {
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <p>@Model.Error</p>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                }
+<div class="container mt-5 w-25">
+    <h1>Iniciar Sesión</h1>
+    <div class="card border rounded-3 shadow mt-3">
+        <div class="card-body">
+            @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+            @if (Model.HasError)
+            {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <p>@Model.Error</p>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
 
-                <form method="post" asp-controller="Auth" asp-action="Index" class="m-3">
+            <form method="post" asp-controller="Auth" asp-action="Index" class="m-3">
 
-                    <div class="mb-3">
-                        <label asp-for="EmailOrUserName" class="form-label">Correo del usuario</label>
-                        <input class="form-control" asp-for="EmailOrUserName">
-                    </div>
-                    <div class="mb-3">
-                        <label asp-for="Password" class="form-label">Contraseña</label>
-                        <input class="form-control" asp-for="Password">
-                    </div>
+                <div class="mb-3">
+                    <label asp-for="EmailOrUserName" class="form-label"></label>
+                    <input class="form-control" asp-for="EmailOrUserName">
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Password" class="form-label"></label>
+                    <input class="form-control" asp-for="Password">
+                </div>
 
-                    <button type="submit" class="btn btn-outline-light float-end">Iniciar sesión</button>
-                    <div class="d-grid">
+                <button type="submit" class="btn btn-primary float-end">Iniciar sesión</button>
+                <div class="d-grid">
 
-                    <a asp-controller="Auth" asp-action="ForgotPassword" class="m-2 text-light">Olvidate tu contrasena?</a>
-                    <a asp-controller="Auth" asp-action="Register" class="m-2 text-light" >Registrar</a>
+                    <a asp-controller="Auth" asp-action="ForgotPassword" class="m-2">Olvidate tu contrasena?</a>
+                    <a asp-controller="Auth" asp-action="Register" class="m-2">Registrar</a>
 
-                    </div>
-                </form>
-            </div>
+                </div>
+            </form>
         </div>
     </div>
+</div>
 </div>

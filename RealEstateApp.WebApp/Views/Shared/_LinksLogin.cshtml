@@ -1,0 +1,22 @@
+﻿@using RealEstateApp.Core.Application.Dtos.Account;
+@model AuthenticationResponse
+
+@if (User != null)
+{
+        <span class="text-muted small me-2 pt-2">Bienvenido, @Model.UserName</span>
+        <a class="nav-link mx-2 float-end" asp-area="" asp-controller="Auth" asp-action="LogOut">
+            <i class="fa-solid fa-right-from-bracket"></i>
+        </a>
+    @*         <div class="row align-items-center">
+            <div class="col-auto">
+                <img src="@Model.PhotoUrl" class="rounded-circle" alt="Foto del usuario @Model.Username"
+                     style="width: 50px; height: auto; margin-right: 10px;">
+            </div>
+            <div class="col">
+                <span class="me-2 p-1">Bienvenido, @Model.Username</span>
+                <a class="btn btn-danger btn-sm" asp-controller="User" asp-action="LogOut">
+                    Cerrar Sesion
+                </a>
+            </div>
+        </div> *@
+}
