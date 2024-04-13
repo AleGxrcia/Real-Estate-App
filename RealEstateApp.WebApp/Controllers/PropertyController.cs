@@ -61,12 +61,12 @@ namespace RealEstateApp.WebApp.Controllers
 
 
 			vm.AgentId = user.Id;
-            vm.Code = GeneratePropertyCode();
+            vm.Code = CodeGeneratorHelper.GeneratePropertyCode();
             SavePropertyViewModel Property = await _propertyService.Add(vm);
-            vm.ImgUrl1 = UploadFile(vm.file1, Property.Id);
-            vm.ImgUrl2 = vm.file2 != null? UploadFile(vm.file2, Property.Id) : "";
-            vm.ImgUrl3 = vm.file3 != null? UploadFile(vm.file3, Property.Id) : "";
-            vm.ImgUrl4 = vm.file4 != null? UploadFile(vm.file4, Property.Id) : "";
+            vm.ImgUrl1 = FileManagerHelper.UploadFile(vm.file1, Property.Id, "PropertyImages");
+            vm.ImgUrl2 = vm.file2 != null? FileManagerHelper.UploadFile(vm.file2, Property.Id, "PropertyImages") : "";
+            vm.ImgUrl3 = vm.file3 != null? FileManagerHelper.UploadFile(vm.file3, Property.Id, "PropertyImages") : "";
+            vm.ImgUrl4 = vm.file4 != null? FileManagerHelper.UploadFile(vm.file4, Property.Id, "PropertyImages") : "";
 
             List<string> Images = new List<string>();
             Images.Add(vm.ImgUrl1);
@@ -120,27 +120,27 @@ namespace RealEstateApp.WebApp.Controllers
 
             if (property.ImgUrl1 == null) 
             {
-                vm.ImgUrl1 = vm.file1 != null ? UploadFile(vm.file1, vm.Id) : "";
+                vm.ImgUrl1 = vm.file1 != null ? FileManagerHelper.UploadFile(vm.file1, vm.Id, "PropertyImages") : "";
             }
-            vm.ImgUrl1 = vm.file1 != null ? UploadFile(vm.file1, vm.Id, true, property.ImgUrl1) : "";
+            vm.ImgUrl1 = vm.file1 != null ? FileManagerHelper.UploadFile(vm.file1, vm.Id, "PropertyImages", true, property.ImgUrl1) : "";
 
             if (property.ImgUrl2 == null)
             {
-                vm.ImgUrl2 = vm.file2 != null ? UploadFile(vm.file2, vm.Id) : "";
+                vm.ImgUrl2 = vm.file2 != null ? FileManagerHelper.UploadFile(vm.file2, vm.Id, "PropertyImages") : "";
             }
-            vm.ImgUrl2 = vm.file2 != null ? UploadFile(vm.file2, vm.Id, true, property.ImgUrl2) : "";
+            vm.ImgUrl2 = vm.file2 != null ? FileManagerHelper.UploadFile(vm.file2, vm.Id, "PropertyImages", true, property.ImgUrl2) : "";
 
             if (property.ImgUrl3 == null)
             {
-                vm.ImgUrl3 = vm.file3 != null ? UploadFile(vm.file3, vm.Id) : "";
+                vm.ImgUrl3 = vm.file3 != null ? FileManagerHelper.UploadFile(vm.file3, vm.Id, "PropertyImages") : "";
             }
-            vm.ImgUrl3 = vm.file3 != null ? UploadFile(vm.file3, vm.Id, true, property.ImgUrl3) : "";
+            vm.ImgUrl3 = vm.file3 != null ? FileManagerHelper.UploadFile(vm.file3, vm.Id, "PropertyImages", true, property.ImgUrl3) : "";
 
             if (property.ImgUrl4 == null)
             {
-                vm.ImgUrl1 = vm.file4 != null ? UploadFile(vm.file1, vm.Id) : "";
+                vm.ImgUrl1 = vm.file4 != null ? FileManagerHelper.UploadFile(vm.file1, vm.Id, "PropertyImages") : "";
             }
-            vm.ImgUrl4 = vm.file4 != null ? UploadFile(vm.file4, vm.Id, true, property.ImgUrl4) : "";
+            vm.ImgUrl4 = vm.file4 != null ? FileManagerHelper.UploadFile(vm.file4, vm.Id, "PropertyImages", true, property.ImgUrl4) : "";
 
             List<string> Images = new List<string>();
             if (vm.ImgUrl1 != "")
@@ -186,72 +186,10 @@ namespace RealEstateApp.WebApp.Controllers
         {
             await _propertyService.DeleteImprovementPropertiesAsync(id);
             await _propertyService.Delete(id);
-            string basePath = $"/Images/ProperyImages/{id}";
-            string path = Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot{basePath}");
 
-            if (Directory.Exists(path))
-            {
-                DirectoryInfo directory = new(path);
+            FileManagerHelper.DeleteFile(id, "PropertyImages");
 
-                foreach (FileInfo file in directory.GetFiles())
-                {
-                    file.Delete();
-                }
-                foreach (DirectoryInfo folder in directory.GetDirectories())
-                {
-                    folder.Delete(true);
-                }
-
-                Directory.Delete(path);
-            }
             return RedirectToRoute(new { controller = "Property", action = "Index" });
-        }
-
-
-
-        //UploadFile
-        private string UploadFile(IFormFile file, int? id, bool isEditMode = false, string imagePath = "")
-        {
-            if (isEditMode)
-            {
-                if (file == null)
-                {
-                    return imagePath;
-                }
-            }
-            string basePath = $"/Images/ProperyImages/{id}";
-            string path = Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot{basePath}");
-
-            //create folder if not exist
-            if (!Directory.Exists(path))
-            {
-                Directory.CreateDirectory(path);
-            }
-
-            //get file extension
-            Guid guid = Guid.NewGuid();
-            FileInfo fileInfo = new(file.FileName);
-            string fileName = guid + fileInfo.Extension;
-
-            string fileNameWithPath = Path.Combine(path, fileName);
-
-            using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
-            {
-                file.CopyTo(stream);
-            }
-
-            if (isEditMode)
-            {
-                string[] oldImagePart = imagePath.Split("/");
-                string oldImagePath = oldImagePart[^1];
-                string completeImageOldPath = Path.Combine(path, oldImagePath);
-
-                if (System.IO.File.Exists(completeImageOldPath))
-                {
-                    System.IO.File.Delete(completeImageOldPath);
-                }
-            }
-            return $"{basePath}/{fileName}";
         }
 
         //GenerarCodigo
