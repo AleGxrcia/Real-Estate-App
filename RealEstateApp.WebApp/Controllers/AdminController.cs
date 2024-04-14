@@ -23,13 +23,12 @@ namespace RealEstateApp.WebApp.Controllers
 
             var dashboardVm = new AdminDashboardViewModel()
             {
-                TotalActiveAgents = users.Where(u => u.IsActive == true).Select(a => a.Role == Roles.Agent.ToString()).Count(),
-
-                TotalInactiveAgents = users.Where(u => u.IsActive == false).Select(a => a.Role == Roles.Agent.ToString()).Count(),
-                TotalActiveAdmins = users.Where(u => u.IsActive == true).Select(a => a.Role == Roles.Admin.ToString()).Count(),
-                TotalInactiveAdmins = users.Where(u => u.IsActive == false).Select(a => a.Role == Roles.Admin.ToString()).Count(),
-                TotalActiveDevs = users.Where(u => u.IsActive == true).Select(a => a.Role == Roles.Developer.ToString()).Count(),
-                TotalInactiveDevs = users.Where(u => u.IsActive == false).Select(a => a.Role == Roles.Developer.ToString()).Count(),
+                TotalActiveAgents = users.Where(u => u.IsActive == true && u.Role == Roles.Agent.ToString()).Count(),
+                TotalInactiveAgents = users.Where(u => u.IsActive == false && u.Role == Roles.Agent.ToString()).Count(),
+                TotalActiveAdmins = users.Where(u => u.IsActive == true && u.Role == Roles.Admin.ToString()).Count(),
+                TotalInactiveAdmins = users.Where(u => u.IsActive == false && u.Role == Roles.Admin.ToString()).Count(),
+                TotalActiveDevs = users.Where(u => u.IsActive == true && u.Role == Roles.Developer.ToString()).Count(),
+                TotalInactiveDevs = users.Where(u => u.IsActive == false && u.Role == Roles.Developer.ToString()).Count(),
                 TotalPropertiesRegistered = properties.Count()
             };
 

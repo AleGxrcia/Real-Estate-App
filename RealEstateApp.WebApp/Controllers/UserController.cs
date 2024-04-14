@@ -4,6 +4,7 @@ using RealEstateApp.Core.Application.Dtos.Account;
 using RealEstateApp.Core.Application.Enums;
 using RealEstateApp.Core.Application.Interfaces.Services;
 using RealEstateApp.Core.Application.Services;
+using RealEstateApp.Core.Application.Helpers;
 using RealEstateApp.Core.Application.ViewModels.User;
 
 namespace RealEstateApp.WebApp.Controllers
@@ -176,10 +177,13 @@ namespace RealEstateApp.WebApp.Controllers
                 {
                     await _propertyService.DeleteImprovementPropertiesAsync(property.Id.Value);
                     await _propertyService.Delete(property.Id.Value);
+
+                    FileManagerHelper.DeleteFile(property.Id.Value, "PropertyImages");
                 }
             }
 
             await _userService.DeleteUser(id);
+            FileManagerHelper.DeleteFile(id, "UserProfile");
 
             return RedirectToRoute(new { controller = "User", action = "AgentManagement" });
         }

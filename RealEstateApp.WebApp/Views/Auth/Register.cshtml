@@ -67,12 +67,15 @@
                             <input asp-for="Phone" class="form-control" />
                             <span asp-validation-for="Phone" class="text-danger"></span>
                         </div>
-
+                    </div>
+                    <div class="col-md-6">
                         <div class="mb-3">
                             <label asp-for="Email" >Correo: </label>
                             <input asp-for="Email" class="form-control" />
                             <span asp-validation-for="Email" class="text-danger"></span>
                         </div>
+                    </div>
+                </div>
 
                         <div class="mb-3">
                             <label asp-for="Photo" >Foto: </label>
@@ -94,10 +97,10 @@
                             <a asp-controller="Auth" asp-action="Index" class="btn btn-outline-danger">Volver atras</a>
                             <button type="submit" class="btn btn-outline-dark">Registrarse</button>
 
-                        </div>
-                    </form>
                 </div>
-            </div>
+            </form>
         </div>
+    </div>
+</div>
     </div>
 </div>

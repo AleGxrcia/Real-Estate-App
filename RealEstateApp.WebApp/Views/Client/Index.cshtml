@@ -2,127 +2,129 @@
 @model List<RealEstateApp.Core.Application.ViewModels.Property.PropertyViewModel>
 
 <div class="container-fluid">
-	<div class="row m-3">
-		<form class="d-flex container justify-content-evenly" asp-controller="Home" asp-action="Index">
-				<input name="SearchString" type="search" placeholder="Buscar por codigo de propiedad" class="form-control h-100">
-			<button type="submit" class="btn btn-dark btn-sm ml-2">Buscar</button>
-		</form>
-	</div>
+    <div class="container">
+        <div class="card border mt-3 py-3 px-3">
+            <div class="row">
+                <div class="col-lg-3 col-md-6 col-sm-12">
+                    <div class="me-0">
+                        <form class="d-flex" asp-controller="Home" asp-action="Index">
+                            <input name="SearchString" type="search" placeholder="Buscar por código" class="form-control">
+                            <button type="submit" class="btn btn-dark">
+                                <i class="bi bi-search"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-lg-9 col-md-6 col-sm-12">
+                    <form class="d-flex" method="post" asp-controller="Home" asp-action="IndexFilter">
+                        <div class="dropdown me-2">
+                            <button class="btn btn-outline-dark dropdown-toggle" type="button" id="dropdownPropertys" data-bs-toggle="dropdown" aria-expanded="false">
+                                Tipo de propiedad
+                            </button>
+                            <ul class="dropdown-menu px-3" aria-labelledby="dropdownPropertys">
+                                @foreach (var propertyType in ViewBag.PropetyTypes)
+                                {
+                                    <li>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="PropertyType" value="@propertyType.Id" id="property-@propertyType.Id">
+                                            <label class="form-check-label" for="property-@propertyType.Id">@propertyType.Name</label>
+                                        </div>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
 
-	<div class="row">
-		<div class="col-3">
-			<div class="card shadow-sm">
-				<div class="card-header bg-dark text-light">
-					<h4>Filtros</h4>
-				</div>
-				<div class="card-body">
-					<h4 class="card-title">Tipos de Propiedad</h4>
-
-					<form method="post" asp-controller="Home" asp-action="IndexFilter">
-
-						@foreach (var propertyType in ViewBag.PropetyTypes)
-						{
-							<div class="mb-3">
-								<div class="form-check">
-									<input class="form-check-input" value="@propertyType.Id" type="radio" name="PropertyType">
-									<label class="form-check-label">@propertyType.Name</label>
-								</div>
-							</div>
-						}
-
-						<h4>Precio</h4>
-						<div class="mb-3">
-							<label for="minPrice" class="form-label">Precio mínimo</label>
-							<input type="number" class="form-control" id="minPrice" name="MinPrice">
-						</div>
-						<div class="mb-3">
-							<label for="maxPrice" class="form-label">Precio máximo</label>
-							<input type="number" class="form-control" id="maxPrice" name="MaxPrice">
-						</div>
-
-						<h4>Cantidad de Baños</h4>
-						<div class="mb-3">
-							<label for="numberOfBathrooms" class="form-label">Cantidad de baños</label>
-							<input type="number" class="form-control" id="numberOfBathrooms" name="NumberOfBathRooms">
-						</div>
-
-						<h4>Cantidad de Habitaciones</h4>
-						<div class="mb-3">
-							<label for="numberOfRooms" class="form-label">Cantidad de habitaciones</label>
-							<input type="number" class="form-control" id="numberOfRooms" name="NumberOfRooms">
-						</div>
-
-						<button type="submit" class="btn btn-primary">Filtrar</button>
-
-					</form>
-
-				</div>
-			</div>
-		</div>
-
-		<div class="col-9">
-			<div class="row">
-				@if (Model == null || Model.Count == 0)
-				{
-					<h4>No hay propiedades</h4>
-				}
+                        <div class="col-lg-2 col-md-6 col-sm-12 me-2">
+                            <input type="number" placeholder="Precio mínimo" class="form-control" id="minPrice" name="MinPrice">
+                        </div>
+                        <div class="col-lg-2 col-md-6 col-sm-12 me-2">
+                            <input type="number" placeholder="Precio máximo" class="form-control" id="maxPrice" name="MaxPrice">
+                        </div>
+                        <div class="col-lg-2 col-md-6 col-sm-12 me-2">
+                            <input type="number" placeholder="Habitaciones(s)" class="form-control" id="numberOfRooms" name="NumberOfRooms">
+                        </div>
+                        <div class="col-lg-2 col-md-6 col-sm-12 me-2">
+                            <input type="number" placeholder="Baños(s)" class="form-control" id="numberOfBathrooms" name="NumberOfBathRooms">
+                        </div>
+                        <div class="col-lg-2 col-md-6 col-sm-12 ms-2">
+                            <button type="submit" class="btn btn-dark">Filtrar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container mt-3">
+            <div class="col-9">
+                <div class="row">
+                    @if (Model == null || Model.Count == 0)
+                    {
+                        <h4>No hay propiedades</h4>
+                    }
 
 
-				@foreach (var propiedad in Model)
-				{
-					<div class="col-4 mt-3">
-						<div class="card">
-							<div class="card">
-								<img class="card-img-top" height="200" width="200" src="@propiedad.ImagesUrl.FirstOrDefault()">
-								<div class="card-body">
-									<a asp-controller="Home" asp-action="Details" asp-route-id="@propiedad.Id">
-										<h4>@propiedad.PropertyType</h4>
-									</a>
-
-									<p>Codigo de propiedad</p>
-									<h4>@propiedad.Code</h4>
-									<p>@propiedad.SaleType</p>
-									<h4 style="color:forestgreen">DO$ @propiedad.Price </h4>
-									<hr>
-									<h4>
-										<i class="fa-solid fa-landmark"></i>
-										@propiedad.LandSize
-									</h4>
-									<h4>
-										<i class="fa-solid fa-bed"></i>
-										@propiedad.NumberOfRooms
-									</h4>
-									<h4>
-										<i class="fa-solid fa-bath"></i>
-										@propiedad.NumberOfBathrooms
-									</h4>
-
-									@if (ViewBag.FavoriteProperties != null)
-									{
-										var favoriteProperties = ViewBag.FavoriteProperties as List<PropertyViewModel>;
-										var isFavorite = favoriteProperties.Any(f => f.Id == propiedad.Id);
-										<div class="d-flex justify-content-end">
-											@if (isFavorite)
-											{
-												<a class="btn btn-warning" asp-controller="Client" asp-action="DisLikeProperty" asp-route-id="@propiedad.Id">
-													<i class="bi bi-star-fill"></i> Dislike
-												</a>
-											}
-											else
-											{
-												<a class="btn btn-outline-success" asp-controller="Client" asp-action="LikeProperty" asp-route-id="@propiedad.Id">
-													<i class="bi bi-star"></i> Like
-												</a>
-											}
-										</div>
-									}
-
-								</div>
-							</div>
-						</div>
-					</div>
-				}
-			</div>
-		</div>
-	</div>
+                    @foreach (var propiedad in Model)
+                    {
+                        <div class="col-4 mt-3">
+                            <a class="text-decoration-none text-dark" asp-controller="Home" asp-action="Details" asp-route-id="@propiedad.Id">
+                                <div class="card p-0" style="width: 20rem;">
+                                    <img class="card-img-top p-0" src="@propiedad.ImagesUrl.FirstOrDefault()" alt="Luxury Villa">
+                                    <span class="badge bg-primary position-absolute top-0 end-0 m-2">Cod. @propiedad.Code</span>
+                                    <div class="card-body p-4">
+                                        <div>
+                                            @if (ViewBag.FavoriteProperties != null)
+                                            {
+                                                var favoriteProperties = ViewBag.FavoriteProperties as List<PropertyViewModel>;
+                                                var isFavorite = favoriteProperties.Any(f => f.Id == propiedad.Id);
+                                                <div class="d-flex justify-content-end">
+                                                    @if (isFavorite)
+                                                    {
+                                                        <a class="btn bg-dark position-absolute mx-2 end-0 shadow" style="top: 50%;" asp-controller="Client"
+                                                           asp-action="DisLikeProperty" asp-route-id="@propiedad.Id">
+                                                            <i class="bi bi-star-fill" style="color: #FFD43B;"></i>
+                                                        </a>
+                                                    }
+                                                    else
+                                                    {
+                                                        <a class="btn bg-dark btn-primary position-absolute mx-2 end-0 shadow" style="top: 50%;" asp-controller="Client"
+                                                           asp-action="LikeProperty" asp-route-id="@propiedad.Id">
+                                                            <i class="bi bi-star" style="color: #FFD43B;"></i>
+                                                        </a>
+                                                    }
+                                                </div>
+                                            }
+                                        </div>
+                                        <h5 class="card-title mb-3">@propiedad.PropertyType</h5>
+                                        <div class="d-flex justify-content-between">
+                                            <div>
+                                                <span class="text-muted fw-light">@propiedad.SaleType.ToUpper()</span>
+                                                <br>
+                                                <span class="fw-bold fs-5">@string.Format("DO{0:C}", propiedad.Price)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer bg-white border-top">
+                                        <div class="d-flex justify-content-between align-items-center mx-2">
+                                            <div>
+                                                <p class="mb-0">Baños</p>
+                                                <p><i class="fas fa-bath"></i> @propiedad.NumberOfBathrooms</p>
+                                            </div>
+                                            <div>
+                                                <p class="mb-0">Habitaciones</p>
+                                                <p><i class="fas fa-door-closed"></i> @propiedad.NumberOfRooms</p>
+                                            </div>
+                                            <div>
+                                                <p class="mb-0">Area</p>
+                                                <p><i class="fas fa-expand-arrows-alt"></i> @propiedad.LandSize m²</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

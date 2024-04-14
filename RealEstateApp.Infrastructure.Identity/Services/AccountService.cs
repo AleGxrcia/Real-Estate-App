@@ -22,6 +22,7 @@ using Microsoft.AspNetCore.Http;
 using RealEstateApp.Infrastructure.Persistence.Contexts;
 using RealEstateApp.Core.Domain.Entities;
 using RealEstateApp.Core.Application.ViewModels.Property;
+using RealEstateApp.Core.Application.Helpers;
 
 namespace RealEstateApp.Infrastructure.Identity.Services
 {
@@ -134,14 +135,14 @@ namespace RealEstateApp.Infrastructure.Identity.Services
 
 			};
 
-			var result = await _userManager.CreateAsync(user, request.Password);
-			if (result.Succeeded)
-			{
-				var userCreated = await _userManager.FindByEmailAsync(user.Email);
-				userCreated.PhotoUrl = UploadFile(file, userCreated.Id);
-				await _userManager.UpdateAsync(userCreated);
-				if (request.UserType == Roles.Agent.ToString())
-				{
+            var result = await _userManager.CreateAsync(user, request.Password);
+            if (result.Succeeded)
+            {
+                var userCreated = await _userManager.FindByEmailAsync(user.Email);
+                userCreated.PhotoUrl = FileManagerHelper.UploadFile(file, userCreated.Id, "UserProfile");
+                await _userManager.UpdateAsync(userCreated);
+                if (request.UserType == Roles.Agent.ToString())
+                {
 
 					await _userManager.AddToRoleAsync(user, Roles.Agent.ToString());
 				}
@@ -356,16 +357,17 @@ namespace RealEstateApp.Infrastructure.Identity.Services
 				return "User not found.";
 			}
 
-			var result = await _userManager.DeleteAsync(user);
-			if (result.Succeeded)
-			{
-				return "User successfully deleted.";
-			}
-			else
-			{
-				return "An error occurred trying to delete the user.";
-			}
-		}
+            var result = await _userManager.DeleteAsync(user);
+            if (result.Succeeded)
+            {
+                FileManagerHelper.DeleteFile(userId, "UserProfile");
+                return "User successfully deleted.";
+            }
+            else
+            {
+                return "An error occurred trying to delete the user.";
+            }
+        }
 
 		public async Task<string> ConfirmAccountAsync(string userId, string token)
 		{
@@ -549,23 +551,23 @@ namespace RealEstateApp.Infrastructure.Identity.Services
 			var users = await _userManager.Users.ToListAsync();
 			var userViewModels = new List<UserViewModel>();
 
-			foreach (var user in users)
-			{
-				var userViewModel = new UserViewModel
-				{
-					Id = user.Id,
-					FirstName = user.FirstName,
-					LastName = user.LastName,
-					Username = user.UserName,
-					Phone = user.PhoneNumber,
-					Email = user.Email,
-					PhotoUrl = user.PhotoUrl,
-					IdNumber = user.IdNumber,
-					IsActive = user.IsActive
-				};
+            foreach (var user in users)
+            {
+                var userViewModel = new UserViewModel
+                {
+                    Id = user.Id,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Username = user.UserName,
+                    Phone = user.PhoneNumber,
+                    Email = user.Email,
+                    PhotoUrl = user.PhotoUrl,
+                    IdNumber = user.IdNumber,
+                    IsActive = user.IsActive
+                };
 
-				// Obtener los roles del usuario
-				var roles = await _userManager.GetRolesAsync(user);
+                // Obtener los roles del usuario
+                var roles = await _userManager.GetRolesAsync(user);
 
 				// Obtener el primer rol asignado al usuario y asignarlo al tipo de usuario
 				if (roles.Any())
@@ -670,34 +672,34 @@ namespace RealEstateApp.Infrastructure.Identity.Services
 			};
 		}
 
-		private string RandomTokenString()
-		{
-			using var rngCryptoServiceProvider = new RNGCryptoServiceProvider();
-			var ramdomBytes = new byte[40];
-			rngCryptoServiceProvider.GetBytes(ramdomBytes);
+        private string RandomTokenString()
+        {
+            using var rngCryptoServiceProvider = new RNGCryptoServiceProvider();
+            var ramdomBytes = new byte[40];
+            rngCryptoServiceProvider.GetBytes(ramdomBytes);
 
-			return BitConverter.ToString(ramdomBytes).Replace("-", "");
-		}
+            return BitConverter.ToString(ramdomBytes).Replace("-", "");
+        }
 
 
-		private async Task<string> SendVerificationEmailUri(ApplicationUser user, string origin)
-		{
-			var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-			code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-			var route = "Auth/ConfirmEmail";
-			var Uri = new Uri(string.Concat($"{origin}/", route));
-			var verificationUri = QueryHelpers.AddQueryString(Uri.ToString(), "userId", user.Id);
-			verificationUri = QueryHelpers.AddQueryString(verificationUri, "token", code);
+        private async Task<string> SendVerificationEmailUri(ApplicationUser user, string origin)
+        {
+            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+            var route = "Auth/ConfirmEmail";
+            var Uri = new Uri(string.Concat($"{origin}/", route));
+            var verificationUri = QueryHelpers.AddQueryString(Uri.ToString(), "userId", user.Id);
+            verificationUri = QueryHelpers.AddQueryString(verificationUri, "token", code);
 
-			return verificationUri;
-		}
-		private async Task<string> SendForgotPasswordUri(ApplicationUser user, string origin)
-		{
-			var code = await _userManager.GeneratePasswordResetTokenAsync(user);
-			code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-			var route = "Auth/ResetPassword";
-			var Uri = new Uri(string.Concat($"{origin}/", route));
-			var verificationUri = QueryHelpers.AddQueryString(Uri.ToString(), "token", code);
+            return verificationUri;
+        }
+        private async Task<string> SendForgotPasswordUri(ApplicationUser user, string origin)
+        {
+            var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+            var route = "Auth/ResetPassword";
+            var Uri = new Uri(string.Concat($"{origin}/", route));
+            var verificationUri = QueryHelpers.AddQueryString(Uri.ToString(), "token", code);
 
 			return verificationUri;
 		}
@@ -747,16 +749,16 @@ namespace RealEstateApp.Infrastructure.Identity.Services
 
 			var result = await _userManager.UpdateAsync(user);
 
-			if (!result.Succeeded)
-			{
-				var errors = result.Errors.Select(e => e.Description);
-				Error = $"Error al actualizar el usuario: {string.Join(", ", errors)}";
-				return Error;
-			}
+            if (!result.Succeeded)
+            {
+                var errors = result.Errors.Select(e => e.Description);
+                Error = $"Error al actualizar el usuario: {string.Join(", ", errors)}";
+                return Error;
+            }
 
 
-			return Error;
-		}
+            return Error;
+        }
 
 
 		public async Task AddFavorite(string clienteId, int propertyId)
