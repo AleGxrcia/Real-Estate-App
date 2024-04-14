@@ -3,9 +3,9 @@
 
 <div class="container-fluid">
 	<div class="row m-3">
-		<form class="d-flex" asp-controller="Home" asp-action="Index">
-			<input name="SearchString" type="search" placeholder="Buscar por codigo de propiedad" class="form-control h-100">
-			<button type="submit" class="btn btn-dark btn-sm">Search</button>
+		<form class="d-flex container justify-content-evenly" asp-controller="Home" asp-action="Index">
+				<input name="SearchString" type="search" placeholder="Buscar por codigo de propiedad" class="form-control h-100">
+			<button type="submit" class="btn btn-dark btn-sm ml-2">Buscar</button>
 		</form>
 	</div>
 
@@ -79,10 +79,10 @@
 										<h4>@propiedad.PropertyType</h4>
 									</a>
 
-									<p>Codigo</p>
+									<p>Codigo de propiedad</p>
 									<h4>@propiedad.Code</h4>
 									<p>@propiedad.SaleType</p>
-									<h4 style="color: red">DO$ @propiedad.Price</h4>
+									<h4 style="color:forestgreen">DO$ @propiedad.Price </h4>
 									<hr>
 									<h4>
 										<i class="fa-solid fa-landmark"></i>
@@ -110,7 +110,7 @@
 											}
 											else
 											{
-												<a class="btn btn-warning" asp-controller="Client" asp-action="LikeProperty" asp-route-id="@propiedad.Id">
+												<a class="btn btn-outline-success" asp-controller="Client" asp-action="LikeProperty" asp-route-id="@propiedad.Id">
 													<i class="bi bi-star"></i> Like
 												</a>
 											}

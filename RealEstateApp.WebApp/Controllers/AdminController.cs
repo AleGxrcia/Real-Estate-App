@@ -24,6 +24,7 @@ namespace RealEstateApp.WebApp.Controllers
             var dashboardVm = new AdminDashboardViewModel()
             {
                 TotalActiveAgents = users.Where(u => u.IsActive == true).Select(a => a.Role == Roles.Agent.ToString()).Count(),
+
                 TotalInactiveAgents = users.Where(u => u.IsActive == false).Select(a => a.Role == Roles.Agent.ToString()).Count(),
                 TotalActiveAdmins = users.Where(u => u.IsActive == true).Select(a => a.Role == Roles.Admin.ToString()).Count(),
                 TotalInactiveAdmins = users.Where(u => u.IsActive == false).Select(a => a.Role == Roles.Admin.ToString()).Count(),
