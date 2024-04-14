@@ -9,69 +9,69 @@
     <div class="col-6 offset-3">
         <div class="card border rounded-3 shadow mt-3">
             <div class="card-header fw-bold">
-                <h4>@(editMode ? $"Editando la propiedad" : "Registrando propiedad")</h4>
+                <h4 class="mt-2">@(editMode ? $"Editando la propiedad" : "Registrando propiedad")</h4>
             </div>
-            <div class="card-body">
+            <div class="card-body form-label">
                 <form method="post" asp-controller="Property" asp-action="@(editMode? "Edit" : "Create")" enctype="multipart/form-data">
 
                     <input type="hidden" asp-for="Id">
 
-                    <div class="form-group">
-                        <label for="PropertyTypeId">Property Type</label>
+                    <div class="form-group mb-3">
+                        <label class="mb-2" for="PropertyTypeId">Tipo de Propiedad</label>
                         <select class="form-control" asp-for="PropertyTypeId" asp-items="@(new SelectList(Model.PropertyTypes, "Id", "Name"))">
-                            <option value="">-- Select Property Type --</option>
+                            <option value="">Selecciona un tipo de propiedad</option>
                         </select>
                         <span asp-validation-for="PropertyTypeId" class="text-danger"></span>
 
                     </div>
 
-                    <div class="form-group">
-                        <label for="SaleTypeId">Sale Type</label>
+                    <div class="form-group mb-">
+                        <label class="mb-2" for="SaleTypeId">Tipo de Venta</label>
                         <select class="form-control" asp-for="SaleTypeId" asp-items="@(new SelectList(Model.SalesTypes, "Id", "Name"))">
-                            <option value="">-- Select Sale Type --</option>
+                            <option value="">Selecciona un tipo de venta</option>
                         </select>
                         <span asp-validation-for="SaleTypeId" class="text-danger"></span>
                     </div>
 
-                    <div class="form-group">
-                        <label for="Price">Price (DOP)</label>
+                    <div class="mb-2 form-group">
+                        <label class="mb-2" for="Price">Precio (DOP)</label>
                         <input type="number" class="form-control" asp-for="Price" />
                         <span asp-validation-for="Price" class="text-danger"></span>
                     </div>
 
-                    <div class="form-group">
-                        <label for="Description">Description</label>
+                    <div class="form-group mb-2">
+                        <label class="mb-2" for="Description">Descripcion</label>
                         <textarea class="form-control" asp-for="Description"></textarea>
                         <span asp-validation-for="Description" class="text-danger"></span>
                     </div>
 
-                    <div class="form-group">
-                        <label for="LandSize">Land Size (m²)</label>
+                    <div class="form-group mb-2">
+                        <label class="mb-2" for="LandSize">Tamaño de propiedad(m²)</label>
                         <input type="number" class="form-control" asp-for="LandSize" />
                         <span asp-validation-for="LandSize" class="text-danger"></span>
                     </div>
 
-                    <div class="form-group">
-                        <label for="NumberOfRooms">Number of Rooms</label>
+                    <div class="form-group mb-2">
+                        <label class="mb-2" for="NumberOfRooms">Cantidad de Habitaciones</label>
                         <input type="number" class="form-control" asp-for="NumberOfRooms" />
                         <span asp-validation-for="NumberOfRooms" class="text-danger"></span>
                     </div>
 
-                    <div class="form-group">
-                        <label for="NumberOfBathrooms">Number of Bathrooms</label>
+                    <div class="form-group mb-2">
+                        <label class="mb-2" for="NumberOfBathrooms">Cantidad de baños</label>
                         <input type="number" class="form-control" asp-for="NumberOfBathrooms" />
                         <span asp-validation-for="NumberOfBathrooms" class="text-danger"></span>
                     </div>
 
-                    <div class="form-group">
-                        <label for="ImprovementId">Improvements</label>
+                    <div class="form-group mb-2">
+                        <label class="mb-2" for="ImprovementId">Lista de mejoras</label>
                         <select class="form-control" asp-for="ImprovementsId" asp-items="@(new SelectList(Model.Improvements, "Id", "Name"))" multiple>
                         </select>
                         <span asp-validation-for="ImprovementsId" class="text-danger"></span>
                     </div>
 
-                    <div class="form-group">
-                        <label for="file1">Imagen de portada</label>
+                    <div class="form-group mb-2">
+                        <label class="mb-2" for="file1">Imagen de portada</label>
                         @if (editMode)
                         {
                             <input asp-for="file1" class="form-control" />
@@ -82,24 +82,27 @@
                         }
                     </div>
 
-                    <div class="form-group">
-                        <label for="file2">Imagen 2</label>
+                    <div class="form-group mb-2">
+                        <label for="file2" class="mb-2">Imagen 2</label>
                         <input type="file" class="form-control" name="file2" />
                     </div>
 
-                    <div class="form-group">
-                        <label for="file3">Imagen 3</label>
+                    <div class="form-group mb-2">
+                        <label for="file3" class="mb-2">Imagen 3</label>
                         <input type="file" class="form-control" name="file3" />
                     </div>
 
-                    <div class="form-group">
-                        <label for="file4">Imagen 4</label>
+                    <div class="form-group mb-2">
+                        <label for="file4" class="mb-2">Imagen 4</label>
                         <input type="file" class="form-control" name="file4" />
                     </div>
 
                     
+                    <div class="btn-group float-end mt-3">
 
-                    <button type="submit" class="btn btn-primary">Create Property</button>
+                        <a class="btn btn-outline-danger" asp-controller="Property" asp-action="Index">Volver atras</a>
+                        <button type="submit" class="btn btn-outline-dark">Guardar propiedad</button>
+                    </div>
                 </form>
             </div>
         </div>

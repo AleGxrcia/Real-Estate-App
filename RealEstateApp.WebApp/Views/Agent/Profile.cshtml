@@ -5,10 +5,10 @@
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-6 offset-3">
-            <div class="card bg-dark text-white rounded border-0">
+        <div class="col-6 mt-5 offset-3">
+            <div class="card border rounded-3 shadow">
                 <div class="card-header ">
-                    <h4>Registrar</h4>
+                    <h4 class="mt-2">Editar Perfil</h4>
                 </div>
                 <div class="card-body">
                     @if (!string.IsNullOrEmpty(ViewBag.Error))
@@ -21,17 +21,22 @@
                     <form method="post" asp-controller="Agent" asp-action="Edit" enctype="multipart/form-data">
 
                         <input type="hidden" asp-for="Id">
-                        <div class="mb-3">
-                            <label asp-for="FirstName" class="form-label">Nombre: </label>
-                            <input asp-for="FirstName" class="form-control" />
-                            <span asp-validation-for="FirstName" class="text-danger"></span>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="FirstName" class="form-label">Nombre: </label>
+                                    <input asp-for="FirstName" class="form-control" />
+                                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                                </div>
+                            </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label asp-for="LastName" class="form-label">Apellido: </label>
+                                        <input asp-for="LastName" class="form-control" />
+                                        <span asp-validation-for="LastName" class="text-danger"></span>
+                                    </div>
+                                 </div>
                         </div>
-                        <div class="mb-3">
-                            <label asp-for="LastName" class="form-label">Apellido: </label>
-                            <input asp-for="LastName" class="form-control" />
-                            <span asp-validation-for="LastName" class="text-danger"></span>
-                        </div>
-
                         <div class="mb-3">
                             <label asp-for="Username" class="form-label">Nombre de usuario: </label>
                             <input asp-for="Username" class="form-control" />
@@ -52,9 +57,11 @@
                         </div>
 
 
+                        <div class="btn-group float-end">
 
-                        <button type="submit" class="btn btn-primary">Editar</button>
-                        <a asp-controller="Property" asp-action="Index" class="btn btn-warning">Volver atras</a>
+                            <a asp-controller="Property" asp-action="Index" class="btn btn-outline-danger">Volver atras</a>
+                            <button type="submit" class="btn btn-outline-dark">Editar</button>
+                        </div>
                     </form>
                 </div>
             </div>
