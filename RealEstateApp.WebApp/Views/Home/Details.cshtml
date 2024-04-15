@@ -51,9 +51,13 @@
                 </button>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-4 text-center">
             <!-- Property details -->
             <h2>@Model.PropertyType</h2>
+
+            <hr>
+
+
             <p><strong>Código de Propiedad:</strong> @Model.Code</p>
             <p><strong>Tipo de Venta:</strong> @Model.SalesType</p>
             <p><strong>Costo de Propiedad:</strong> $@Model.Price</p>
@@ -65,16 +69,21 @@
             <ul>
                 @foreach (var improvement in Model.ImproveMentes)
                 {
-                    <li>@improvement.Name</li>
+
+
+                    <span class="badge  bg-primary-subtle border border-primary text-primary text-primary-emphasis rounded-pill" >@improvement.Name</span>
                 }
             </ul>
             <hr>
             <!-- Agent information -->
-            <h3>Agente Inmobiliario</h3>
-            <img src="@Model.AgentImgUrl" alt="Agent Image" class="img-fluid rounded-circle" style="max-width: 150px;">
-            <p><strong>Nombre:</strong> @Model.AgentName</p>
-            <p><strong>Teléfono:</strong> @Model.AgentPhoneNumber</p>
-            <p><strong>Correo:</strong> @Model.AgentEmail</p>
+            <div class="text-center">
+
+                <h3>Agente Inmobiliario</h3>
+                <img src="@Model.AgentImgUrl" alt="Agent Image" class="img-fluid rounded-circle mb-3" style="max-width: 150px;">
+                <p><strong>Nombre:</strong> @Model.AgentName</p>
+                <p><strong>Teléfono:</strong> @Model.AgentPhoneNumber</p>
+                <p><strong>Correo:</strong> @Model.AgentEmail</p>
+            </div>
         </div>
     </div>
 </div>

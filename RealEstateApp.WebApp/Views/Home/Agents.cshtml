@@ -2,35 +2,42 @@
 
 <div class="container-fluid">
 	<div class="row m-3">
-		<form class="d-flex" asp-controller="Home" asp-action="Index">
-			<input name="SearchString" type="search" placeholder="Buscar por nombre" class="form-control h-100">
-			<button type="submit" class="btn btn-dark btn-sm">Search</button>
-		</form>
+		<div class="col-3  offset-9">
+
+			<div class="bg-dark w-100 my-2 p-4 col-3 rounded-3 shadow-lg">
+				<label class="form-label text-light lead">Buscar agente</label>
+				<form class="d-flex justify-content-around"  asp-controller="Home" asp-action="Agents">
+					<input name="SearchString" type="search" placeholder="Ingrese el primer nombre del agente" class="form-control h-100">
+					<button type="submit" class="btn btn-dark"> <i class="bi bi-search"></i></button>
+				</form>
+			</div>
+
+
 	</div>
 
 
+	<div class="container marketing">
 
-			<div class="row">
-				@if (Model == null || Model.Count == 0)
-				{
-					<h4>No hay agentes</h4>
-				}
+		<div class="row ">
+			@if (Model == null || Model.Count == 0)
+			{
+				<h4>No hay agentes</h4>
+			}
 
-				@foreach (var agente in Model)
-				{
-					<div class="col-4 mt-3">
-						<div class="card">
-							<div class="card">
-								<img class="card-img-top" height="200" width="200" src="@agente.PhotoUrl"></img>
-								<div class="card-body">
-								<h4>@agente.FirstName</h4>
-									<a asp-controller="Home" asp-action="PropertiesByAgentId" asp-route-id="@agente.Id">
-										-Propiedades
-									</a>
-								</div>
-							</div>
-						</div>
-					</div>
-				}
-			</div>
+
+			@foreach (var agente in Model)
+			{
+
+				<div class="col-lg-3 mt-3 text-center">
+					<img class="mb-3 bd-placeholder-img rounded-circle ml-3" width="180" height="170" role="img" aria-label="Placeholder" preserveAspectRatio="xMidYMid slice" focusable="false" src="@agente.PhotoUrl"></img>
+
+					<h2 class="fw-normal">@agente.FirstName @agente.LastName</h2>
+					<p><a class="btn btn-outline-dark" asp-controller="Home" asp-action="PropertiesByAgentId" asp-route-id="@agente.Id">Ver propiedades »</a></p>
+				</div>
+
+
+			}
+		</div>
+	</div>
+
 </div>

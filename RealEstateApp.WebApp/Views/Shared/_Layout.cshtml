@@ -29,7 +29,7 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-lg navbar-light bg-white box-shadow border-bottom p-2">
+        <nav class="navbar mb-4 navbar-expand-lg navbar-light bg-white box-shadow border-bottom p-2">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="" asp-action="">RealEstate App</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -88,9 +88,6 @@
                                 <a class="nav-link mx-2" asp-controller="Agent" asp-action="Profile">Profile</a>
                             </li>
 
-                            <li class="nav-item">
-                                <a class="nav-link mx-2" asp-controller="Auth" asp-action="LogOut">Cerrar session</a>
-                            </li>
                         }
                         else if (isClient)
                         {
@@ -137,8 +134,8 @@
     </div>
 
     <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2024 - RealEstateApp.WebApp <a asp-area="" asp-controller="Home" asp-action="Index"></a>
+        <div class="container text-center">
+            &copy; 2024 - RealEstateApp <a asp-area="" asp-controller="Home" asp-action="Index"></a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

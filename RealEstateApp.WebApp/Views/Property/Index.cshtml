@@ -2,51 +2,72 @@
 
 <div class="container-fluid">
 	<div class="row m-3">
-		<div class="col-3 offset-9">
-			<a asp-action="Create" asp-controller="Property" class="btn btn-success">Registrar Propiedad</a>
-		</div>
+        <div class="d-flex justify-content-lg-around" >
+
+            <div class="bg-dark w-20 my-2 p-4 col-3 rounded shadow ">
+
+                <span class="lead text-light text-decoration-none ">Propiedades guardadas</span>
+            </div>
+		    <div class="col-3  ">
+
+                <div class="bg-dark w-100 my-2 p-4 rounded shadow  text-end">
+
+                    <a asp-action="Create" asp-controller="Property" class="lead text-light text-decoration-none ">Desea Registrar una propiedad?</a>
+                </div>
+
+		    </div>
+        </div>
 	</div>
 
-	<div class="row">
+    <div class="container mt-3">
+        <div class="col-9">
+            <div class="row">
+                @if (Model == null || Model.Count == 0)
+                {
+                    <h4>No hay propiedades</h4>
+                }
 
-		@if (Model == null || Model.Count == 0)
-		{
-			<h4>No hay propiedades</h4>
-		}
 
-		@foreach (var propiedad in Model)
-		{
-			<div class="col-4 mt-3">
-				<div class="card">
-					<div class="card">
-						<img class="card-img-top" height="200" width="200" src="@propiedad.ImagesUrl.FirstOrDefault()">
-						<div class="card-body">
-							<h4>@propiedad.PropertyType</h4>
-							<p>Codigo</p>
-							<h4>@propiedad.Code</h4>
-							<p>@propiedad.SaleType</p>
-							<h4 style="color: red">DO$ @propiedad.Price</h4>
-							<hr>
-							<h4>
-								<i class="fa-solid fa-landmark"></i>
-								@propiedad.LandSize
-							</h4>
-							<h4>
-								<i class="fa-solid fa-bed"></i>
-								@propiedad.NumberOfRooms
-							</h4>
-							<h4>
-								<i class="fa-solid fa-bath"></i>
-								@propiedad.NumberOfBathrooms
-							</h4>
-							<div class="btn-group">
-								<a asp-action="Edit" asp-controller="Property" asp-route-id="@propiedad.Id" class="btn btn-info">Editar</a>
-								<a asp-action="Delete" asp-controller="Property" asp-route-id="@propiedad.Id" class="btn btn-danger">Eliminar</a>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		}
-	</div>
+                @foreach (var propiedad in Model)
+                {
+                    <div class="col-4 mt-3">
+                        <a class="text-decoration-none text-dark" asp-controller="Home" asp-action="Details" asp-route-id="@propiedad.Id">
+                            <div class="card p-0 shadow" style="width: 20rem;">
+                                <img class="card-img-top p-0" src="@propiedad.ImagesUrl.FirstOrDefault()" alt="Luxury Villa">
+                                <span class="badge bg-primary position-absolute top-0 end-0 m-2">Cod. @propiedad.Code</span>
+                                <div class="card-body p-4"> 
+                                    <h5 class="card-title mb-3">@propiedad.PropertyType</h5>
+                                    <div class="d-flex justify-content-between">
+                                        <div>
+                                            <span class="text-muted fw-light">@propiedad.SaleType.ToUpper()</span>
+                                            <br>
+                                            <span class="fw-bold fs-5">@string.Format("DO{0:C}", propiedad.Price)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer bg-white border-top">
+                                    <div class="d-flex justify-content-between align-items-center mx-2">
+                                        <div>
+                                            <p class="mb-0">Baños</p>
+                                            <p><i class="fas fa-bath"></i> @propiedad.NumberOfBathrooms</p>
+                                        </div>
+                                        <div>
+                                            <p class="mb-0">Habitaciones</p>
+                                            <p><i class="fas fa-door-closed"></i> @propiedad.NumberOfRooms</p>
+                                        </div>
+                                        <div>
+                                            <p class="mb-0">Area</p>
+                                            <p><i class="fas fa-expand-arrows-alt"></i> @propiedad.LandSize m²</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
 </div>
