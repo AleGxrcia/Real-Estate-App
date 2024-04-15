@@ -3,6 +3,14 @@
     font-family: 'Inter', sans-serif
 }
 
+.text-purple {
+    color: #8649E4 !important;
+}
+
+.text-orange {
+    color: #FF4D00 !important;
+}
+
 .form-label {
     font-weight: 600 !important;
     font-size: 1rem !important;
@@ -19,4 +27,42 @@
     font-size: 2.5rem;
     padding: 8px 19px;
     border-radius: 50%;
+}
+
+.sidebar li a {
+    color: #fff;
+}
+
+.sidebar ul li:hover a {
+    color: black;
+    background: #eee;
+    border-radius: 8px;
+}
+
+.border-start-primary {
+    border-left: 0.25rem solid #4e73df !important;
+}
+
+.border-start-orange {
+    border-left: 0.25rem solid #FF4D00 !important;
+}
+
+.border-start-success {
+    border-left: 0.25rem solid #1cc88a !important;
+}
+
+.border-start-info {
+    border-left: 0.25rem solid #36b9cc !important;
+}
+
+.border-start-warning {
+    border-left: 0.25rem solid #f6c23e !important;
+}
+
+.border-start-danger {
+    border-left: 0.25rem solid #e74a3b !important;
+}
+
+.border-start-purple {
+    border-left: 0.25rem solid #8649E4 !important;
 }
