@@ -31,14 +31,17 @@ namespace RealEstateApp.WebApp.Controllers
 			_saleTypeService = saleTypeService;
 		}
 
-		public async Task<IActionResult> Index()
-		{
-			return View(await _propertyService.GetAllPropertiesByAgentId(user.Id));
-		}
+        public async Task<IActionResult> Index()
+        {
+            var properties = await _propertyService.GetAllPropertiesByAgentId(user.Id);
+            properties.Reverse();
+            return View(properties);
+        }
 
 
-		//Crear Propiedad
-		public async Task<IActionResult> Create()
+
+        //Crear Propiedad
+        public async Task<IActionResult> Create()
 		{
 			SavePropertyViewModel vm = new();
 			vm.PropertyTypes = await _propertyTypeService.GetAllViewModel();
@@ -118,29 +121,41 @@ namespace RealEstateApp.WebApp.Controllers
             vm.Code = property.Code;
             await _propertyService.Update(vm, vm.Id);
 
-            if (property.ImgUrl1 == null) 
+            if (property.ImgUrl1 == null)
             {
                 vm.ImgUrl1 = vm.file1 != null ? FileManagerHelper.UploadFile(vm.file1, vm.Id, "PropertyImages") : "";
             }
-            vm.ImgUrl1 = vm.file1 != null ? FileManagerHelper.UploadFile(vm.file1, vm.Id, "PropertyImages", true, property.ImgUrl1) : "";
+            else
+            {
+                vm.ImgUrl1 = FileManagerHelper.UploadFile(vm.file1, vm.Id, "PropertyImages", true, property.ImgUrl1);
+            }
 
             if (property.ImgUrl2 == null)
             {
                 vm.ImgUrl2 = vm.file2 != null ? FileManagerHelper.UploadFile(vm.file2, vm.Id, "PropertyImages") : "";
             }
-            vm.ImgUrl2 = vm.file2 != null ? FileManagerHelper.UploadFile(vm.file2, vm.Id, "PropertyImages", true, property.ImgUrl2) : "";
+            else
+            {
+                vm.ImgUrl2 = FileManagerHelper.UploadFile(vm.file2, vm.Id, "PropertyImages", true, property.ImgUrl2);
+            }
 
             if (property.ImgUrl3 == null)
             {
                 vm.ImgUrl3 = vm.file3 != null ? FileManagerHelper.UploadFile(vm.file3, vm.Id, "PropertyImages") : "";
             }
-            vm.ImgUrl3 = vm.file3 != null ? FileManagerHelper.UploadFile(vm.file3, vm.Id, "PropertyImages", true, property.ImgUrl3) : "";
+            else
+            {
+                vm.ImgUrl3 = FileManagerHelper.UploadFile(vm.file3, vm.Id, "PropertyImages", true, property.ImgUrl3);
+            }
 
             if (property.ImgUrl4 == null)
             {
-                vm.ImgUrl1 = vm.file4 != null ? FileManagerHelper.UploadFile(vm.file1, vm.Id, "PropertyImages") : "";
+                vm.ImgUrl4 = vm.file4 != null ? FileManagerHelper.UploadFile(vm.file4, vm.Id, "PropertyImages") : "";
             }
-            vm.ImgUrl4 = vm.file4 != null ? FileManagerHelper.UploadFile(vm.file4, vm.Id, "PropertyImages", true, property.ImgUrl4) : "";
+            else
+            {
+                vm.ImgUrl4 = FileManagerHelper.UploadFile(vm.file4, vm.Id, "PropertyImages", true, property.ImgUrl4);
+            }
 
             List<string> Images = new List<string>();
             if (vm.ImgUrl1 != "")

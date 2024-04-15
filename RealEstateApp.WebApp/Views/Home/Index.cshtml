@@ -1,4 +1,6 @@
-﻿@model List<RealEstateApp.Core.Application.ViewModels.Property.PropertyViewModel>
+@model List<RealEstateApp.Core.Application.ViewModels.Property.PropertyViewModel>
+
+
 
 <div class="container-fluid">
     <div class="container">
@@ -25,7 +27,7 @@
                                 {
                                     <li>
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="PropertyType" value="@propertyType.Id" id="property-@propertyType.Id">
+                                            <input class="form-check-input" type="checkbox" name="PropertyType" value="@propertyType.Id" id="property-@propertyType.Id">
                                             <label class="form-check-label" for="property-@propertyType.Id">@propertyType.Name</label>
                                         </div>
                                     </li>
@@ -62,46 +64,47 @@
                     }
 
 
-                    @foreach (var propiedad in Model)
-                    {
-                        <div class="col-4 mt-3 me-3">
-                            <a class="text-decoration-none text-dark" asp-controller="Home" asp-action="Details" asp-route-id="@propiedad.Id">
-                                <div class="card p-0 shadow" style="width: 20rem;">
-                                    <img class="card-img-top p-0" src="@propiedad.ImagesUrl.FirstOrDefault()" alt="Luxury Villa">
-                                    <span class="badge bg-primary position-absolute top-0 end-0 m-2">Cod. @propiedad.Code</span>
-                                    <div class="card-body p-4">
-                                        <h5 class="card-title mb-3">@propiedad.PropertyType</h5>
-                                        <div class="d-flex justify-content-between">
-                                            <div>
-                                                <span class="text-muted fw-light">@propiedad.SaleType.ToUpper()</span>
-                                                <br>
-                                                <span class="fw-bold fs-5">@string.Format("DO{0:C}", propiedad.Price)</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card-footer bg-white border-top">
-                                        <div class="d-flex justify-content-between align-items-center mx-2">
-                                            <div>
-                                                <p class="mb-0">Baños</p>
-                                                <p><i class="fas fa-bath"></i> @propiedad.NumberOfBathrooms</p>
-                                            </div>
-                                            <div>
-                                                <p class="mb-0">Habitaciones</p>
-                                                <p><i class="fas fa-door-closed"></i> @propiedad.NumberOfRooms</p>
-                                            </div>
-                                            <div>
-                                                <p class="mb-0">Area</p>
-                                                <p><i class="fas fa-expand-arrows-alt"></i> @propiedad.LandSize m²</p>
-                                            </div>
+                @foreach (var propiedad in Model)
+                {
+                    <div class="col-4 mt-3">
+                        <a class="text-decoration-none text-dark" asp-controller="Home" asp-action="Details" asp-route-id="@propiedad.Id">
+                            <div class="card p-0 shadow" style="width: 20rem;">
+                                <img class="card-img-top p-0" src="@propiedad.ImagesUrl.FirstOrDefault()" alt="Luxury Villa">
+                                <span class="badge bg-primary position-absolute top-0 end-0 m-2">Cod. @propiedad.Code</span>
+                                <div class="card-body p-4">
+                                    <h5 class="card-title mb-3">@propiedad.PropertyType</h5>
+                                    <div class="d-flex justify-content-between">
+                                        <div>
+                                            <span class="text-muted fw-light">@propiedad.SaleType.ToUpper()</span>
+                                            <br>
+                                            <span class="fw-bold fs-5">@string.Format("DO{0:C}", propiedad.Price)</span>
                                         </div>
                                     </div>
                                 </div>
-                            </a>
-                        </div>
-                    }
+                                <div class="card-footer bg-white border-top">
+                                    <div class="d-flex justify-content-between align-items-center mx-2">
+                                        <div>
+                                            <p class="mb-0">Baños</p>
+                                            <p><i class="fas fa-bath"></i> @propiedad.NumberOfBathrooms</p>
+                                        </div>
+                                        <div>
+                                            <p class="mb-0">Habitaciones</p>
+                                            <p><i class="fas fa-door-closed"></i> @propiedad.NumberOfRooms</p>
+                                        </div>
+                                        <div>
+                                            <p class="mb-0">Area</p>
+                                            <p><i class="fas fa-expand-arrows-alt"></i> @propiedad.LandSize m²</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                      
+                    </div>
+                }
+
 
                 </div>
             </div>
         </div>
     </div>
-</div>
