@@ -3,6 +3,7 @@
 @model SaveUserAdminViewModel
 
 @{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
     ViewData["Title"] = "Registrar desarrollador";
     bool editMode = Model.Id == null ? false : true;
 

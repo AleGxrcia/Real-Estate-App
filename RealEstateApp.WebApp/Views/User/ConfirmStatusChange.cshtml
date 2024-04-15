@@ -1,6 +1,7 @@
 ﻿@using RealEstateApp.Core.Application.Enums
 @model RealEstateApp.Core.Application.Dtos.Account.UserResponse
 @{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
     ViewData["Title"] = "Confirmar accion";
     bool isActive = Model.IsActive == true ? true : false;
 }
