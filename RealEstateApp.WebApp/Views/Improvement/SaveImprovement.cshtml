@@ -7,9 +7,8 @@
     bool editMode = Model.Id == 0 ? false : true;
 }
 
-<div class="row">
-    <div class="col-6 offset-3">
-        <div class="card border rounded-3 shadow mt-3">
+<div class="container mt-5 w-50">
+    <div class="card border rounded-3 shadow">
             <div class="card-header fw-bold">
                 <h4>@(editMode ? $"Editando la mejora: {Model.Name}" : "Creando una mejora")</h4>
             </div>
