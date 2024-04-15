@@ -1,93 +1,130 @@
 ﻿@model RealEstateApp.Core.Application.ViewModels.Dashboard.AdminDashboardViewModel
 
 @{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
     ViewData["Title"] = "Admin Dashboard";
 }
 
-<div class="container mb-3">
-    <div class="row  justify-content-md-center">
-        <h1 class="text-center">Dashboard</h1>
-        <hr class="w-50 mx-auto mb-3 border-dark-subtle">
-    </div>
-</div>
-</div>
-
-<div class="container">
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
-        <div class="col">
-            <div class="card border rounded-3 shadow h-100">
-                <div class="card-body text-center">
-                    <div class="d-flex align-items-center justify-content-center mb-3 bsb-circle">
-                        <i class="fa-solid fa-user"></i>
+<div class="container mb-3 mt-5">
+    <h2 class="fw-bolder">Dashboard</h2>
+    <hr class="w-100 mx-auto mb-3 border-dark-subtle">
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-3">
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-start-primary shadow px-2 pt-3">
+                <div class="card-body">
+                    <div class="row g-0 align-items-center">
+                        <div class="col mr-2">
+                            <div class="fw-bold text-primary small text-uppercase mb-1">
+                                Agentes activos
+                            </div>
+                            <div class="h5 mb-0 fw-bold">@Model.TotalActiveAgents+</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fa-solid fa-user fa-2x" style="color: #6C757D;"></i>
+                        </div>
                     </div>
-                    <h5 class="display-6 fw-bold m-1">@Model.TotalActiveAgents+</h5>
-                    <p class="text-secondary m-0">Total active agents</p>
                 </div>
             </div>
         </div>
-        <div class="col">
-            <div class="card border rounded-3 shadow h-100">
-                <div class="card-body text-center">
-                    <div class="d-flex align-items-center justify-content-center mb-3 bsb-circle">
-                        <i class="fa-solid fa-user"></i>
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-start-success border rounded-3 shadow px-2 pt-3">
+                <div class="card-body">
+                    <div class="row g-0 align-items-center">
+                        <div class="col mr-2">
+                            <div class="fw-bold text-success small text-uppercase mb-1">
+                                Agentes inactivos
+                            </div>
+                            <div class="h5 mb-0 fw-bold">@Model.TotalInactiveAgents+</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fa-solid fa-user fa-2x" style="color: #6C757D;"></i>
+                        </div>
                     </div>
-                    <h5 class="display-6 fw-bold m-1">@Model.TotalInactiveAgents+</h5>
-                    <p class="text-secondary m-0">Total inactive agents</p>
                 </div>
             </div>
         </div>
-        <div class="col">
-            <div class="card border rounded-3 shadow h-100">
-                <div class="card-body text-center">
-                    <div class="d-flex align-items-center justify-content-center mb-3 bsb-circle">
-                        <i class="fa-solid fa-user-tie"></i>
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-start-info shadow px-2 pt-3">
+                <div class="card-body">
+                    <div class="row g-0 align-items-center">
+                        <div class="col mr-2">
+                            <div class="fw-bold text-info small text-uppercase mb-1">
+                                Administradores activos
+                            </div>
+                            <div class="h5 mb-0 fw-bold">@Model.TotalActiveAdmins+</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fa-solid fa-user-tie fa-2x" style="color: #6C757D;"></i>
+                        </div>
                     </div>
-                    <h5 class="display-6 fw-bold m-1">@Model.TotalActiveAdmins+</h5>
-                    <p class="text-secondary m-0">Total active admins</p>
                 </div>
             </div>
         </div>
-        <div class="col">
-            <div class="card border rounded-3 shadow h-100">
-                <div class="card-body text-center">
-                    <div class="d-flex align-items-center justify-content-center mb-3 bsb-circle">
-                        <i class="fa-solid fa-user-tie"></i>
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-start-warning shadow px-2 pt-3">
+                <div class="card-body">
+                    <div class="row g-0 align-items-center">
+                        <div class="col mr-2">
+                            <div class="fw-bold text-warning small text-uppercase mb-1">
+                                Administradores inactivos
+                            </div>
+                            <div class="h5 mb-0 fw-bold">@Model.TotalInactiveAdmins+</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fa-solid fa-user-tie fa-2x" style="color: #6C757D;"></i>
+                        </div>
                     </div>
-                    <h5 class="display-6 fw-bold m-1">@Model.TotalInactiveAdmins+</h5>
-                    <p class="text-secondary m-0">Total inactive admins</p>
                 </div>
             </div>
         </div>
-        <div class="col-lg-4">
-            <div class="card border rounded-3 shadow h-100">
-                <div class="card-body text-center">
-                    <div class="d-flex align-items-center justify-content-center mb-3 bsb-circle">
-                        <i class="fa-solid fa-user-gear"></i>
+        <div class="col-xl-4 col-md-6 mb-4">
+            <div class="card border-start-danger shadow px-2 pt-3">
+                <div class="card-body">
+                    <div class="row g-0 align-items-center">
+                        <div class="col mr-2">
+                            <div class="fw-bold text-danger small text-uppercase mb-1">
+                                Desarrolladores activos
+                            </div>
+                            <div class="h5 mb-0 fw-bold">@Model.TotalActiveDevs+</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fa-solid fa-user-gear fa-2x" style="color: #6C757D;"></i>
+                        </div>
                     </div>
-                    <h5 class="display-6 fw-bold m-1">@Model.TotalActiveDevs+</h5>
-                    <p class="text-secondary m-0">Total active developers</p>
                 </div>
             </div>
         </div>
-        <div class="col-lg-4">
-            <div class="card border rounded-3 shadow h-100">
-                <div class="card-body text-center">
-                    <div class="d-flex align-items-center justify-content-center mb-3 bsb-circle">
-                        <i class="fa-solid fa-user-gear"></i>
+        <div class="col-xl-4 col-md-6 mb-4">
+            <div class="card border-start-purple shadow px-2 pt-3">
+                <div class="card-body">
+                    <div class="row g-0 align-items-center">
+                        <div class="col mr-2">
+                            <div class="fw-bold text-purple small text-uppercase mb-1">
+                                Desarrolladores inactivos
+                            </div>
+                            <div class="h5 mb-0 fw-bold">@Model.TotalInactiveDevs+</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fa-solid fa-user-gear fa-2x" style="color: #6C757D;"></i>
+                        </div>
                     </div>
-                    <h5 class="display-6 fw-bold m-1">@Model.TotalInactiveDevs+</h5>
-                    <p class="text-secondary m-0">Total inactive developers</p>
                 </div>
             </div>
         </div>
-        <div class="col-lg-4">
-            <div class="card border rounded-3 shadow h-100">
-                <div class="card-body text-center">
-                    <div class="d-flex align-items-center justify-content-center mb-3 bsb-circle">
-                        <i class="fa-solid fa-house"></i>
+        <div class="col-xl-4 col-md-6 mb-4">
+            <div class="card border-start-orange shadow px-2 pt-3">
+                <div class="card-body">
+                    <div class="row g-0 align-items-center">
+                        <div class="col mr-2">
+                            <div class="fw-bold text-orange small text-uppercase mb-1">
+                                Propiedades registradas
+                            </div>
+                            <div class="h5 mb-0 fw-bold">@Model.TotalPropertiesRegistered+</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fa-solid fa-house fa-2x" style="color: #6C757D;"></i>
+                        </div>
                     </div>
-                    <h5 class="display-6 fw-bold m-1">@Model.TotalPropertiesRegistered+</h5>
-                    <p class="text-secondary m-0">Total properties registered</p>
                 </div>
             </div>
         </div>

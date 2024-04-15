@@ -25,7 +25,7 @@
                                 {
                                     <li>
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" name="PropertyType" value="@propertyType.Id" id="property-@propertyType.Id">
+                                            <input class="form-check-input" type="radio" name="PropertyType" value="@propertyType.Id" id="property-@propertyType.Id">
                                             <label class="form-check-label" for="property-@propertyType.Id">@propertyType.Name</label>
                                         </div>
                                     </li>
@@ -64,7 +64,7 @@
 
                     @foreach (var propiedad in Model)
                     {
-                        <div class="col-4 mt-3">
+                        <div class="col-4 mt-3 me-3">
                             <a class="text-decoration-none text-dark" asp-controller="Home" asp-action="Details" asp-route-id="@propiedad.Id">
                                 <div class="card p-0 shadow" style="width: 20rem;">
                                     <img class="card-img-top p-0" src="@propiedad.ImagesUrl.FirstOrDefault()" alt="Luxury Villa">
