@@ -2,6 +2,7 @@
 @model SaveImprovementViewModel
 
 @{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
     ViewData["Title"] = "Guardar mejora";
     bool editMode = Model.Id == 0 ? false : true;
 }
