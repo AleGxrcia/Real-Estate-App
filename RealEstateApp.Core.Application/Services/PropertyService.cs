@@ -79,43 +79,20 @@ public async Task<List<PropertyViewModel>> GetAllPropertiesByAgentId(string Id)
 				}).ToList()
 			}).ToList();
 
-			if (filters.PropertyType != null && filters.MinPrice != null && filters.MaxPrice != null && filters.NumberOfBathRooms != null && filters.NumberOfBathRooms != null)
-			{
-				propertiesWithFilters = propertiesWithFilters.Where(p => p.PropertyTypeId == filters.PropertyType
-				&& p.Price >= filters.MinPrice && p.Price <= filters.MaxPrice
-				&& p.NumberOfBathrooms == filters.NumberOfBathRooms
-				&& p.NumberOfRooms == filters.NumberOfRooms)
-				.ToList();
-
-			}
-			else if (filters.PropertyType != null)
-			{
-				propertiesWithFilters = propertiesWithFilters.Where(p => p.PropertyTypeId == filters.PropertyType).ToList();
-			}
-			else if (filters.MinPrice != null)
-			{
-				propertiesWithFilters = propertiesWithFilters.Where(p => p.Price >= filters.MinPrice).ToList();
-			}
-			else if (filters.MaxPrice != null)
-			{
-				propertiesWithFilters = propertiesWithFilters.Where(p => p.Price <= filters.MaxPrice).ToList();
-			}
-			else if (filters.MaxPrice != null && filters.MinPrice != null)
-			{
-				propertiesWithFilters = propertiesWithFilters.Where(p => p.Price >= filters.MinPrice && p.Price <= filters.MaxPrice).ToList();
-			}
-			else if (filters.NumberOfRooms != null) 
-			{
-				propertiesWithFilters = propertiesWithFilters.Where(p => p.NumberOfRooms == filters.NumberOfRooms).ToList();
-			}
-			else if (filters.NumberOfBathRooms != null)
-			{
-				propertiesWithFilters = propertiesWithFilters.Where(p => p.NumberOfBathrooms == filters.NumberOfBathRooms).ToList();
-			}
+            if (filters != null)
+            {
+                propertiesWithFilters = propertiesWithFilters.Where(p =>
+                    (filters.PropertyType == null || p.PropertyTypeId == filters.PropertyType) &&
+                    (filters.MinPrice == null || p.Price >= filters.MinPrice) &&
+                    (filters.MaxPrice == null || p.Price <= filters.MaxPrice) &&
+                    (filters.NumberOfBathRooms == null || p.NumberOfBathrooms == filters.NumberOfBathRooms) &&
+                    (filters.NumberOfRooms == null || p.NumberOfRooms == filters.NumberOfRooms))
+                .ToList();
+            }
 
 
 
-			return propertiesWithFilters;
+            return propertiesWithFilters;
 		}
 
 

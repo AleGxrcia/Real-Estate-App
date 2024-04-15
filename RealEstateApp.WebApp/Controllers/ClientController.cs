@@ -30,28 +30,36 @@ namespace RealEstateApp.WebApp.Controllers
         }
 
 
-		public async Task<IActionResult> Index(string SearchString)
-		{
-			var propiedades = await _propertyService.GetAllWithIncludeAsync();
-			ViewBag.PropetyTypes = await _propertyTypeService.GetAllViewModel();
-			ViewBag.FavoriteProperties = await _userService.GetFavoriteProperties(user.Id);
-			if (!string.IsNullOrEmpty(SearchString))
-			{
-				propiedades = propiedades.Where(p => p.Code.ToString().Contains(SearchString)).ToList();
-			}
-			return View(propiedades);
-		}
+        public async Task<IActionResult> Index(string SearchString)
+        {
+            var propiedades = await _propertyService.GetAllWithIncludeAsync();
+            ViewBag.PropetyTypes = await _propertyTypeService.GetAllViewModel();
+            ViewBag.FavoriteProperties = await _userService.GetFavoriteProperties(user.Id);
 
-		public async Task<IActionResult> IndexFilter(FiltersPropertyViewModel vm)
-		{
-			ViewBag.PropetyTypes = await _propertyTypeService.GetAllViewModel();
-			ViewBag.FavoriteProperties = await _userService.GetFavoriteProperties(user.Id);
-			return View("Index", await _propertyService.GetAllWithFilters(vm));
-		}
+            if (!string.IsNullOrEmpty(SearchString))
+            {
+                propiedades = propiedades.Where(p => p.Code.ToString().Contains(SearchString)).ToList();
+            }
+
+            propiedades.Reverse(); 
+
+            return View(propiedades);
+        }
+
+        public async Task<IActionResult> IndexFilter(FiltersPropertyViewModel vm)
+        {
+            ViewBag.PropetyTypes = await _propertyTypeService.GetAllViewModel();
+            ViewBag.FavoriteProperties = await _userService.GetFavoriteProperties(user.Id);
+
+            var filteredProperties = await _propertyService.GetAllWithFilters(vm);
+            filteredProperties.Reverse(); 
+
+            return View("Index", filteredProperties);
+        }
 
 
 
-		public async Task<IActionResult> LikeProperty(int id) 
+        public async Task<IActionResult> LikeProperty(int id) 
         {
            await _userService.AddFavorite(user.Id, id);
            return RedirectToRoute(new { controller = "Client", action = "Index" });
