@@ -3,23 +3,28 @@ using Microsoft.AspNetCore.Mvc;
 using RealEstateApp.Core.Application.Dtos.Account;
 using RealEstateApp.Core.Application.Enums;
 using RealEstateApp.Core.Application.Interfaces.Services;
-using RealEstateApp.Core.Application.Services;
 using RealEstateApp.Core.Application.Helpers;
 using RealEstateApp.Core.Application.ViewModels.User;
+using Microsoft.AspNetCore.Authorization;
 
 namespace RealEstateApp.WebApp.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class UserController : Controller
     {
         private readonly IUserService _userService;
         private readonly IPropertyService _propertyService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly AuthenticationResponse userViewModel;
         private readonly IMapper _mapper;
 
-        public UserController(IUserService userService, IPropertyService propertyService, IMapper mapper)
+        public UserController(IHttpContextAccessor httpContextAccessor, IUserService userService, IPropertyService propertyService, IMapper mapper)
         {
             _userService = userService;
             _propertyService = propertyService;
+            _httpContextAccessor = httpContextAccessor;
             _mapper = mapper;
+            userViewModel = _httpContextAccessor.HttpContext.Session.Get<AuthenticationResponse>("user");
         }
 
         public async Task<IActionResult> AgentManagement()
@@ -107,8 +112,12 @@ namespace RealEstateApp.WebApp.Controllers
         public async Task<IActionResult> Edit(string id)
         {
             var user = await _userService.getUserByIdAsync(id);
-            SaveUserAdminViewModel userVm = _mapper.Map<SaveUserAdminViewModel>(user);
+            if (user.Id == userViewModel.Id)
+            {
+                return View("AdminManagement");
+            }
 
+            SaveUserAdminViewModel userVm = _mapper.Map<SaveUserAdminViewModel>(user);
             if (userVm.UserType == Roles.Admin.ToString())
             {
                 return View("SaveAdmin", userVm);
