@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using RealEstateApp.Core.Application.Dtos.Account;
 using RealEstateApp.Core.Application.Interfaces.Services;
 using RealEstateApp.Core.Application.ViewModels.Property;
-using RealEstateApp.WebApp.Models;
-using System.Diagnostics;
+using RealEstateApp.Core.Application.Helpers;
+using RealEstateApp.Core.Application.Enums;
 
 namespace RealEstateApp.WebApp.Controllers
 {
@@ -11,15 +12,29 @@ namespace RealEstateApp.WebApp.Controllers
         private readonly IPropertyService _propertyService;
         private readonly IPropertyTypeService _propertyTypeService;
         private readonly IUserService _userService;
-        public HomeController(IPropertyService propertyService, IPropertyTypeService propertyTypeService, IUserService userService)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly AuthenticationResponse userViewModel;
+        public HomeController(IPropertyService propertyService, IPropertyTypeService propertyTypeService, IUserService userService,
+            IHttpContextAccessor httpContextAccessor)
         {
             _propertyService = propertyService;
             _propertyTypeService = propertyTypeService;
             _userService = userService;
+            _httpContextAccessor = httpContextAccessor;
+            userViewModel = _httpContextAccessor.HttpContext.Session.Get<AuthenticationResponse>("user");
         }
 
         public async Task<IActionResult> Index(string SearchString)
         {
+            if (userViewModel != null && userViewModel.Roles.FirstOrDefault() == Roles.Admin.ToString())
+            {
+                return RedirectToRoute(new { controller = "Admin", action = "Index" });
+            }
+            else if (userViewModel != null && userViewModel.Roles.FirstOrDefault() == Roles.Client.ToString())
+            {
+                return RedirectToRoute(new { controller = "Client", action = "Index" });
+            }
+
             var propiedades = await _propertyService.GetAllWithIncludeAsync();
             ViewBag.PropetyTypes = await _propertyTypeService.GetAllViewModel();
 

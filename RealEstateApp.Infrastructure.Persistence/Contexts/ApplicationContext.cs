@@ -79,7 +79,7 @@ namespace RealEstateApp.Infrastructure.Persistence.Contexts
                 .HasMany<FavoriteProperty>(p => p.FavoriteProperties)
                 .WithOne(fp => fp.Property)
                 .HasForeignKey(fp => fp.PropertyId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<SaleType>()
                 .HasMany<Property>(st => st.Properties)
@@ -91,13 +91,13 @@ namespace RealEstateApp.Infrastructure.Persistence.Contexts
                 .HasMany<ImprovementProperty>(p => p.ImprovementProperties)
                 .WithOne(ip => ip.Property)
                 .HasForeignKey(ip => ip.PropertyId)
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Improvement>()
                 .HasMany<ImprovementProperty>(i => i.ImprovementProperties)
                 .WithOne(ip => ip.Improvement)
                 .HasForeignKey(ip => ip.ImprovementId)
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.Cascade);
             #endregion
 
             #region "property configuration"

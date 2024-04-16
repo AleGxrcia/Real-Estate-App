@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using RealEstateApp.Core.Application.Interfaces.Services;
 using RealEstateApp.Core.Application.ViewModels.PropertyType;
 
 namespace RealEstateApp.WebApp.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class PropertyTypeController : Controller
     {
         private readonly IPropertyTypeService _propertyTypeService;
