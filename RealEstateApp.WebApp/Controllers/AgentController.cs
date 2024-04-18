@@ -37,6 +37,11 @@ namespace RealEstateApp.WebApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(EditUserViewModel vm) 
         {
+            if (!ModelState.IsValid)
+            {
+                return View("Profile",vm);
+            }
+
             string Error = await _userService.UpdateUser(vm);
             if (Error != "") 
             {
